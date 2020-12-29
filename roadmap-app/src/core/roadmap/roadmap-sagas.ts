@@ -16,7 +16,7 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
       ...requestOptions,
     };
 
-    const url = 'https://mockend.com/org/repo/posts';
+    const url = 'https://mockend.com/marfuny51/RoadMap/posts';
     const dataList = yield call(createApiCall, url, options);
 
     return yield put(
