@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { roadMapActions, roadMapSelectors } from 'core/roadmap';
 
@@ -17,6 +17,9 @@ const RoadMapApp = () => {
   useEffect(() => {
     data();
   }, []);
+
+  console.log('dataList', dataList);
+  console.log('isDataListFetching', isDataListFetching);
 
   return <button onClick={data}>My RoadMap Application</button>;
 };

@@ -7,5 +7,5 @@ import { roadMapReducer } from './roadmap';
 export default (history: History): any =>
   combineReducers({
     // router: connectRouter(history),
-    roadMapReducer: roadMapReducer,
+    roadMap: roadMapReducer,
   });

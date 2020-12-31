@@ -38,7 +38,6 @@ module.exports = {
       },
     ],
     'no-confusing-arrow': 0,
-    'no-console': 1,
     'no-use-before-define': 0,
     'object-curly-newline': ['error', { consistent: true }],
     'prefer-template': 2,

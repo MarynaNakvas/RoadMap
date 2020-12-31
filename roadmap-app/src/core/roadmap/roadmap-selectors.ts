@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const getLocalState = (state: any) => state;
+const getLocalState = (state: any) => state.roadMap;
 
 const getDataList = createSelector(
   getLocalState,
