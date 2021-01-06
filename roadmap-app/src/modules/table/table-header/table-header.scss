@@ -1,0 +1,48 @@
+@import 'styles/variables';
+
+.table-headers {
+  display: grid;
+  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr);
+  padding: 10px;
+  background-color: $color-background-secondary;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  & .sorting-button {
+    max-height: 24px;
+    margin-left: 4px;
+    padding: 0;
+    background-color: $color-background-secondary;
+    border: none;
+    transition: transform 0.3s;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &__increase {
+      transform: rotate(180deg);
+    }
+
+    &__decrease {
+      transform: rotate(0);
+    }
+
+    &__active {
+      color: $color-orange;
+    }
+  }
+}

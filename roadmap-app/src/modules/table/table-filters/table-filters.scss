@@ -1,0 +1,19 @@
+@import 'styles/variables';
+
+.table-filters {
+  display: grid;
+  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr);
+  min-height: 34px;
+  border-top: 1px solid $color-border-20;
+  border-bottom: 1px solid $color-border-20;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    border-right: 1px solid $color-border-20;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+}

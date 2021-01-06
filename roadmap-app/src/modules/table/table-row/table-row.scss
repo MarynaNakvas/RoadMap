@@ -1,0 +1,22 @@
+@import 'styles/variables';
+
+.table-row {
+  display: grid;
+  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr);
+  padding: 8px 5px;
+  background-color: inherit;
+  border-bottom: 1px solid $color-border-20;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: $color-background-primary-hover;
+    cursor: pointer;
+  }
+
+  &__item {
+    padding-left: 5px;
+  }
+}

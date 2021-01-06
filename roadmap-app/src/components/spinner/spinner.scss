@@ -1,0 +1,13 @@
+@import 'styles/variables';
+
+.spinner {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+
+  & .MuiCircularProgress-colorPrimary {
+    color: $color-primary;
+  }
+}

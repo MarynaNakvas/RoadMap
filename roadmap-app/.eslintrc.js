@@ -81,6 +81,7 @@ module.exports = {
     'redux-saga/no-unhandled-errors': 0,
     'react-hooks/rules-of-hooks': 2,
     'react-hooks/exhaustive-deps': 0,
+    'react/prop-types': 0,
     'require-yield': 0,
     'space-before-function-paren': [
       'error',

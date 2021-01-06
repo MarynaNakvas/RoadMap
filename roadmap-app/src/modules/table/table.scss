@@ -1,0 +1,21 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.table {
+  @extend .text;
+  min-width: 860px;
+  background-color: $color-background-primary;
+  border-radius: 10px;
+  box-shadow: $shadow-table;
+
+  &-rows {
+    max-height: 80vh;
+    overflow: scroll;
+  }
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
