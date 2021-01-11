@@ -2,8 +2,8 @@
 
 .table-headers {
   display: grid;
-  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr);
-  padding: 10px;
+  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
+  padding: 10px 0;
   background-color: $color-background-secondary;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -11,9 +11,16 @@
   &__item {
     display: flex;
     align-items: center;
+    padding-left: 10px;
 
     &:hover {
       cursor: pointer;
+    }
+
+    &-action {
+      &:hover {
+        cursor: default;
+      }
     }
   }
 

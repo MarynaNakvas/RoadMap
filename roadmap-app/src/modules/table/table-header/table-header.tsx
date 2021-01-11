@@ -41,8 +41,9 @@ const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {
   };
   const emptyHeading = {
     id: TableKeys.Action,
-    title: 'Make it a priority',
+    title: 'Priority',
     dataKey: 'action',
+    className: 'table-headers__item-action',
   };
 
   const tableHeadings = [
@@ -59,7 +60,7 @@ const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {
       return id === 'action' ? (
         <div
           key={id}
-          className={classNames('table-headers__item', { className })}
+          className={classNames('table-headers__item', className)}
           onClick={() => sort(dataKey)}
         >
           {title}

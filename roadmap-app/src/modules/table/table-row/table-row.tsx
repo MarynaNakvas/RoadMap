@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import classNames from 'clsx';
-
-import { roadMapSelectors, TableKeys } from 'core/roadmap';
+import { Checkbox } from '@material-ui/core';
+import { TableKeys } from 'core/roadmap';
 import { dateFormat } from 'utils/date-formater';
 
 import './table-row.scss';
@@ -15,9 +14,10 @@ interface TextCell {
 
 interface TableRowProps {
   rowData: any;
+  addPriority(props: number): void;
 }
 
-const TableRow = ({ rowData }: TableRowProps) => {
+const TableRow = ({ rowData, addPriority }: TableRowProps) => {
   const cells = useMemo(() => {
     const {
       [TableKeys.id]: id,
@@ -26,8 +26,6 @@ const TableRow = ({ rowData }: TableRowProps) => {
       [TableKeys.Date]: date,
       [TableKeys.Raiting]: raiting,
     } = rowData;
-
-    const action = <input type="checkbox" />;
 
     const titleCell = {
       id: TableKeys.Title,
@@ -47,7 +45,12 @@ const TableRow = ({ rowData }: TableRowProps) => {
     };
     const actionCell = {
       id: TableKeys.Action,
-      data: action,
+      data: (
+        <Checkbox
+          className="table-row__item-action"
+          onClick={() => addPriority(id)}
+        />
+      ),
     };
 
     const tableCells = [

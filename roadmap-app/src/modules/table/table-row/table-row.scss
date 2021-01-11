@@ -2,8 +2,8 @@
 
 .table-row {
   display: grid;
-  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr);
-  padding: 8px 5px;
+  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
+  padding: 8px 0;
   background-color: inherit;
   border-bottom: 1px solid $color-border-20;
 
@@ -17,6 +17,29 @@
   }
 
   &__item {
-    padding-left: 5px;
+    display: flex;
+    padding-left: 10px;
+
+    &-action {
+      &.PrivateSwitchBase-root-1 {
+        padding: 0;
+      }
+
+      &.MuiCheckbox-root {
+        color: $color-primary;
+
+        & .MuiIconButton-label {
+          color: $color-primary;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        & .MuiTouchRipple-root {
+          display: none;
+        }
+      }
+    }
   }
 }

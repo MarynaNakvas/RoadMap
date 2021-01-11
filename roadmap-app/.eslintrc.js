@@ -73,7 +73,7 @@ module.exports = {
     'react/jsx-curly-newline': 0,
     'react/jsx-no-target-blank': 0,
     'react/require-extension': 0,
-    'react/self-closing-comp': 1,
+    'react/self-closing-comp': 0,
     'react/sort-comp': 1,
     'react/jsx-fragments': 0,
     'redux-saga/no-yield-in-race': 2,
