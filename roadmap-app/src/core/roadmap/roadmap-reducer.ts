@@ -9,13 +9,14 @@ import {
   resolved,
 } from 'utils';
 import { types as actionsTypes } from './roadmap-actions';
+import { TableKeysType } from './roadmap.model';
 
 export interface ReducerType {
   errors: {
     [key: string]: string;
   };
   isDataListFetched: boolean;
-  dataList: any[];
+  dataList: TableKeysType[];
 }
 
 const defaultState: ReducerType = {

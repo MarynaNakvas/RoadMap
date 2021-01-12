@@ -11,9 +11,5 @@
     display: flex;
     align-items: center;
     border-right: 1px solid $color-border-20;
-
-    &:last-child {
-      border-right: none;
-    }
   }
 }

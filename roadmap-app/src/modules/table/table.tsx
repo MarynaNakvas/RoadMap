@@ -34,11 +34,16 @@ const Table = () => {
     dispatch(roadMapActions.fetchDataList());
   }, [dispatch]);
 
+  const [dataPriority, setDataPriority] = useState(priorityRows);
+
+  // const dataListWithoutPriority =
+  //   dataPriority.map((i) =>
+  //     remove(dataList, (n: any) =>
+  //       n.id === i));
+
   const { items, sortData, sortRules } = useSortData(dataList);
 
   const [tableContent, setTableContent] = useState(items);
-
-  const [dataPriority, setDataPriority] = useState(priorityRows);
 
   useEffect(() => {
     setTableContent(items);
@@ -67,42 +72,15 @@ const Table = () => {
     [tableContent],
   );
 
-  console.log('tableAllContent', tableAllContent);
-
   const changePriority = () => {
-    const evens = remove(
-      dataList,
-      (n: any) => n.id === dataPriority[0],
+    const evens = dataPriority.map((i) =>
+      remove(tableContent, (n: any) => n.id === i),
     );
-    // dataPriority.map((i) =>
-    //   remove(dataList, (n: any) =>
-    //     n.id === i));
 
     const arr = flattenDeep(evens);
 
-    const tableRowsPriority = arr.map((rowData: any) => {
-      const { [TableKeys.id]: key } = rowData;
-      return (
-        <TableRow
-          key={key}
-          rowData={rowData}
-          addPriority={addPriority}
-        />
-      );
-    });
+    const updateTableContent = [...arr, ...tableContent];
 
-    const tableRows = dataList.map((rowData: any) => {
-      const { [TableKeys.id]: key } = rowData;
-      return (
-        <TableRow
-          key={key}
-          rowData={rowData}
-          addPriority={addPriority}
-        />
-      );
-    });
-
-    const updateTableContent = [...tableRowsPriority, ...tableRows];
     setTableContent(updateTableContent);
   };
 
@@ -113,11 +91,13 @@ const Table = () => {
   return (
     <div className="table">
       <TableHeader sort={sortData} sortRules={sortRules} />
-      <TableFilters />
+      <TableFilters dataList={dataList} />
       <Spinner isFetching={isDataListFetching}>
         <div className="table-rows">{tableAllContent}</div>
       </Spinner>
-      <button onClick={changePriority}>Make a priority</button>
+      <button className="table-button" onClick={changePriority}>
+        Make a priority
+      </button>
     </div>
   );
 };

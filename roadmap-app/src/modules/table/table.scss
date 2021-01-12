@@ -7,6 +7,30 @@
   background-color: $color-background-primary;
   border-radius: 10px;
   box-shadow: $shadow-table;
+
+  &-button {
+    @extend .text;
+    float: right;
+    margin: 0 40px 15px 0;
+    padding: 6px 14px;
+    letter-spacing: 0.5px;
+    background-color: $color-background-secondary;
+    border: 2px solid $color-primary;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-background-primary-hover;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__select-filter {
+    position: relative;
+  }
 }
 
 .content {
