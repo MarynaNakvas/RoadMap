@@ -30,6 +30,17 @@
 
   &__select-filter {
     position: relative;
+
+    & .seacrh-select__placeholder {
+      display: flex;
+      align-items: center;
+      color: $color-placeholder;
+
+      &-text {
+        margin: 0 0 0 7px;
+        padding-top: 3px;
+      }
+    }
   }
 }
 
