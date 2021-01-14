@@ -19,11 +19,7 @@ const enableFetchDataList = createAction(
 const fetchDataList = createAction(
   types.FETCH_DATA_LIST,
   (payload: any) => payload,
-  () => ({
-    auth: {
-      enableFetch: enableFetchDataList,
-    },
-  }),
+  () => ({ isDataListFetched: enableFetchDataList }),
 );
 
 export const actions = {

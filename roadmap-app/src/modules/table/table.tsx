@@ -28,6 +28,8 @@ const Table = () => {
     roadMapSelectors.getIsDataListFetched,
   );
 
+  const globalFilters: any = {};
+
   const dispatch = useDispatch();
 
   const data = useCallback(() => {
@@ -35,11 +37,6 @@ const Table = () => {
   }, [dispatch]);
 
   const [dataPriority, setDataPriority] = useState(priorityRows);
-
-  // const dataListWithoutPriority =
-  //   dataPriority.map((i) =>
-  //     remove(dataList, (n: any) =>
-  //       n.id === i));
 
   const { items, sortData, sortRules } = useSortData(dataList);
 
@@ -73,13 +70,13 @@ const Table = () => {
   );
 
   const changePriority = () => {
-    const evens = dataPriority.map((i) =>
+    const priorityRowsArray = dataPriority.map((i) =>
       remove(tableContent, (n: any) => n.id === i),
     );
 
-    const arr = flattenDeep(evens);
+    const priorityRows = flattenDeep(priorityRowsArray);
 
-    const updateTableContent = [...arr, ...tableContent];
+    const updateTableContent = [...priorityRows, ...tableContent];
 
     setTableContent(updateTableContent);
   };
@@ -91,7 +88,10 @@ const Table = () => {
   return (
     <div className="table">
       <TableHeader sort={sortData} sortRules={sortRules} />
-      <TableFilters dataList={dataList} />
+      <TableFilters
+        dataList={dataList}
+        setTableContent={setTableContent}
+      />
       <Spinner isFetching={isDataListFetching}>
         <div className="table-rows">{tableAllContent}</div>
       </Spinner>

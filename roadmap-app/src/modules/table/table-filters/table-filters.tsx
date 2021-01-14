@@ -14,7 +14,15 @@ interface CollectionMap {
   [key: string]: Set<string>;
 }
 
-const TableFilters = ({ dataList }: any) => {
+interface TableFiltersProps {
+  setTableContent(props: any): void;
+  dataList: [];
+}
+
+const TableFilters = ({
+  dataList,
+  setTableContent,
+}: TableFiltersProps) => {
   const filtersOptions: Collection = {};
   const map: CollectionMap = {};
 
@@ -44,7 +52,12 @@ const TableFilters = ({ dataList }: any) => {
 
   const tableFilters = optionGroups.map((key: string) => (
     <div key={key} className="table-filters__item">
-      <SelectFilter options={filtersOptions[key]} />
+      <SelectFilter
+        byKey={key}
+        options={filtersOptions[key]}
+        onChange={setTableContent}
+        dataList={dataList}
+      />
     </div>
   ));
 

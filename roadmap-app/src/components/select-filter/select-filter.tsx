@@ -1,11 +1,23 @@
-import React, { ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import Select, { InputActionMeta } from 'react-select';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
 import { customStyles } from './select-filter.utils';
 
-// import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
+interface SelectFiltersProps {
+  byKey: string;
+  options: any;
+  onChange(props: any): void;
+  dataList: [];
+}
 
-const SelectFilter = ({ options }: any) => {
+const SelectFilter = ({
+  options,
+  onChange,
+  dataList,
+  byKey,
+}: SelectFiltersProps) => {
+  const [inputValue, setInputValue] = useState('');
+
   const placeholderComponent = (
     <div className="seacrh-select__placeholder">
       <SearchIcon />
@@ -13,14 +25,31 @@ const SelectFilter = ({ options }: any) => {
     </div>
   );
 
-  const onChange = (option: any) => {
+  const change = (option: any) => {
     console.log('option', option);
 
-    const { label, value } = option;
-    // const otherKey = options.filter(
-    //   (opt: any) => opt.label === label && opt.value.includes(inputValue),
-    // );
-    // return value.includes(inputValue) || otherKey.length > 0;
+    const udateDataList = option
+      ? dataList.filter((item: any) => {
+          const modifiedInputValue = option.value
+            .toString()
+            .toLocaleLowerCase();
+          const modifiedItem = item[byKey]
+            .toString()
+            .toLocaleLowerCase();
+          return modifiedItem.includes(modifiedInputValue);
+        })
+      : dataList;
+    onChange(udateDataList);
+  };
+
+  const changeInput = (inputValue: any, reasons: InputActionMeta) => {
+    if (reasons.action === 'input-change') {
+      const option = {
+        label: inputValue,
+        value: inputValue,
+      };
+      change(option);
+    }
   };
 
   return (
@@ -35,7 +64,8 @@ const SelectFilter = ({ options }: any) => {
       noOptionsMessage={() =>
         'Sorry, no options \n matched your criteria.'
       }
-      onChange={onChange}
+      onChange={change}
+      onInputChange={changeInput}
     />
   );
 };

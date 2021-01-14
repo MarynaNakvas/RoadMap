@@ -3,6 +3,7 @@ import { put, fork, call, takeLatest } from 'redux-saga/effects';
 import { createApiCall } from 'services/api-service';
 import { AppMeta, rejectedAction, resolvedAction } from 'utils';
 import { types as actionsTypes } from './roadmap-actions';
+import { normalizeData } from './roadmap-service';
 
 /*
  * Sagas
@@ -20,7 +21,9 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
       // 'https://app.fakejson.com/q/ePNmHUee?token=Ao7nQtvP3G6muZKNI7fguQ';
       'https://mockend.com/marfuny51/RoadMap/posts';
     // 'https://my-json-server.typicode.com/marfuny51/RoadMap/posts';
-    const dataList = yield call(createApiCall, url, options);
+    const response = yield call(createApiCall, url, options);
+
+    const dataList = yield call(normalizeData, response);
 
     return yield put(
       resolvedAction(actionsTypes.FETCH_DATA_LIST, dataList),

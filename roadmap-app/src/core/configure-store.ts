@@ -2,7 +2,6 @@ import createSagaMiddleware from 'redux-saga';
 import * as localforage from 'localforage';
 import { createBrowserHistory } from 'history';
 import { applyMiddleware, createStore } from 'redux';
-import { routerMiddleware } from 'connected-react-router';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistReducer, persistStore } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
@@ -23,9 +22,7 @@ export const history = createBrowserHistory();
 
 const dev = process.env.NODE_ENV === 'development';
 
-const enchanters = [routerMiddleware(history), sagaMiddleware];
-
-let middleware = applyMiddleware(...enchanters);
+let middleware = applyMiddleware(sagaMiddleware);
 
 if (dev) {
   middleware = composeWithDevTools(middleware);

@@ -37,7 +37,7 @@ const TableRow = ({ rowData, addPriority }: TableRowProps) => {
     };
     const dateCell = {
       id: TableKeys.Date,
-      data: dateFormat(new Date(date)),
+      data: date,
     };
     const raitingCell = {
       id: TableKeys.Raiting,
