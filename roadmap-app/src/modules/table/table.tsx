@@ -20,15 +20,18 @@ import TableRow from './table-row';
 
 import './table.scss';
 
+interface PriorityRowsSet {
+  [key: number]: number;
+}
+
 const Table = () => {
-  let priorityRows: number[] = [];
+  const priorityRows: any = new Set();
+  // const priorityRows: number[] = [];
   const dataList = useSelector(roadMapSelectors.getDataList);
 
   const isDataListFetching = useSelector(
     roadMapSelectors.getIsDataListFetched,
   );
-
-  const globalFilters: any = {};
 
   const dispatch = useDispatch();
 
@@ -42,17 +45,21 @@ const Table = () => {
 
   const [tableContent, setTableContent] = useState(items);
 
-  useEffect(() => {
-    setTableContent(items);
-  }, [items]);
-
-  const addPriority = (id: number) => {
-    !dataPriority.includes(id)
-      ? setDataPriority((prevState: number[]) => [...prevState, id])
-      : setDataPriority((prevState: number[]) =>
-          prevState.filter((item) => item !== id),
-        );
+  const toggleAddPriority = (id: number) => {
+    setDataPriority((prevState: any) => {
+      if (prevState.has(id)) {
+        prevState.delete(id);
+        return prevState;
+      }
+      return prevState.add(id);
+    });
   };
+
+  // const toggleAddPriority = (id: number) => {
+  //   setDataPriority((prevState: number[]) =>
+  //     prevState.includes(id) ? prevState.filter((item) => item !== id) : [...prevState, id],
+  //   )
+  // };
 
   const tableAllContent = useMemo(
     () =>
@@ -62,7 +69,7 @@ const Table = () => {
           <TableRow
             key={key}
             rowData={rowData}
-            addPriority={addPriority}
+            addPriority={toggleAddPriority}
           />
         );
       }),
@@ -70,7 +77,8 @@ const Table = () => {
   );
 
   const changePriority = () => {
-    const priorityRowsArray = dataPriority.map((i) =>
+    const dataPriorityArray = Array.from(dataPriority);
+    const priorityRowsArray = dataPriorityArray.map((i: any) =>
       remove(tableContent, (n: any) => n.id === i),
     );
 
@@ -84,6 +92,10 @@ const Table = () => {
   useEffect(() => {
     data();
   }, []);
+
+  useEffect(() => {
+    setTableContent(items);
+  }, [items]);
 
   return (
     <div className="table">

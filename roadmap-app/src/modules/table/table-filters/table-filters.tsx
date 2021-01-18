@@ -55,7 +55,7 @@ const TableFilters = ({
       <SelectFilter
         byKey={key}
         options={filtersOptions[key]}
-        onChange={setTableContent}
+        filterData={setTableContent}
         dataList={dataList}
       />
     </div>

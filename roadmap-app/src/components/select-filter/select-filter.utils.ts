@@ -4,8 +4,9 @@ export const customStyles = {
   control: (base: CSSProperties, state: any) => {
     const {
       hasValue,
-      selectProps: { menuIsOpen },
+      selectProps: { menuIsOpen, inputValue },
     } = state;
+
     return {
       ...base,
       display: 'flex',
@@ -17,7 +18,8 @@ export const customStyles = {
         border: 'none',
         boxShadow: 'none',
       },
-      background: hasValue || menuIsOpen ? 'green' : 'inherit',
+      background:
+        hasValue || menuIsOpen || inputValue ? 'green' : 'inherit',
     };
   },
   container: (base: CSSProperties) => ({
@@ -70,6 +72,7 @@ export const customStyles = {
     const { value } = state;
     return {
       ...base,
+      minWidth: '150px',
       color: !!value ? 'white' : 'inherit',
     };
   },

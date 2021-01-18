@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import Select, { InputActionMeta } from 'react-select';
+import React, { useEffect, useState } from 'react';
+import Select, { Props, InputActionMeta } from 'react-select';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
 import { customStyles } from './select-filter.utils';
 
-interface SelectFiltersProps {
+interface SelectFiltersProps extends Props {
   byKey: string;
   options: any;
-  onChange(props: any): void;
+  filterData(props: any): void;
   dataList: [];
 }
 
 const SelectFilter = ({
   options,
-  onChange,
+  filterData,
   dataList,
   byKey,
 }: SelectFiltersProps) => {
-  const [inputValue, setInputValue] = useState('');
+  let initialValue: any = null;
+  const [value, setInputValue] = useState(initialValue);
 
   const placeholderComponent = (
     <div className="seacrh-select__placeholder">
@@ -25,9 +26,7 @@ const SelectFilter = ({
     </div>
   );
 
-  const change = (option: any) => {
-    console.log('option', option);
-
+  const onChange = (option: any) => {
     const udateDataList = option
       ? dataList.filter((item: any) => {
           const modifiedInputValue = option.value
@@ -39,23 +38,32 @@ const SelectFilter = ({
           return modifiedItem.includes(modifiedInputValue);
         })
       : dataList;
-    onChange(udateDataList);
+    const newValue = option ? option : null;
+    setInputValue(newValue);
+    filterData(udateDataList);
   };
 
-  const changeInput = (inputValue: any, reasons: InputActionMeta) => {
+  const onInputChange = (
+    inputValue: any,
+    reasons: InputActionMeta,
+  ) => {
     if (reasons.action === 'input-change') {
-      const option = {
-        label: inputValue,
+      const option: any = {
         value: inputValue,
+        label: inputValue,
       };
-      change(option);
+      onChange(option);
     }
   };
 
+  useEffect(() => {
+    setInputValue(initialValue);
+  }, [initialValue]);
+
   return (
     <Select
+      value={value}
       isClearable
-      isSearchable
       options={options}
       placeholder={placeholderComponent}
       openMenuOnClick={false}
@@ -64,8 +72,8 @@ const SelectFilter = ({
       noOptionsMessage={() =>
         'Sorry, no options \n matched your criteria.'
       }
-      onChange={change}
-      onInputChange={changeInput}
+      onChange={onChange}
+      onInputChange={onInputChange}
     />
   );
 };

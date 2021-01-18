@@ -43,12 +43,17 @@ const TableRow = ({ rowData, addPriority }: TableRowProps) => {
       id: TableKeys.Raiting,
       data: raiting,
     };
+
+    const toggleSelected = () => {
+      addPriority(id);
+    };
+
     const actionCell = {
       id: TableKeys.Action,
       data: (
         <Checkbox
           className="table-row__item-action"
-          onClick={() => addPriority(id)}
+          onClick={toggleSelected}
         />
       ),
     };

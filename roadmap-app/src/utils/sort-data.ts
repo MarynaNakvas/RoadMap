@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
+import { remove, flattenDeep } from 'lodash';
 
 export const useSortData = (items: any) => {
   const [sortRules, setSortRules] = useState(items);
-
   const sortedItems = useMemo(() => {
     let sortableItems = [...items];
     if (sortRules !== null) {
