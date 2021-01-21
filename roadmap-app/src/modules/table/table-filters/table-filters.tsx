@@ -15,16 +15,22 @@ interface CollectionMap {
 }
 
 interface TableFiltersProps {
-  setTableContent(props: any): void;
-  dataList: [];
+  actions: any;
+  dataList: any;
+  tableContent: any;
+  activeFilters: {};
 }
 
 const TableFilters = ({
   dataList,
-  setTableContent,
+  actions,
+  tableContent,
+  activeFilters,
 }: TableFiltersProps) => {
+  // const {changeActiveFilters} = actions;
   const filtersOptions: Collection = {};
   const map: CollectionMap = {};
+  // const filters: any = {};
 
   const optionGroups: any[] = [
     TableKeys.Title,
@@ -35,9 +41,10 @@ const TableFilters = ({
   optionGroups.forEach((key) => {
     map[key] = new Set();
     filtersOptions[key] = [];
+    // filters[key] = [];
   });
 
-  dataList.forEach((item: any) => {
+  tableContent.forEach((item: any) => {
     optionGroups.forEach((key) => {
       const value = item[key] as string;
       if (!!value && !map[key].has(value)) {
@@ -55,11 +62,17 @@ const TableFilters = ({
       <SelectFilter
         byKey={key}
         options={filtersOptions[key]}
-        filterData={setTableContent}
+        actions={actions}
         dataList={dataList}
+        tableContent={tableContent}
+        activeFilters={activeFilters}
       />
     </div>
   ));
+
+  // console.log('filters', filters);
+
+  // changeActiveFilters(filters);
 
   return <div className="table-filters">{tableFilters}</div>;
 };

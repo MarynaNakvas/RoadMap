@@ -1,21 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import Select, { Props, InputActionMeta } from 'react-select';
+import Select, {
+  Props,
+  InputActionMeta,
+  ActionMeta,
+} from 'react-select';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
+import { isEmpty } from 'lodash';
 import { customStyles } from './select-filter.utils';
 
 interface SelectFiltersProps extends Props {
   byKey: string;
   options: any;
-  filterData(props: any): void;
+  actions: any;
   dataList: [];
+  tableContent: [];
+  activeFilters: any;
 }
 
 const SelectFilter = ({
   options,
-  filterData,
+  actions,
   dataList,
   byKey,
+  tableContent,
+  activeFilters,
 }: SelectFiltersProps) => {
+  // const {setTableContent, changeActiveFilters} = actions;
   let initialValue: any = null;
   const [value, setInputValue] = useState(initialValue);
 
@@ -26,21 +36,74 @@ const SelectFilter = ({
     </div>
   );
 
-  const onChange = (option: any) => {
-    const udateDataList = option
-      ? dataList.filter((item: any) => {
-          const modifiedInputValue = option.value
-            .toString()
-            .toLocaleLowerCase();
-          const modifiedItem = item[byKey]
-            .toString()
-            .toLocaleLowerCase();
-          return modifiedItem.includes(modifiedInputValue);
-        })
-      : dataList;
+  const onChange = (option: any, actionMeta?: ActionMeta<any>) => {
+    let updateDataList: any = [];
+    let clearDataList: any = [];
+    const globalFilters: any = {
+      raiting: '',
+      title: '',
+      date: '',
+      author: '',
+    };
+    if (actionMeta?.action === 'clear') {
+      activeFilters[byKey] = '';
+      actions.changeActiveFilters((prevState: any) => ({
+        ...prevState,
+        ...activeFilters,
+      }));
+      if (
+        JSON.stringify(activeFilters) ===
+        JSON.stringify(globalFilters)
+      ) {
+        updateDataList = dataList;
+      } else {
+        for (let key in activeFilters) {
+          if (activeFilters[key] !== '') {
+            if (isEmpty(clearDataList)) {
+              clearDataList = dataList.filter((item: any) => {
+                const modifiedInputValue = activeFilters[key]
+                  .toString()
+                  .toLocaleLowerCase();
+                const modifiedItem = item[key]
+                  .toString()
+                  .toLocaleLowerCase();
+                return modifiedItem.includes(modifiedInputValue);
+              });
+            } else {
+              clearDataList = clearDataList.filter((item: any) => {
+                const modifiedInputValue = activeFilters[key]
+                  .toString()
+                  .toLocaleLowerCase();
+                const modifiedItem = item[key]
+                  .toString()
+                  .toLocaleLowerCase();
+                return modifiedItem.includes(modifiedInputValue);
+              });
+            }
+          }
+        }
+        updateDataList = clearDataList;
+      }
+    } else {
+      activeFilters[byKey] = option.value;
+      actions.changeActiveFilters((prevState: any) => ({
+        ...prevState,
+        ...activeFilters,
+      }));
+      updateDataList = tableContent.filter((item: any) => {
+        const modifiedInputValue = option.value
+          .toString()
+          .toLocaleLowerCase();
+        const modifiedItem = item[byKey]
+          .toString()
+          .toLocaleLowerCase();
+        return modifiedItem.includes(modifiedInputValue);
+      });
+    }
     const newValue = option ? option : null;
     setInputValue(newValue);
-    filterData(udateDataList);
+    actions.setTableContent(updateDataList);
+    console.log('clearDataList2', clearDataList);
   };
 
   const onInputChange = (
@@ -59,6 +122,8 @@ const SelectFilter = ({
   useEffect(() => {
     setInputValue(initialValue);
   }, [initialValue]);
+
+  // console.log('tableContent', tableContent);
 
   return (
     <Select

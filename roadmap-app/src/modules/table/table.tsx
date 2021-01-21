@@ -26,6 +26,12 @@ interface PriorityRowsSet {
 
 const Table = () => {
   const priorityRows: any = new Set();
+  const globalFilters: any = {
+    raiting: '',
+    title: '',
+    date: '',
+    author: '',
+  };
   // const priorityRows: number[] = [];
   const dataList = useSelector(roadMapSelectors.getDataList);
 
@@ -39,9 +45,16 @@ const Table = () => {
     dispatch(roadMapActions.fetchDataList());
   }, [dispatch]);
 
+  const [activeFilters, changeActiveFilters] = useState(
+    globalFilters,
+  );
+
   const [dataPriority, setDataPriority] = useState(priorityRows);
 
-  const { items, sortData, sortRules } = useSortData(dataList);
+  const { items, sortData, sortRules } = useSortData(
+    dataList,
+    dataPriority,
+  );
 
   const [tableContent, setTableContent] = useState(items);
 
@@ -60,7 +73,9 @@ const Table = () => {
   //     prevState.includes(id) ? prevState.filter((item) => item !== id) : [...prevState, id],
   //   )
   // };
+  // console.log('updateTableContent', updateTableContent);
 
+  const actions = { setTableContent, changeActiveFilters };
   const tableAllContent = useMemo(
     () =>
       tableContent.map((rowData: any) => {
@@ -84,9 +99,9 @@ const Table = () => {
 
     const priorityRows = flattenDeep(priorityRowsArray);
 
-    const updateTableContent = [...priorityRows, ...tableContent];
+    const newUpdateTableContent = [...priorityRows, ...tableContent];
 
-    setTableContent(updateTableContent);
+    setTableContent(newUpdateTableContent);
   };
 
   useEffect(() => {
@@ -95,14 +110,20 @@ const Table = () => {
 
   useEffect(() => {
     setTableContent(items);
-  }, [items]);
+  }, [dataList, sortRules]);
+
+  // useEffect(() => {
+  //   changeActiveFilters(globalFilters);
+  // }, [globalFilters]);
 
   return (
     <div className="table">
       <TableHeader sort={sortData} sortRules={sortRules} />
       <TableFilters
         dataList={dataList}
-        setTableContent={setTableContent}
+        actions={actions}
+        tableContent={tableContent}
+        activeFilters={activeFilters}
       />
       <Spinner isFetching={isDataListFetching}>
         <div className="table-rows">{tableAllContent}</div>

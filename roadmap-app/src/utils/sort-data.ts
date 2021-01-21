@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { remove, flattenDeep } from 'lodash';
 
-export const useSortData = (items: any) => {
+export const useSortData = (items: any, dataPriority: any) => {
   const [sortRules, setSortRules] = useState(items);
   const sortedItems = useMemo(() => {
     let sortableItems = [...items];
@@ -32,5 +32,12 @@ export const useSortData = (items: any) => {
     setSortRules({ dataKey, direction });
   };
 
-  return { items: sortedItems, sortData, sortRules };
+  const dataPriorityArray = Array.from(dataPriority);
+  const priorityRowsArray = dataPriorityArray.map((i: any) =>
+    remove(sortedItems, (n: any) => n.id === i),
+  );
+  const priorityRows = flattenDeep(priorityRowsArray);
+  const newUpdateTableContent = [...priorityRows, ...sortedItems];
+
+  return { items: newUpdateTableContent, sortData, sortRules };
 };
