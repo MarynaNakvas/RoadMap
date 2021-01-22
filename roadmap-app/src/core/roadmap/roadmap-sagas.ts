@@ -19,7 +19,7 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
 
     const url =
       // 'https://app.fakejson.com/q/ePNmHUee?token=Ao7nQtvP3G6muZKNI7fguQ';
-      'https://mockend.com/marfuny51/RoadMap/posts';
+      'https://mockend.com/marfuny51/RoadMap/post';
     // 'https://my-json-server.typicode.com/marfuny51/RoadMap/posts';
     const response = yield call(createApiCall, url, options);
 
@@ -29,7 +29,12 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
       resolvedAction(actionsTypes.FETCH_DATA_LIST, dataList),
     );
   } catch (error) {
-    yield put(rejectedAction(actionsTypes.FETCH_DATA_LIST, null));
+    const { message } = error;
+    yield put(
+      rejectedAction(actionsTypes.FETCH_DATA_LIST, null, {
+        message: message,
+      }),
+    );
   }
 }
 

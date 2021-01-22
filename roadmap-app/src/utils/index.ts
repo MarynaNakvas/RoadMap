@@ -38,19 +38,11 @@ export const createReducer = <S>(
 };
 
 export interface AppMeta {
-  toaster?: {
-    riseToast?: {
-      containerId: string;
-      message: string;
-    };
-    dismissToast?: string;
-  };
-  modalConductorAction?: Action<any>;
+  message: string;
   auth?: {
     enableFetch?(payload?: any): ActionMeta<any, any>;
   };
   requestOptions?: RequestInit;
-  toastId?: string;
 }
 
 export const resolvedAction = (

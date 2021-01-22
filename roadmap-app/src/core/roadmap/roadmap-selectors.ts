@@ -12,8 +12,14 @@ const getIsDataListFetched = createSelector(
   ({ isDataListFetched }) => isDataListFetched,
 );
 
+const getErrors = createSelector(
+  getLocalState,
+  ({ errors }) => errors,
+);
+
 export default {
   getLocalState,
   getDataList,
   getIsDataListFetched,
+  getErrors,
 };

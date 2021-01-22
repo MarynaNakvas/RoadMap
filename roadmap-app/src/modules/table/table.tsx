@@ -14,6 +14,7 @@ import {
 
 import { useSortData } from 'utils/sort-data';
 import Spinner from 'components/spinner';
+import List from 'components/list';
 import TableFilters from './table-filters';
 import TableHeader from './table-header';
 import TableRow from './table-row';
@@ -34,6 +35,8 @@ const Table = () => {
   };
   // const priorityRows: number[] = [];
   const dataList = useSelector(roadMapSelectors.getDataList);
+
+  const errors = useSelector(roadMapSelectors.getErrors);
 
   const isDataListFetching = useSelector(
     roadMapSelectors.getIsDataListFetched,
@@ -57,6 +60,8 @@ const Table = () => {
   );
 
   const [tableContent, setTableContent] = useState(items);
+
+  const [isOpen, setListIsOpen] = useState(false);
 
   const toggleAddPriority = (id: number) => {
     setDataPriority((prevState: any) => {
@@ -104,6 +109,9 @@ const Table = () => {
     setTableContent(newUpdateTableContent);
   };
 
+  const openList = () =>
+    setListIsOpen((prevState: boolean) => !prevState);
+
   useEffect(() => {
     data();
   }, []);
@@ -117,20 +125,30 @@ const Table = () => {
   // }, [globalFilters]);
 
   return (
-    <div className="table">
-      <TableHeader sort={sortData} sortRules={sortRules} />
-      <TableFilters
-        dataList={dataList}
-        actions={actions}
-        tableContent={tableContent}
-        activeFilters={activeFilters}
-      />
-      <Spinner isFetching={isDataListFetching}>
-        <div className="table-rows">{tableAllContent}</div>
-      </Spinner>
-      <button className="table-button" onClick={changePriority}>
-        Make a priority
-      </button>
+    <div className="content-wrapper">
+      <div className="table">
+        <TableHeader sort={sortData} sortRules={sortRules} />
+        <TableFilters
+          dataList={dataList}
+          actions={actions}
+          tableContent={tableContent}
+          activeFilters={activeFilters}
+        />
+        <Spinner isFetching={isDataListFetching}>
+          <div className="table-rows">{tableAllContent}</div>
+        </Spinner>
+        <div className="table-buttons">
+          <button className="table-button" onClick={openList}>
+            {isOpen ? 'Hide errors' : 'Show errors'}
+          </button>
+          <button className="table-button" onClick={changePriority}>
+            Make a priority
+          </button>
+        </div>
+      </div>
+      <div>
+        <List data={errors} isOpen={isOpen} />
+      </div>
     </div>
   );
 };

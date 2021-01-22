@@ -8,9 +8,13 @@
   border-radius: 10px;
   box-shadow: $shadow-table;
 
+  &-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   &-button {
     @extend .text;
-    float: right;
     margin: 0 40px 15px 0;
     padding: 6px 14px;
     letter-spacing: 0.5px;
@@ -42,6 +46,10 @@
       }
     }
   }
+}
+
+.content-wrapper {
+  position: relative;
 }
 
 .content {

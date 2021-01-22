@@ -45,13 +45,13 @@ export const roadMapReducer = createReducer<ReducerType>(
     },
     [rejected(actionsTypes.FETCH_DATA_LIST)](
       state: ReducerType,
-      { payload, meta }: ActionMeta<any, AppMeta>,
+      { meta }: ActionMeta<any, AppMeta>,
     ) {
       return update(state, {
         isDataListFetched: { $set: false },
         errors: {
           $merge: {
-            [payload]: meta.toastId,
+            [meta.message]: meta.message,
           },
         },
       });

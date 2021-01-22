@@ -103,7 +103,6 @@ const SelectFilter = ({
     const newValue = option ? option : null;
     setInputValue(newValue);
     actions.setTableContent(updateDataList);
-    console.log('clearDataList2', clearDataList);
   };
 
   const onInputChange = (
