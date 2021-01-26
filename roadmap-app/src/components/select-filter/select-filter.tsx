@@ -5,16 +5,22 @@ import Select, {
   ActionMeta,
 } from 'react-select';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
+import { TableKeysType } from 'core/roadmap';
+import {
+  ActiveFiltersProps,
+  OptionProps,
+  TableActionProps,
+} from 'modules/table/table.model';
 import { isEmpty } from 'lodash';
 import { customStyles } from './select-filter.utils';
 
 interface SelectFiltersProps extends Props {
   byKey: string;
   options: any;
-  actions: any;
-  dataList: [];
-  tableContent: [];
-  activeFilters: any;
+  actions: TableActionProps;
+  dataList: TableKeysType[];
+  tableContent: TableKeysType[];
+  activeFilters: ActiveFiltersProps;
 }
 
 const SelectFilter = ({
@@ -25,7 +31,7 @@ const SelectFilter = ({
   tableContent,
   activeFilters,
 }: SelectFiltersProps) => {
-  // const {setTableContent, changeActiveFilters} = actions;
+  const { setTableContent, changeActiveFilters } = actions;
   let initialValue: any = null;
   const [value, setInputValue] = useState(initialValue);
 
@@ -36,10 +42,13 @@ const SelectFilter = ({
     </div>
   );
 
-  const onChange = (option: any, actionMeta?: ActionMeta<any>) => {
-    let updateDataList: any = [];
-    let clearDataList: any = [];
-    const globalFilters: any = {
+  const onChange = (
+    option: OptionProps,
+    actionMeta?: ActionMeta<any>,
+  ) => {
+    let updateDataList: TableKeysType[] = [];
+    let clearDataList: TableKeysType[] = [];
+    const globalFilters: ActiveFiltersProps = {
       raiting: '',
       title: '',
       date: '',
@@ -47,7 +56,7 @@ const SelectFilter = ({
     };
     if (actionMeta?.action === 'clear') {
       activeFilters[byKey] = '';
-      actions.changeActiveFilters((prevState: any) => ({
+      changeActiveFilters((prevState: ActiveFiltersProps) => ({
         ...prevState,
         ...activeFilters,
       }));
@@ -86,7 +95,7 @@ const SelectFilter = ({
       }
     } else {
       activeFilters[byKey] = option.value;
-      actions.changeActiveFilters((prevState: any) => ({
+      changeActiveFilters((prevState: ActiveFiltersProps) => ({
         ...prevState,
         ...activeFilters,
       }));
@@ -102,15 +111,15 @@ const SelectFilter = ({
     }
     const newValue = option ? option : null;
     setInputValue(newValue);
-    actions.setTableContent(updateDataList);
+    setTableContent(updateDataList);
   };
 
   const onInputChange = (
-    inputValue: any,
+    inputValue: string,
     reasons: InputActionMeta,
   ) => {
     if (reasons.action === 'input-change') {
-      const option: any = {
+      const option: OptionProps = {
         value: inputValue,
         label: inputValue,
       };
@@ -121,8 +130,6 @@ const SelectFilter = ({
   useEffect(() => {
     setInputValue(initialValue);
   }, [initialValue]);
-
-  // console.log('tableContent', tableContent);
 
   return (
     <Select

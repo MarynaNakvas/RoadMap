@@ -1,20 +1,19 @@
 import React, { useMemo } from 'react';
 import classNames from 'clsx';
 import { Checkbox } from '@material-ui/core';
-import { TableKeys } from 'core/roadmap';
-import { dateFormat } from 'utils/date-formater';
+import { TableKeys, TableKeysType } from 'core/roadmap';
 
 import './table-row.scss';
 
 interface TextCell {
   id: string;
-  data?: string | number;
+  data?: string | number | Date | JSX.Element;
   className?: string;
 }
 
 interface TableRowProps {
-  rowData: any;
-  addPriority(props: number): void;
+  rowData: TableKeysType;
+  addPriority(props: string): void;
 }
 
 const TableRow = ({ rowData, addPriority }: TableRowProps) => {

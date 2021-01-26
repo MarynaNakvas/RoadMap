@@ -11,6 +11,6 @@ export interface TableKeysType {
   [TableKeys.id]: string;
   [TableKeys.Title]: string;
   [TableKeys.Author]: string;
-  [TableKeys.Date]: Date;
+  [TableKeys.Date]: string;
   [TableKeys.Raiting]: number;
 }

@@ -19,7 +19,7 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
 
     const url =
       // 'https://app.fakejson.com/q/ePNmHUee?token=Ao7nQtvP3G6muZKNI7fguQ';
-      'https://mockend.com/marfuny51/RoadMap/post';
+      'https://mockend.com/marfuny51/RoadMap/posts';
     // 'https://my-json-server.typicode.com/marfuny51/RoadMap/posts';
     const response = yield call(createApiCall, url, options);
 

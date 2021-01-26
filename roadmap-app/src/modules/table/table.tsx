@@ -10,6 +10,7 @@ import {
   roadMapActions,
   roadMapSelectors,
   TableKeys,
+  TableKeysType,
 } from 'core/roadmap';
 
 import { useSortData } from 'utils/sort-data';
@@ -18,22 +19,18 @@ import List from 'components/list';
 import TableFilters from './table-filters';
 import TableHeader from './table-header';
 import TableRow from './table-row';
-
+import { ActiveFiltersProps } from './table.model';
 import './table.scss';
 
-interface PriorityRowsSet {
-  [key: number]: number;
-}
-
 const Table = () => {
-  const priorityRows: any = new Set();
-  const globalFilters: any = {
+  const priorityRows: Set<string> = new Set();
+  const globalFilters: ActiveFiltersProps = {
     raiting: '',
     title: '',
     date: '',
     author: '',
   };
-  // const priorityRows: number[] = [];
+
   const dataList = useSelector(roadMapSelectors.getDataList);
 
   const errors = useSelector(roadMapSelectors.getErrors);
@@ -63,8 +60,8 @@ const Table = () => {
 
   const [isOpen, setListIsOpen] = useState(false);
 
-  const toggleAddPriority = (id: number) => {
-    setDataPriority((prevState: any) => {
+  const toggleAddPriority = (id: string) => {
+    setDataPriority((prevState: Set<string>) => {
       if (prevState.has(id)) {
         prevState.delete(id);
         return prevState;
@@ -83,7 +80,7 @@ const Table = () => {
   const actions = { setTableContent, changeActiveFilters };
   const tableAllContent = useMemo(
     () =>
-      tableContent.map((rowData: any) => {
+      tableContent.map((rowData: TableKeysType) => {
         const { [TableKeys.id]: key } = rowData;
         return (
           <TableRow
@@ -98,8 +95,12 @@ const Table = () => {
 
   const changePriority = () => {
     const dataPriorityArray = Array.from(dataPriority);
-    const priorityRowsArray = dataPriorityArray.map((i: any) =>
-      remove(tableContent, (n: any) => n.id === i),
+
+    const priorityRowsArray = dataPriorityArray.map((item: string) =>
+      remove(
+        tableContent,
+        (rowData: TableKeysType) => rowData.id === item,
+      ),
     );
 
     const priorityRows = flattenDeep(priorityRowsArray);
@@ -118,11 +119,7 @@ const Table = () => {
 
   useEffect(() => {
     setTableContent(items);
-  }, [dataList, sortRules]);
-
-  // useEffect(() => {
-  //   changeActiveFilters(globalFilters);
-  // }, [globalFilters]);
+  }, [dataList, sortRules, changeActiveFilters]);
 
   return (
     <div className="content-wrapper">

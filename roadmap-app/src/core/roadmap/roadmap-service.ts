@@ -1,8 +1,8 @@
 import { dateFormat } from 'utils/date-formater';
-import { TableKeys } from './roadmap.model';
+import { TableKeys, TableKeysType } from './roadmap.model';
 
-export const normalizeData = (data: any) =>
-  data.map((item: any) => {
+export const normalizeData = (data: TableKeysType[]) =>
+  data.map((item: TableKeysType) => {
     const { id, title, author, date, raiting } = item;
 
     return {

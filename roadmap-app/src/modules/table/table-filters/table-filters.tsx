@@ -1,24 +1,19 @@
 import React from 'react';
 import SelectFilter from 'components/select-filter';
-import { TableKeys } from 'core/roadmap';
+import { TableKeys, TableKeysType } from 'core/roadmap';
+import {
+  ActiveFiltersProps,
+  Collection,
+  CollectionMap,
+  TableActionProps,
+} from '../table.model';
 import './table-filters.scss';
 
-interface OptionProps {
-  label: string;
-  value: any;
-}
-interface Collection {
-  [key: string]: OptionProps[];
-}
-interface CollectionMap {
-  [key: string]: Set<string>;
-}
-
 interface TableFiltersProps {
-  actions: any;
-  dataList: any;
-  tableContent: any;
-  activeFilters: {};
+  actions: TableActionProps;
+  dataList: TableKeysType[];
+  tableContent: TableKeysType[];
+  activeFilters: ActiveFiltersProps;
 }
 
 const TableFilters = ({
@@ -27,12 +22,10 @@ const TableFilters = ({
   tableContent,
   activeFilters,
 }: TableFiltersProps) => {
-  // const {changeActiveFilters} = actions;
   const filtersOptions: Collection = {};
   const map: CollectionMap = {};
-  // const filters: any = {};
 
-  const optionGroups: any[] = [
+  const optionGroups: string[] = [
     TableKeys.Title,
     TableKeys.Author,
     TableKeys.Date,
@@ -41,12 +34,11 @@ const TableFilters = ({
   optionGroups.forEach((key) => {
     map[key] = new Set();
     filtersOptions[key] = [];
-    // filters[key] = [];
   });
 
   tableContent.forEach((item: any) => {
-    optionGroups.forEach((key) => {
-      const value = item[key] as string;
+    optionGroups.forEach((key: string) => {
+      const value = item[key];
       if (!!value && !map[key].has(value)) {
         map[key].add(value);
         filtersOptions[key].push({
@@ -69,10 +61,6 @@ const TableFilters = ({
       />
     </div>
   ));
-
-  // console.log('filters', filters);
-
-  // changeActiveFilters(filters);
 
   return <div className="table-filters">{tableFilters}</div>;
 };

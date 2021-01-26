@@ -3,6 +3,7 @@ import classNames from 'clsx';
 
 import { TableKeys } from 'core/roadmap';
 import { ReactComponent as SortingIcon } from 'assets/icons/arrow-sort.svg';
+import { SotringRulesProps } from '../table.model';
 
 import './table-header.scss';
 
@@ -15,7 +16,7 @@ interface TextHeading {
 
 interface TableHeadersProps {
   sort(props: string): void;
-  sortRules: any;
+  sortRules: SotringRulesProps;
 }
 
 const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {

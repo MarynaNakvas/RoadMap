@@ -1,6 +1,11 @@
 import { createSelector } from 'reselect';
+import { ReducerType } from './roadmap-reducer';
 
-const getLocalState = (state: any) => state.roadMap;
+export interface StateType {
+  roadMap: ReducerType;
+}
+
+const getLocalState = (state: StateType) => state.roadMap;
 
 const getDataList = createSelector(
   getLocalState,
