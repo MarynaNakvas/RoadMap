@@ -5,7 +5,6 @@ import React, {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { remove, flattenDeep } from 'lodash';
 import {
   roadMapActions,
   roadMapSelectors,
@@ -14,8 +13,8 @@ import {
 } from 'core/roadmap';
 
 import { useSortData } from 'utils/sort-data';
+import { checkDataPriority } from 'utils/data-priority';
 import Spinner from 'components/spinner';
-import List from 'components/list';
 import TableFilters from './table-filters';
 import TableHeader from './table-header';
 import TableRow from './table-row';
@@ -32,8 +31,6 @@ const Table = () => {
   };
 
   const dataList = useSelector(roadMapSelectors.getDataList);
-
-  const errors = useSelector(roadMapSelectors.getErrors);
 
   const isDataListFetching = useSelector(
     roadMapSelectors.getIsDataListFetched,
@@ -58,8 +55,6 @@ const Table = () => {
 
   const [tableContent, setTableContent] = useState(items);
 
-  const [isOpen, setListIsOpen] = useState(false);
-
   const toggleAddPriority = (id: string) => {
     setDataPriority((prevState: Set<string>) => {
       if (prevState.has(id)) {
@@ -69,13 +64,6 @@ const Table = () => {
       return prevState.add(id);
     });
   };
-
-  // const toggleAddPriority = (id: number) => {
-  //   setDataPriority((prevState: number[]) =>
-  //     prevState.includes(id) ? prevState.filter((item) => item !== id) : [...prevState, id],
-  //   )
-  // };
-  // console.log('updateTableContent', updateTableContent);
 
   const actions = { setTableContent, changeActiveFilters };
   const tableAllContent = useMemo(
@@ -94,24 +82,13 @@ const Table = () => {
   );
 
   const changePriority = () => {
-    const dataPriorityArray = Array.from(dataPriority);
-
-    const priorityRowsArray = dataPriorityArray.map((item: string) =>
-      remove(
-        tableContent,
-        (rowData: TableKeysType) => rowData.id === item,
-      ),
-    );
-
-    const priorityRows = flattenDeep(priorityRowsArray);
-
-    const newUpdateTableContent = [...priorityRows, ...tableContent];
+    const newUpdateTableContent = checkDataPriority({
+      dataPriority,
+      tableContent,
+    });
 
     setTableContent(newUpdateTableContent);
   };
-
-  const openList = () =>
-    setListIsOpen((prevState: boolean) => !prevState);
 
   useEffect(() => {
     data();
@@ -122,7 +99,7 @@ const Table = () => {
   }, [dataList, sortRules, changeActiveFilters]);
 
   return (
-    <div className="content-wrapper">
+    <div className="content">
       <div className="table">
         <TableHeader sort={sortData} sortRules={sortRules} />
         <TableFilters
@@ -135,16 +112,10 @@ const Table = () => {
           <div className="table-rows">{tableAllContent}</div>
         </Spinner>
         <div className="table-buttons">
-          <button className="table-button" onClick={openList}>
-            {isOpen ? 'Hide errors' : 'Show errors'}
-          </button>
           <button className="table-button" onClick={changePriority}>
             Make a priority
           </button>
         </div>
-      </div>
-      <div>
-        <List data={errors} isOpen={isOpen} />
       </div>
     </div>
   );

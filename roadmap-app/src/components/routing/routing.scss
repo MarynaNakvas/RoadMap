@@ -1,0 +1,24 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.routing {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+
+  &-link {
+    @extend .text;
+    margin-right: 20px;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.active {
+  color: $color-primary;
+  font-style: italic;
+  text-decoration: underline;
+}

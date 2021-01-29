@@ -1,9 +1,24 @@
-import { combineReducers } from 'redux';
-import { History } from 'history';
+import {
+  AnyAction,
+  CombinedState,
+  Reducer,
+  combineReducers,
+} from 'redux';
 
-import { roadMapReducer } from './roadmap';
+import {
+  Action,
+  ReducerType,
+  roadMapReducer,
+  TableKeysType,
+} from './roadmap';
 
-export default (history: History): any =>
-  combineReducers({
-    roadMap: roadMapReducer,
-  });
+interface StateReducerProps {
+  state: ReducerType;
+  action: Action<TableKeysType[]>;
+}
+
+export const rootReducers = combineReducers({
+  roadMap: roadMapReducer,
+});
+
+// export type RootState = ReturnType<typeof rootReducers>

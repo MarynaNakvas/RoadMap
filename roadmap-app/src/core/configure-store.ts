@@ -1,5 +1,6 @@
 import createSagaMiddleware from 'redux-saga';
 import * as localforage from 'localforage';
+import storage from 'redux-persist/lib/storage';
 import { createBrowserHistory } from 'history';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -7,14 +8,14 @@ import { persistReducer, persistStore } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 import rootSaga from './root-saga';
-import rootReducer from './root-reducer';
+import { rootReducers } from './root-reducer';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const persistConfig = {
   key: 'root',
   version: 1,
-  storage: localforage,
+  storage: storage,
   stateReconciler: autoMergeLevel2,
 };
 
@@ -28,9 +29,9 @@ if (dev) {
   middleware = composeWithDevTools(middleware);
 }
 
-const persistedReducer = persistReducer(
+const persistedReducer = persistReducer<any>(
   persistConfig,
-  rootReducer(history),
+  rootReducers,
 );
 
 export default () => {

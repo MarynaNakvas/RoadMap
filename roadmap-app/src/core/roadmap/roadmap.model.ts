@@ -14,3 +14,14 @@ export interface TableKeysType {
   [TableKeys.Date]: string;
   [TableKeys.Raiting]: number;
 }
+
+export interface AppMeta {
+  message: string;
+  requestOptions?: RequestInit;
+}
+
+export interface Action<T> {
+  type: string;
+  payload?: T;
+  meta?: AppMeta;
+}

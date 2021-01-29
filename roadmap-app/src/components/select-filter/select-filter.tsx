@@ -11,7 +11,7 @@ import {
   OptionProps,
   TableActionProps,
 } from 'modules/table/table.model';
-import { isEmpty } from 'lodash';
+import { filterDataWithValue } from 'utils/filter-data';
 import { customStyles } from './select-filter.utils';
 
 interface SelectFiltersProps extends Props {
@@ -46,69 +46,15 @@ const SelectFilter = ({
     option: OptionProps,
     actionMeta?: ActionMeta<any>,
   ) => {
-    let updateDataList: TableKeysType[] = [];
-    let clearDataList: TableKeysType[] = [];
-    const globalFilters: ActiveFiltersProps = {
-      raiting: '',
-      title: '',
-      date: '',
-      author: '',
-    };
-    if (actionMeta?.action === 'clear') {
-      activeFilters[byKey] = '';
-      changeActiveFilters((prevState: ActiveFiltersProps) => ({
-        ...prevState,
-        ...activeFilters,
-      }));
-      if (
-        JSON.stringify(activeFilters) ===
-        JSON.stringify(globalFilters)
-      ) {
-        updateDataList = dataList;
-      } else {
-        for (let key in activeFilters) {
-          if (activeFilters[key] !== '') {
-            if (isEmpty(clearDataList)) {
-              clearDataList = dataList.filter((item: any) => {
-                const modifiedInputValue = activeFilters[key]
-                  .toString()
-                  .toLocaleLowerCase();
-                const modifiedItem = item[key]
-                  .toString()
-                  .toLocaleLowerCase();
-                return modifiedItem.includes(modifiedInputValue);
-              });
-            } else {
-              clearDataList = clearDataList.filter((item: any) => {
-                const modifiedInputValue = activeFilters[key]
-                  .toString()
-                  .toLocaleLowerCase();
-                const modifiedItem = item[key]
-                  .toString()
-                  .toLocaleLowerCase();
-                return modifiedItem.includes(modifiedInputValue);
-              });
-            }
-          }
-        }
-        updateDataList = clearDataList;
-      }
-    } else {
-      activeFilters[byKey] = option.value;
-      changeActiveFilters((prevState: ActiveFiltersProps) => ({
-        ...prevState,
-        ...activeFilters,
-      }));
-      updateDataList = tableContent.filter((item: any) => {
-        const modifiedInputValue = option.value
-          .toString()
-          .toLocaleLowerCase();
-        const modifiedItem = item[byKey]
-          .toString()
-          .toLocaleLowerCase();
-        return modifiedItem.includes(modifiedInputValue);
-      });
-    }
+    const updateDataList = filterDataWithValue({
+      option,
+      actionMeta,
+      dataList,
+      tableContent,
+      byKey,
+      activeFilters,
+      changeActiveFilters,
+    });
     const newValue = option ? option : null;
     setInputValue(newValue);
     setTableContent(updateDataList);

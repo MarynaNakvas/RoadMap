@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { remove, flattenDeep } from 'lodash';
+import { checkDataPriority } from './data-priority';
 
 export const useSortData = (items: any, dataPriority: any) => {
   const [sortRules, setSortRules] = useState(items);
@@ -32,12 +32,10 @@ export const useSortData = (items: any, dataPriority: any) => {
     setSortRules({ dataKey, direction });
   };
 
-  const dataPriorityArray = Array.from(dataPriority);
-  const priorityRowsArray = dataPriorityArray.map((i: any) =>
-    remove(sortedItems, (n: any) => n.id === i),
-  );
-  const priorityRows = flattenDeep(priorityRowsArray);
-  const newUpdateTableContent = [...priorityRows, ...sortedItems];
+  const newUpdateTableContent = checkDataPriority({
+    dataPriority,
+    tableContent: sortedItems,
+  });
 
   return { items: newUpdateTableContent, sortData, sortRules };
 };

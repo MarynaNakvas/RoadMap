@@ -1,15 +1,8 @@
 import update from 'immutability-helper';
-import { ActionMeta } from 'redux-actions';
-
-import {
-  Action,
-  AppMeta,
-  createReducer,
-  rejected,
-  resolved,
-} from 'utils';
+import { createReducer } from 'redux-create-reducer';
+import { rejected, resolved } from 'utils';
 import { types as actionsTypes } from './roadmap-actions';
-import { TableKeysType } from './roadmap.model';
+import { Action, TableKeysType } from './roadmap.model';
 
 export interface ReducerType {
   errors: {
@@ -25,36 +18,44 @@ const defaultState: ReducerType = {
   dataList: [],
 };
 
-export const roadMapReducer = createReducer<ReducerType>(
-  defaultState,
-  {
-    [actionsTypes.ENABLE_FETCH_DATA_LIST](state: ReducerType) {
-      return update(state, {
-        isDataListFetched: { $set: true },
-        dataList: { $set: [] },
-      });
-    },
-    [resolved(actionsTypes.FETCH_DATA_LIST)](
-      state: ReducerType,
-      { payload: dataList }: Action<any[]>,
-    ) {
-      return update(state, {
-        isDataListFetched: { $set: false },
-        dataList: { $set: dataList },
-      });
-    },
-    [rejected(actionsTypes.FETCH_DATA_LIST)](
-      state: ReducerType,
-      { meta }: ActionMeta<any, AppMeta>,
-    ) {
-      return update(state, {
-        isDataListFetched: { $set: false },
-        errors: {
-          $merge: {
-            [meta.message]: meta.message,
-          },
-        },
-      });
-    },
+export const roadMapReducer = createReducer(defaultState, {
+  [actionsTypes.ENABLE_FETCH_DATA_LIST](state: ReducerType) {
+    return update(state, {
+      isDataListFetched: { $set: true },
+      dataList: { $set: [] },
+    });
   },
-);
+
+  [actionsTypes.FETCH_DATA_LIST](state: ReducerType) {
+    return update(state, {
+      isDataListFetched: { $set: true },
+      dataList: { $set: [] },
+    });
+  },
+
+  [resolved(actionsTypes.FETCH_DATA_LIST)](
+    state: ReducerType,
+    action: Action<TableKeysType[]>,
+  ) {
+    const payload = action.payload ? action.payload : [];
+    return update(state, {
+      isDataListFetched: { $set: false },
+      dataList: { $set: payload },
+    });
+  },
+
+  [rejected(actionsTypes.FETCH_DATA_LIST)](
+    state: ReducerType,
+    action: Action<TableKeysType[]>,
+  ) {
+    const message = action.meta ? action.meta.message : '';
+    return update(state, {
+      isDataListFetched: { $set: false },
+      errors: {
+        $merge: {
+          [message]: message,
+        },
+      },
+    });
+  },
+});

@@ -2,26 +2,18 @@
 @import 'styles/typography';
 
 .list {
-  position: absolute;
-  top: 50vh;
-  left: 25vw;
-  margin: auto;
-  background: $color-background-primary-hover;
-  border-radius: 8px;
-  opacity: 1;
-  transition: opacity 1s;
+  display: flex;
+  justify-content: center;
 
   & .ordered-list {
     @extend .text;
     margin: 0;
     padding: 15px 20px 15px 35px;
+    background: $color-background-primary-hover;
+    border-radius: 8px;
 
     &__item:not(:last-of-type) {
       margin-bottom: 10px;
     }
   }
-}
-
-.list-close {
-  opacity: 0;
 }

@@ -4,10 +4,9 @@ import './list.scss';
 
 export interface ListProps {
   data: {};
-  isOpen: boolean;
 }
 
-const List = ({ data, isOpen }: ListProps) => {
+const List = ({ data }: ListProps) => {
   const listContent = Object.values(data).map((item: any) => (
     <li className="ordered-list__item" key={item}>
       {item}
@@ -15,7 +14,7 @@ const List = ({ data, isOpen }: ListProps) => {
   ));
 
   return (
-    <div className={isOpen ? 'list' : 'list-close'}>
+    <div className="list">
       <ol className="ordered-list">{listContent}</ol>
     </div>
   );

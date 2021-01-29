@@ -1,9 +1,10 @@
 import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest } from 'redux-saga/effects';
 import { createApiCall } from 'services/api-service';
-import { AppMeta, rejectedAction, resolvedAction } from 'utils';
+import { rejectedAction, resolvedAction } from 'utils';
 import { types as actionsTypes } from './roadmap-actions';
 import { normalizeData } from './roadmap-service';
+import { AppMeta } from './roadmap.model';
 
 /*
  * Sagas

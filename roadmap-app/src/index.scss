@@ -1,6 +1,15 @@
 @import 'styles/variables';
+@import 'styles/typography';
 
 body {
   margin: 0;
   background-color: $color-background-body;
+}
+
+.message {
+  @extend .text;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+  font-size: 20px;
 }
