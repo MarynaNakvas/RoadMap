@@ -1,10 +1,7 @@
 const checkIsSuccess = ({ ok, status }: Response) =>
   ok && status >= 200 && status < 300;
 
-export const createApiCall = async (
-  url: string,
-  options: RequestInit,
-) => {
+export const createApiCall = async (url: string, options: any) => {
   const response = await fetch(`${url}`, options);
   const isSuccess = checkIsSuccess(response);
 

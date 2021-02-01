@@ -9,6 +9,7 @@ export interface SotringRulesProps {
 export interface TableActionProps {
   setTableContent: any;
   changeActiveFilters: any;
+  changePriority: any;
 }
 
 export interface OptionProps {

@@ -4,6 +4,7 @@ import { TableKeysType } from 'core/roadmap';
 import {
   ActiveFiltersProps,
   OptionProps,
+  TableActionProps,
 } from 'modules/table/table.model';
 
 interface FilterDataWithValueProps {
@@ -13,7 +14,7 @@ interface FilterDataWithValueProps {
   tableContent: TableKeysType[];
   byKey: string;
   activeFilters: ActiveFiltersProps;
-  changeActiveFilters: any;
+  actions: TableActionProps;
 }
 
 export const filterDataWithValue = ({
@@ -23,8 +24,9 @@ export const filterDataWithValue = ({
   tableContent,
   byKey,
   activeFilters,
-  changeActiveFilters,
+  actions,
 }: FilterDataWithValueProps) => {
+  const { changeActiveFilters } = actions;
   let clearDataList: TableKeysType[] = [];
   const globalFilters: ActiveFiltersProps = {
     raiting: '',

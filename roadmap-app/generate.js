@@ -12,6 +12,7 @@ module.exports = function () {
 					'min': 0,
 					'max': 2000,
 				}),
+				isPriority: false,
 			}
 		}),
 	}

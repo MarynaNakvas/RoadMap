@@ -65,7 +65,6 @@ const Table = () => {
     });
   };
 
-  const actions = { setTableContent, changeActiveFilters };
   const tableAllContent = useMemo(
     () =>
       tableContent.map((rowData: TableKeysType) => {
@@ -88,6 +87,12 @@ const Table = () => {
     });
 
     setTableContent(newUpdateTableContent);
+  };
+
+  const actions = {
+    setTableContent,
+    changeActiveFilters,
+    changePriority,
   };
 
   useEffect(() => {

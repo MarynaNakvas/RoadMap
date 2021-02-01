@@ -31,7 +31,7 @@ const SelectFilter = ({
   tableContent,
   activeFilters,
 }: SelectFiltersProps) => {
-  const { setTableContent, changeActiveFilters } = actions;
+  const { setTableContent } = actions;
   let initialValue: any = null;
   const [value, setInputValue] = useState(initialValue);
 
@@ -53,7 +53,7 @@ const SelectFilter = ({
       tableContent,
       byKey,
       activeFilters,
-      changeActiveFilters,
+      actions,
     });
     const newValue = option ? option : null;
     setInputValue(newValue);
