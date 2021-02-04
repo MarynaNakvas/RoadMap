@@ -1,5 +1,6 @@
 import { ActionMeta } from 'redux-actions';
-import { put, fork, call, takeLatest } from 'redux-saga/effects';
+import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
+import { differenceBy } from 'lodash';
 import { createApiCall } from 'services/api-service';
 import { rejectedAction, resolvedAction } from 'utils';
 import { types as actionsTypes } from './roadmap-actions';
@@ -20,11 +21,11 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
 
     const url =
       'https://roadmap-29e3e-default-rtdb.firebaseio.com/posts.json';
+    // 'https://roadmap-29e3e-default-rtdb.firebaseio.com/posts.json';
     // 'https://app.fakejson.com/q/ePNmHUee?token=Ao7nQtvP3G6muZKNI7fguQ';
     // 'https://mockend.com/marfuny51/RoadMap/posts';
     // 'https://my-json-server.typicode.com/marfuny51/RoadMap/posts';
     const response = yield call(createApiCall, url, options);
-    console.log('response', response);
 
     const dataList = yield call(normalizeData, response);
 
@@ -35,6 +36,40 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
     const { message } = error;
     yield put(
       rejectedAction(actionsTypes.FETCH_DATA_LIST, null, {
+        message: message,
+      }),
+    );
+  }
+}
+
+function* makePriorityHandler({
+  payload,
+  meta,
+}: ActionMeta<any, AppMeta>) {
+  try {
+    const { requestOptions } = meta;
+    const { values, initialValues } = payload;
+    const array = differenceBy(values, initialValues);
+
+    yield all([
+      ...array.map((item: any) =>
+        call(
+          createApiCall,
+          `https://roadmap-29e3e-default-rtdb.firebaseio.com/posts/${item.id}/.json`,
+          {
+            method: 'PATCH',
+            body: JSON.stringify(item),
+            ...requestOptions,
+          },
+        ),
+      ),
+    ]);
+
+    return yield put(resolvedAction(actionsTypes.MAKE_PRIORITY));
+  } catch (error) {
+    const { message } = error;
+    yield put(
+      rejectedAction(actionsTypes.MAKE_PRIORITY, null, {
         message: message,
       }),
     );
@@ -52,4 +87,11 @@ function* fetchDataListWatcher() {
   );
 }
 
-export default [fork(fetchDataListWatcher)];
+function* makePriorityWatcher() {
+  yield takeLatest(actionsTypes.MAKE_PRIORITY, makePriorityHandler);
+}
+
+export default [
+  fork(fetchDataListWatcher),
+  fork(makePriorityWatcher),
+];

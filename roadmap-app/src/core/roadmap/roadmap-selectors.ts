@@ -22,9 +22,15 @@ const getErrors = createSelector(
   ({ errors }) => errors,
 );
 
+const getIsMakePriorityFetched = createSelector(
+  getLocalState,
+  ({ isMakePriorityFetched }) => isMakePriorityFetched,
+);
+
 export default {
   getLocalState,
   getDataList,
   getIsDataListFetched,
   getErrors,
+  getIsMakePriorityFetched,
 };

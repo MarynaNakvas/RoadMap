@@ -3,10 +3,16 @@
 
 .table {
   @extend .text;
-  min-width: 860px;
+  max-width: 860px;
+  overflow: hidden;
   background-color: $color-background-primary;
   border-radius: 10px;
   box-shadow: $shadow-table;
+
+  &-rows {
+    max-height: 80vh;
+    overflow-y: scroll;
+  }
 
   &-buttons {
     display: flex;

@@ -5,15 +5,16 @@ import React, {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FormikConfig, FormikValues, useFormik } from 'formik';
 import {
   roadMapActions,
   roadMapSelectors,
   TableKeys,
   TableKeysType,
 } from 'core/roadmap';
-
+import Form from 'components/formik';
+import { remove, flattenDeep } from 'lodash';
 import { useSortData } from 'utils/sort-data';
-import { checkDataPriority } from 'utils/data-priority';
 import Spinner from 'components/spinner';
 import TableFilters from './table-filters';
 import TableHeader from './table-header';
@@ -22,7 +23,6 @@ import { ActiveFiltersProps } from './table.model';
 import './table.scss';
 
 const Table = () => {
-  const priorityRows: Set<string> = new Set();
   const globalFilters: ActiveFiltersProps = {
     raiting: '',
     title: '',
@@ -46,81 +46,97 @@ const Table = () => {
     globalFilters,
   );
 
-  const [dataPriority, setDataPriority] = useState(priorityRows);
+  const [tableContent, setTableContent] = useState(dataList);
 
-  const { items, sortData, sortRules } = useSortData(
-    dataList,
-    dataPriority,
+  const initialValues = useMemo(() => dataList, [dataList]);
+
+  const makePriority = useCallback(
+    (payload) => {
+      dispatch(roadMapActions.makePriority(payload));
+    },
+    [dispatch],
   );
 
-  const [tableContent, setTableContent] = useState(items);
+  const formikConfig = useMemo(
+    (): FormikConfig<FormikValues> => ({
+      enableReinitialize: true,
+      initialValues,
+      onSubmit: (values: any) => {
+        makePriority({ values, initialValues });
+      },
+    }),
+    [initialValues],
+  );
 
-  const toggleAddPriority = (id: string) => {
-    setDataPriority((prevState: Set<string>) => {
-      if (prevState.has(id)) {
-        prevState.delete(id);
-        return prevState;
-      }
-      return prevState.add(id);
-    });
+  const formik = useFormik(formikConfig);
+
+  const { handleSubmit } = formik;
+
+  const dataListWithPriority = useMemo(() => {
+    const array = [...dataList];
+    const dataPriority = array.filter(
+      (rowData: TableKeysType) => rowData.isPriority,
+    );
+    dataPriority.map((item: any) =>
+      remove(array, (n: any) => n.id === item.id),
+    );
+    return [...dataPriority, ...array];
+  }, [dataList, formik]);
+
+  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    handleSubmit();
   };
 
   const tableAllContent = useMemo(
     () =>
-      tableContent.map((rowData: TableKeysType) => {
+      dataListWithPriority.map((rowData: TableKeysType) => {
         const { [TableKeys.id]: key } = rowData;
         return (
           <TableRow
             key={key}
             rowData={rowData}
-            addPriority={toggleAddPriority}
+            addPriority={() => null}
+            formik={formik}
           />
         );
       }),
-    [tableContent],
+    [dataListWithPriority, dataList, formik],
   );
-
-  const changePriority = () => {
-    const newUpdateTableContent = checkDataPriority({
-      dataPriority,
-      tableContent,
-    });
-
-    setTableContent(newUpdateTableContent);
-  };
 
   const actions = {
     setTableContent,
     changeActiveFilters,
-    changePriority,
   };
 
   useEffect(() => {
     data();
   }, []);
 
-  useEffect(() => {
-    setTableContent(items);
-  }, [dataList, sortRules, changeActiveFilters]);
+  // useEffect(() => {
+  //   setTableContent(items);
+  // }, [dataList, sortRules, changeActiveFilters]);
 
   return (
     <div className="content">
       <div className="table">
-        <TableHeader sort={sortData} sortRules={sortRules} />
-        <TableFilters
-          dataList={dataList}
-          actions={actions}
-          tableContent={tableContent}
-          activeFilters={activeFilters}
-        />
-        <Spinner isFetching={isDataListFetching}>
-          <div className="table-rows">{tableAllContent}</div>
-        </Spinner>
-        <div className="table-buttons">
-          <button className="table-button" onClick={changePriority}>
-            Make a priority
-          </button>
-        </div>
+        <Form formik={formik}>
+          <TableHeader sort={() => null} sortRules={{}} />
+          <TableFilters
+            dataList={dataList}
+            actions={actions}
+            tableContent={dataListWithPriority}
+            activeFilters={activeFilters}
+          />
+          <Spinner isFetching={isDataListFetching}>
+            <div className="table-rows">{tableAllContent}</div>
+          </Spinner>
+          <div className="table-buttons">
+            <button className="table-button" onClick={onClick}>
+              Make a priority
+            </button>
+          </div>
+        </Form>
       </div>
     </div>
   );

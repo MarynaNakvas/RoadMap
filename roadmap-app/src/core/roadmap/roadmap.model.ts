@@ -5,6 +5,7 @@ export enum TableKeys {
   Date = 'date',
   Raiting = 'raiting',
   Action = 'action',
+  isPriority = 'isPriority',
 }
 
 export interface TableKeysType {
@@ -13,6 +14,7 @@ export interface TableKeysType {
   [TableKeys.Author]: string;
   [TableKeys.Date]: string;
   [TableKeys.Raiting]: number;
+  [TableKeys.isPriority]: any;
 }
 
 export interface AppMeta {

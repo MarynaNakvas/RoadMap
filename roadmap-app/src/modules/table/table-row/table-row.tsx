@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import classNames from 'clsx';
-import { Checkbox } from '@material-ui/core';
-import { TableKeys, TableKeysType } from 'core/roadmap';
+import CheckBox from 'components/checkbox';
+import { FormikProps } from 'formik';
+import { TableKeys } from 'core/roadmap';
 
 import './table-row.scss';
 
@@ -12,11 +13,16 @@ interface TextCell {
 }
 
 interface TableRowProps {
-  rowData: TableKeysType;
+  rowData: any;
   addPriority(props: string): void;
+  formik: FormikProps<any>;
 }
 
-const TableRow = ({ rowData, addPriority }: TableRowProps) => {
+const TableRow = ({
+  rowData,
+  addPriority,
+  formik,
+}: TableRowProps) => {
   const cells = useMemo(() => {
     const {
       [TableKeys.id]: id,
@@ -25,6 +31,8 @@ const TableRow = ({ rowData, addPriority }: TableRowProps) => {
       [TableKeys.Date]: date,
       [TableKeys.Raiting]: raiting,
     } = rowData;
+
+    const name = `${id}.${TableKeys.isPriority}`;
 
     const titleCell = {
       id: TableKeys.Title,
@@ -43,16 +51,14 @@ const TableRow = ({ rowData, addPriority }: TableRowProps) => {
       data: raiting,
     };
 
-    const toggleSelected = () => {
-      addPriority(id);
-    };
-
     const actionCell = {
       id: TableKeys.Action,
       data: (
-        <Checkbox
+        <CheckBox
           className="table-row__item-action"
-          onClick={toggleSelected}
+          name={name}
+          formik={formik}
+          addPriority={addPriority}
         />
       ),
     };
@@ -73,7 +79,7 @@ const TableRow = ({ rowData, addPriority }: TableRowProps) => {
         {data}
       </div>
     ));
-  }, [rowData]);
+  }, [rowData, formik]);
 
   return <div className="table-row">{cells}</div>;
 };

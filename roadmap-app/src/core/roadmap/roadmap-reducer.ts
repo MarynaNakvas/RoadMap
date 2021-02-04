@@ -10,12 +10,14 @@ export interface ReducerType {
   };
   isDataListFetched: boolean;
   dataList: TableKeysType[];
+  isMakePriorityFetched: boolean;
 }
 
 const defaultState: ReducerType = {
   errors: {},
   isDataListFetched: false,
   dataList: [],
+  isMakePriorityFetched: false,
 };
 
 export const roadMapReducer = createReducer(defaultState, {
@@ -51,6 +53,39 @@ export const roadMapReducer = createReducer(defaultState, {
     const message = action.meta ? action.meta.message : '';
     return update(state, {
       isDataListFetched: { $set: false },
+      errors: {
+        $merge: {
+          [message]: message,
+        },
+      },
+    });
+  },
+
+  [actionsTypes.ENABLE_MAKE_PRIORITY](state: ReducerType) {
+    return update(state, {
+      isMakePriorityFetched: { $set: true },
+    });
+  },
+
+  [actionsTypes.MAKE_PRIORITY](state: ReducerType) {
+    return update(state, {
+      isMakePriorityFetched: { $set: true },
+    });
+  },
+
+  [resolved(actionsTypes.MAKE_PRIORITY)](state: ReducerType) {
+    return update(state, {
+      isMakePriorityFetched: { $set: false },
+    });
+  },
+
+  [rejected(actionsTypes.MAKE_PRIORITY)](
+    state: ReducerType,
+    action: Action<TableKeysType[]>,
+  ) {
+    const message = action.meta ? action.meta.message : '';
+    return update(state, {
+      isMakePriorityFetched: { $set: false },
       errors: {
         $merge: {
           [message]: message,

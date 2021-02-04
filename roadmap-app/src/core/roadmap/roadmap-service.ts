@@ -3,7 +3,7 @@ import { TableKeys, TableKeysType } from './roadmap.model';
 
 export const normalizeData = (data: TableKeysType[]) =>
   data.map((item: TableKeysType) => {
-    const { id, title, author, date, raiting } = item;
+    const { id, title, author, date, raiting, isPriority } = item;
 
     return {
       [TableKeys.id]: id,
@@ -11,5 +11,6 @@ export const normalizeData = (data: TableKeysType[]) =>
       [TableKeys.Author]: author,
       [TableKeys.Date]: dateFormat(new Date(date)),
       [TableKeys.Raiting]: raiting,
+      [TableKeys.isPriority]: isPriority,
     };
   });

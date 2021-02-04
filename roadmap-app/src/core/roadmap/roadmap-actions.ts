@@ -4,6 +4,8 @@ import { createConstants } from 'utils';
 const typesNames = [
   'ENABLE_FETCH_DATA_LIST',
   'FETCH_DATA_LIST',
+  'ENABLE_MAKE_PRIORITY',
+  'MAKE_PRIORITY',
 ] as const;
 
 type Types = {
@@ -22,9 +24,19 @@ const fetchDataList = createAction(
   () => ({ isDataListFetched: enableFetchDataList }),
 );
 
+const enableMakePriority = createAction(types.ENABLE_MAKE_PRIORITY);
+
+const makePriority = createAction(
+  types.MAKE_PRIORITY,
+  (payload: any) => payload,
+  () => ({ isMakePriorityFetched: enableMakePriority }),
+);
+
 export const actions = {
   enableFetchDataList,
   fetchDataList,
+  enableMakePriority,
+  makePriority,
 } as const;
 
 export default actions;
