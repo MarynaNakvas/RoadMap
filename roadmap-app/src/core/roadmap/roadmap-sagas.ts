@@ -6,6 +6,7 @@ import { rejectedAction, resolvedAction } from 'utils';
 import { types as actionsTypes } from './roadmap-actions';
 import { normalizeData } from './roadmap-service';
 import { AppMeta } from './roadmap.model';
+import { roadMapActions } from '.';
 
 /*
  * Sagas
@@ -64,8 +65,10 @@ function* makePriorityHandler({
         ),
       ),
     ]);
-
-    return yield put(resolvedAction(actionsTypes.MAKE_PRIORITY));
+    return yield all([
+      put(resolvedAction(actionsTypes.MAKE_PRIORITY)),
+      put(roadMapActions.fetchDataList()),
+    ]);
   } catch (error) {
     const { message } = error;
     yield put(

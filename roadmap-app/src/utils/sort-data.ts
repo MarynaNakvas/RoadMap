@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
-import { checkDataPriority } from './data-priority';
 
-export const useSortData = (items: any, dataPriority: any) => {
+export const useSortData = (items: any) => {
   const [sortRules, setSortRules] = useState(items);
   const sortedItems = useMemo(() => {
     let sortableItems = [...items];
@@ -32,10 +31,5 @@ export const useSortData = (items: any, dataPriority: any) => {
     setSortRules({ dataKey, direction });
   };
 
-  const newUpdateTableContent = checkDataPriority({
-    dataPriority,
-    tableContent: sortedItems,
-  });
-
-  return { items: newUpdateTableContent, sortData, sortRules };
+  return { items: sortedItems, sortData, sortRules };
 };

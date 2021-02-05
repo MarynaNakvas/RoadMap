@@ -1,20 +1,19 @@
 import { TableKeysType } from 'core/roadmap';
-import { remove, flattenDeep } from 'lodash';
+import { remove } from 'lodash';
 
 interface CheckDataPriorityProps {
-  dataPriority: Set<string>;
   tableContent: TableKeysType[];
 }
 
 export const checkDataPriority = ({
-  dataPriority,
   tableContent,
 }: CheckDataPriorityProps) => {
-  const dataPriorityArray = Array.from(dataPriority);
-  const priorityRowsArray = dataPriorityArray.map((i: any) =>
-    remove(tableContent, (n: any) => n.id === i),
+  const dataList = [...tableContent];
+  const dataPriority = dataList.filter(
+    (rowData: TableKeysType) => rowData.isPriority,
   );
-  const priorityRows = flattenDeep(priorityRowsArray);
-
-  return [...priorityRows, ...tableContent];
+  dataPriority.map((item: any) =>
+    remove(dataList, (n: any) => n.id === item.id),
+  );
+  return [...dataPriority, ...dataList];
 };

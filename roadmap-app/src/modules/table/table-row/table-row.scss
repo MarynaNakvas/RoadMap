@@ -3,6 +3,7 @@
 .table-row {
   display: grid;
   grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
+  align-items: center;
   padding: 8px 0;
   background-color: inherit;
   border-bottom: 1px solid $color-border-20;

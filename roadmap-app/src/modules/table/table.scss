@@ -17,6 +17,11 @@
   &-buttons {
     display: flex;
     justify-content: flex-end;
+
+    & .spinner {
+      justify-content: flex-end;
+      margin-right: 80px;
+    }
   }
 
   &-button {

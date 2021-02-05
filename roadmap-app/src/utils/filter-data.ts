@@ -6,6 +6,7 @@ import {
   OptionProps,
   TableActionProps,
 } from 'modules/table/table.model';
+import { checkDataPriority } from './data-priority';
 
 interface FilterDataWithValueProps {
   option: OptionProps;
@@ -43,7 +44,7 @@ export const filterDataWithValue = ({
     if (
       JSON.stringify(activeFilters) === JSON.stringify(globalFilters)
     ) {
-      return dataList;
+      return checkDataPriority({ tableContent: dataList });
     } else {
       for (let key in activeFilters) {
         if (activeFilters[key] !== '') {
