@@ -62,7 +62,6 @@ const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {
         <div
           key={id}
           className={classNames('table-headers__item', className)}
-          onClick={() => sort(dataKey)}
         >
           {title}
         </div>
