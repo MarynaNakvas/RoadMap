@@ -5,7 +5,7 @@ module.exports = function () {
 		posts: _.times(2000, function (n) {
 			return {
 				id: n,
-				title: faker.lorem.sentence(),
+				title: faker.lorem.sentence(3),
 				author: faker.name.findName(),
 				date: faker.date.between('2015-01-01', '2020-01-01'),
 				raiting: faker.random.number({

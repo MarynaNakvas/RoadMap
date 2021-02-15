@@ -2,15 +2,11 @@
 
 .table-row {
   display: grid;
-  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
+  grid-template-columns: minmax(200px, 100fr) minmax(175px, 75fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
   align-items: center;
   padding: 8px 0;
   background-color: inherit;
   border-bottom: 1px solid $color-border-20;
-
-  &:last-child {
-    border-bottom: none;
-  }
 
   &:hover {
     background-color: $color-background-primary-hover;

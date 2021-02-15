@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Routing from 'components/routing';
 import { useSelector } from 'react-redux';
 import { roadMapSelectors } from 'core/roadmap';
+import { PAGE_PATH } from 'core/app-constants';
 
 const RoadMapApp = () => {
   const errors = useSelector(roadMapSelectors.getErrors);
@@ -14,11 +15,11 @@ const RoadMapApp = () => {
       <div>
         <Routing />
         <Switch>
-          <Route exact path="/">
+          <Route exact path={PAGE_PATH.HOME}>
             <div className="message">Nakvas Marina roadmap</div>
           </Route>
-          <Route path="/table" component={Table} />
-          <Route path="/errors">
+          <Route path={PAGE_PATH.TABLE} component={Table} />
+          <Route path={PAGE_PATH.ERRORS}>
             <List data={errors} />
           </Route>
           <Route>

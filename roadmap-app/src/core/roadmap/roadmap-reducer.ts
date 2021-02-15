@@ -21,13 +21,6 @@ const defaultState: ReducerType = {
 };
 
 export const roadMapReducer = createReducer(defaultState, {
-  [actionsTypes.ENABLE_FETCH_DATA_LIST](state: ReducerType) {
-    return update(state, {
-      isDataListFetched: { $set: true },
-      dataList: { $set: [] },
-    });
-  },
-
   [actionsTypes.FETCH_DATA_LIST](state: ReducerType) {
     return update(state, {
       isDataListFetched: { $set: true },
@@ -58,12 +51,6 @@ export const roadMapReducer = createReducer(defaultState, {
           [message]: message,
         },
       },
-    });
-  },
-
-  [actionsTypes.ENABLE_MAKE_PRIORITY](state: ReducerType) {
-    return update(state, {
-      isMakePriorityFetched: { $set: true },
     });
   },
 

@@ -16,12 +16,14 @@ interface TableRowProps {
   rowData: any;
   addPriority(props: string): void;
   formik: FormikProps<any>;
+  styles?: any;
 }
 
 const TableRow = ({
   rowData,
   addPriority,
   formik,
+  styles,
 }: TableRowProps) => {
   const cells = useMemo(() => {
     const {
@@ -75,6 +77,7 @@ const TableRow = ({
       <div
         key={id}
         className={classNames('table-row__item', { className })}
+        // style={styles}
       >
         {data}
       </div>

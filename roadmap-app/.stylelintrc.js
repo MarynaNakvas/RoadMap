@@ -4,6 +4,7 @@ module.exports = {
     'stylelint-config-rational-order',
   ],
   rules: {
+    'font-family-no-missing-generic-family-keyword': true,
     'string-quotes': 'single',
     'number-leading-zero': null,
     'property-case': null,

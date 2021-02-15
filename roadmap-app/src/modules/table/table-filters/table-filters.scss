@@ -2,7 +2,7 @@
 
 .table-filters {
   display: grid;
-  grid-template-columns: minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
+  grid-template-columns: minmax(200px, 100fr) minmax(175px, 75fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
   min-height: 34px;
   border-top: 1px solid $color-border-20;
   border-bottom: 1px solid $color-border-20;

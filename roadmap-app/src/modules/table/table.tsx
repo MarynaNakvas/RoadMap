@@ -1,17 +1,16 @@
 import React, {
+  CSSProperties,
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormikConfig, FormikValues, useFormik } from 'formik';
-import {
-  roadMapActions,
-  roadMapSelectors,
-  TableKeys,
-  TableKeysType,
-} from 'core/roadmap';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { VariableSizeList } from 'react-window';
+import { roadMapActions, roadMapSelectors } from 'core/roadmap';
 import Form from 'components/formik';
 import { checkDataPriority } from 'utils/data-priority';
 import { useSortData } from 'utils/sort-data';
@@ -22,7 +21,17 @@ import TableRow from './table-row';
 import { ActiveFiltersProps } from './table.model';
 import './table.scss';
 
+type AutoSizerType = {
+  width: number;
+  height: number;
+};
+type VariableSizeListType = {
+  index: number;
+  style: CSSProperties;
+};
+
 const Table = () => {
+  const TABLE_ROW_HEIGHT = 41;
   const globalFilters: ActiveFiltersProps = {
     raiting: '',
     title: '',
@@ -90,21 +99,48 @@ const Table = () => {
     handleSubmit();
   };
 
-  const tableAllContent = useMemo(
-    () =>
-      tableContent.map((rowData: TableKeysType) => {
-        const { [TableKeys.id]: key } = rowData;
-        return (
-          <TableRow
-            key={key}
-            rowData={rowData}
-            addPriority={() => null}
-            formik={formik}
-          />
-        );
-      }),
+  const getItemSize = () => TABLE_ROW_HEIGHT;
+  const lineHeights = getItemSize() * tableContent.length;
+
+  const listRef = useRef<VariableSizeList>(null);
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.resetAfterIndex(0);
+    }
+  }, [listRef, lineHeights]);
+
+  const Row = ({ index, style }: VariableSizeListType) => (
+    <div style={style}>
+      <TableRow
+        key={index}
+        rowData={tableContent[index]}
+        formik={formik}
+        addPriority={() => null}
+      />
+    </div>
+  );
+
+  const tableAllContent: any = useMemo(
+    () => (
+      // <AutoSizer disableWidth>
+      //   {({ height }: AutoSizerType) => (
+      <VariableSizeList
+        className="table-rows"
+        ref={listRef}
+        width="auto"
+        height={500}
+        itemCount={tableContent.length}
+        itemSize={getItemSize}
+      >
+        {Row}
+      </VariableSizeList>
+    ),
+    //   )}
+    // </AutoSizer>,
     [tableContent, formik],
   );
+
+  // console.log('tableAllContent', tableAllContent);
 
   const actions = {
     setTableContent,
@@ -131,7 +167,7 @@ const Table = () => {
             activeFilters={activeFilters}
           />
           <Spinner isFetching={isDataListFetching}>
-            <div className="table-rows">{tableAllContent}</div>
+            <div>{tableAllContent}</div>
           </Spinner>
           <div className="table-buttons">
             <Spinner isFetching={isMakePriorityFetching}>

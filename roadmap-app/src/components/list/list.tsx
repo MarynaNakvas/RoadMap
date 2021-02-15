@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import './list.scss';
 
@@ -7,17 +7,17 @@ export interface ListProps {
 }
 
 const List = ({ data }: ListProps) => {
-  const listContent = Object.values(data).map((item: any) => (
-    <li className="ordered-list__item" key={item}>
-      {item}
-    </li>
-  ));
+  const listContent = useMemo(() => {
+    const list = Object.values(data).map((item: any) => (
+      <li className="ordered-list__item" key={item}>
+        {item}
+      </li>
+    ));
 
-  return (
-    <div className="list">
-      <ol className="ordered-list">{listContent}</ol>
-    </div>
-  );
+    return <ol className="ordered-list">{list}</ol>;
+  }, [data]);
+
+  return <div className="list">{listContent}</div>;
 };
 
 List.displayName = 'List';
