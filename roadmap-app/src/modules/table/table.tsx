@@ -61,6 +61,8 @@ const Table = () => {
 
   const { items, sortData, sortRules } = useSortData(dataList);
 
+  const hasSorting = !!sortRules.dataKey;
+
   const dataListWithPriority = useMemo(
     () => checkDataPriority({ tableContent: items }),
     [items],
@@ -78,6 +80,9 @@ const Table = () => {
     },
     [dispatch],
   );
+
+  const clearAllFilters = () =>
+    checkDataPriority({ tableContent: dataList });
 
   const formikConfig = useMemo(
     (): FormikConfig<FormikValues> => ({
@@ -115,36 +120,37 @@ const Table = () => {
         key={index}
         rowData={tableContent[index]}
         formik={formik}
-        addPriority={() => null}
       />
     </div>
   );
 
   const tableAllContent: any = useMemo(
     () => (
-      // <AutoSizer disableWidth>
-      //   {({ height }: AutoSizerType) => (
-      <VariableSizeList
-        className="table-rows"
-        ref={listRef}
-        width="auto"
-        height={500}
-        itemCount={tableContent.length}
-        itemSize={getItemSize}
-      >
-        {Row}
-      </VariableSizeList>
+      <AutoSizer disableWidth>
+        {({ height }: AutoSizerType) => (
+          <VariableSizeList
+            className="table-rows"
+            ref={listRef}
+            width="auto"
+            height={height}
+            itemCount={tableContent.length}
+            itemSize={getItemSize}
+          >
+            {Row}
+          </VariableSizeList>
+        )}
+      </AutoSizer>
     ),
-    //   )}
-    // </AutoSizer>,
     [tableContent, formik],
   );
 
-  // console.log('tableAllContent', tableAllContent);
+  const isEmptyTableContent = tableContent.length;
 
   const actions = {
     setTableContent,
     changeActiveFilters,
+    sortData,
+    clearAllFilters,
   };
 
   useEffect(() => {
@@ -159,15 +165,23 @@ const Table = () => {
     <div className="content">
       <div className="table">
         <Form formik={formik}>
-          <TableHeader sort={sortData} sortRules={sortRules} />
+          <TableHeader actions={actions} sortRules={sortRules} />
           <TableFilters
             dataList={dataList}
             actions={actions}
             tableContent={tableContent}
             activeFilters={activeFilters}
+            hasSorting={hasSorting}
           />
           <Spinner isFetching={isDataListFetching}>
-            <div>{tableAllContent}</div>
+            {!isEmptyTableContent && (
+              <div className="table-rows__description">
+                Sorry, no content matched your criteria.
+              </div>
+            )}
+            <div className="table-rows__wrapper">
+              {tableAllContent}
+            </div>
           </Spinner>
           <div className="table-buttons">
             <Spinner isFetching={isMakePriorityFetching}>

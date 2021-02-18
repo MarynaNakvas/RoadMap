@@ -19,8 +19,8 @@ interface SelectFiltersProps extends Props {
   options: any;
   actions: TableActionProps;
   dataList: TableKeysType[];
-  tableContent: TableKeysType[];
   activeFilters: ActiveFiltersProps;
+  hasSorting: boolean;
 }
 
 const SelectFilter = ({
@@ -28,8 +28,8 @@ const SelectFilter = ({
   actions,
   dataList,
   byKey,
-  tableContent,
   activeFilters,
+  hasSorting,
 }: SelectFiltersProps) => {
   const { setTableContent } = actions;
   let initialValue: any = null;
@@ -50,7 +50,6 @@ const SelectFilter = ({
       option,
       actionMeta,
       dataList,
-      tableContent,
       byKey,
       activeFilters,
       actions,
@@ -79,7 +78,7 @@ const SelectFilter = ({
 
   return (
     <Select
-      value={value}
+      value={hasSorting ? null : value}
       isClearable
       options={options}
       placeholder={placeholderComponent}

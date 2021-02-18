@@ -14,17 +14,10 @@ interface TextCell {
 
 interface TableRowProps {
   rowData: any;
-  addPriority(props: string): void;
   formik: FormikProps<any>;
-  styles?: any;
 }
 
-const TableRow = ({
-  rowData,
-  addPriority,
-  formik,
-  styles,
-}: TableRowProps) => {
+const TableRow = ({ rowData, formik }: TableRowProps) => {
   const cells = useMemo(() => {
     const {
       [TableKeys.id]: id,
@@ -60,7 +53,6 @@ const TableRow = ({
           className="table-row__item-action"
           name={name}
           formik={formik}
-          addPriority={addPriority}
         />
       ),
     };
@@ -77,7 +69,6 @@ const TableRow = ({
       <div
         key={id}
         className={classNames('table-row__item', { className })}
-        // style={styles}
       >
         {data}
       </div>

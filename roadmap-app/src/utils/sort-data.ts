@@ -6,10 +6,18 @@ export const useSortData = (items: any) => {
     let sortableItems = [...items];
     if (sortRules !== null) {
       sortableItems.sort((a, b) => {
-        if (a[sortRules.dataKey] < b[sortRules.dataKey]) {
+        const leftItem =
+          sortRules.dataKey === 'date'
+            ? new Date(a[sortRules.dataKey])
+            : a[sortRules.dataKey];
+        const rightItem =
+          sortRules.dataKey === 'date'
+            ? new Date(b[sortRules.dataKey])
+            : b[sortRules.dataKey];
+        if (leftItem < rightItem) {
           return sortRules.direction === 'increase' ? -1 : 1;
         }
-        if (a[sortRules.dataKey] > b[sortRules.dataKey]) {
+        if (leftItem > rightItem) {
           return sortRules.direction === 'increase' ? 1 : -1;
         }
         return 0;
@@ -20,7 +28,6 @@ export const useSortData = (items: any) => {
 
   const sortData = (dataKey: string) => {
     let direction = 'increase';
-
     if (
       sortRules &&
       sortRules.dataKey === dataKey &&

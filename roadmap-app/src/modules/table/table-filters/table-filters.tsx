@@ -14,6 +14,7 @@ interface TableFiltersProps {
   dataList: TableKeysType[];
   tableContent: TableKeysType[];
   activeFilters: ActiveFiltersProps;
+  hasSorting: boolean;
 }
 
 const TableFilters = ({
@@ -21,6 +22,7 @@ const TableFilters = ({
   actions,
   tableContent,
   activeFilters,
+  hasSorting,
 }: TableFiltersProps) => {
   const filtersOptions: Collection = {};
   const map: CollectionMap = {};
@@ -56,8 +58,8 @@ const TableFilters = ({
         options={filtersOptions[key]}
         actions={actions}
         dataList={dataList}
-        tableContent={tableContent}
         activeFilters={activeFilters}
+        hasSorting={hasSorting}
       />
     </div>
   ));

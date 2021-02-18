@@ -15,11 +15,12 @@ interface TextHeading {
 }
 
 interface TableHeadersProps {
-  sort(props: string): void;
+  actions: any;
   sortRules: SotringRulesProps;
 }
 
-const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {
+const TableHeader = ({ actions, sortRules }: TableHeadersProps) => {
+  const { sortData, clearAllFilters } = actions;
   const titleHeading = {
     id: TableKeys.Title,
     title: 'Title',
@@ -58,6 +59,10 @@ const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {
   const headings = tableHeadings.map(
     ({ id, title, dataKey, className }: TextHeading) => {
       const isActiveSortingButton = dataKey === sortRules.dataKey;
+      const sort = () => {
+        clearAllFilters();
+        sortData(dataKey);
+      };
       return id === 'action' ? (
         <div
           key={id}
@@ -69,7 +74,7 @@ const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {
         <div
           key={id}
           className={classNames('table-headers__item', { className })}
-          onClick={() => sort(dataKey)}
+          onClick={sort}
         >
           {title}
           <button
@@ -83,7 +88,7 @@ const TableHeader = ({ sort, sortRules }: TableHeadersProps) => {
                 isActiveSortingButton &&
                 sortRules.direction === 'decrease',
             })}
-            onClick={() => sort(dataKey)}
+            onClick={sort}
           >
             <SortingIcon />
           </button>

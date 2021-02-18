@@ -3,11 +3,21 @@
 
 .table {
   @extend .text;
-  // max-width: 1000px;
-  // overflow: hidden;
   background-color: $color-background-primary;
   border-radius: 10px;
   box-shadow: $shadow-table;
+
+  &-rows__wrapper {
+    height: 75vh;
+  }
+
+  &-rows__description {
+    @extend .text;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    letter-spacing: 0.3px;
+  }
 
   &-buttons {
     display: flex;

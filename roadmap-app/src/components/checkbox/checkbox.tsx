@@ -7,21 +7,14 @@ interface CheckBoxProps {
   name: any;
   formik: FormikProps<any>;
   className: any;
-  addPriority(props: any): void;
 }
 
-const CheckBox = ({
-  name,
-  formik,
-  className,
-  addPriority,
-}: CheckBoxProps) => {
+const CheckBox = ({ name, formik, className }: CheckBoxProps) => {
   const { values, setFieldValue } = formik;
   const isChecked = get(values, name, false);
 
   const toggleChecked = useCallback(() => {
     setFieldValue(name, !isChecked);
-    addPriority(name);
   }, [name, isChecked, setFieldValue]);
 
   return (
