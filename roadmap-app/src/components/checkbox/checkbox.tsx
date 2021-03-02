@@ -14,6 +14,8 @@ const CheckBox = ({ name, formik, className }: CheckBoxProps) => {
   const isChecked = get(values, name, false);
 
   const toggleChecked = useCallback(() => {
+    console.log('toggle');
+
     setFieldValue(name, !isChecked);
   }, [name, isChecked, setFieldValue]);
 

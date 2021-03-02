@@ -1,5 +1,4 @@
 import createSagaMiddleware from 'redux-saga';
-import * as localforage from 'localforage';
 import storage from 'redux-persist/lib/storage';
 import { createBrowserHistory } from 'history';
 import { applyMiddleware, createStore } from 'redux';

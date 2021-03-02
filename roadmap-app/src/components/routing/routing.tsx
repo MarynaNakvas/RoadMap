@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { PAGE_PATH } from 'core/app-constants';
 
 import './routing.scss';
 
@@ -8,21 +9,21 @@ const Routing: React.FunctionComponent = () => (
     <nav>
       <NavLink
         exact
-        to="/"
+        to={PAGE_PATH.HOME}
         activeClassName="active"
         className="routing-link"
       >
         Main
       </NavLink>
       <NavLink
-        to="/table"
+        to={PAGE_PATH.TABLE}
         activeClassName="active"
         className="routing-link"
       >
         Table
       </NavLink>
       <NavLink
-        to="/errors"
+        to={PAGE_PATH.ERRORS}
         activeClassName="active"
         className="routing-link"
       >
