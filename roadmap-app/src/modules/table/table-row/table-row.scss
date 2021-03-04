@@ -24,11 +24,9 @@
 
       &.MuiCheckbox-root {
         padding: 0;
-        color: $color-primary;
+        color: $color-not-priority;
 
         & .MuiIconButton-label {
-          color: $color-primary;
-
           &:focus {
             outline: none;
           }

@@ -11,6 +11,7 @@ import { FormikConfig, FormikValues, useFormik } from 'formik';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { roadMapActions, roadMapSelectors } from 'core/roadmap';
+import { globalFilters } from 'core/app-constants';
 import Form from 'components/formik';
 import { checkDataPriority } from 'utils/data-priority';
 import { useSortData } from 'utils/sort-data';
@@ -18,7 +19,6 @@ import Spinner from 'components/spinner';
 import TableFilters from './table-filters';
 import TableHeader from './table-header';
 import TableRow from './table-row';
-import { ActiveFiltersProps } from './table.model';
 import './table.scss';
 
 type AutoSizerType = {
@@ -32,12 +32,6 @@ type VariableSizeListType = {
 
 const Table = () => {
   const TABLE_ROW_HEIGHT = 41;
-  const globalFilters: ActiveFiltersProps = {
-    raiting: '',
-    title: '',
-    date: '',
-    author: '',
-  };
 
   const dataList = useSelector(roadMapSelectors.getDataList);
 

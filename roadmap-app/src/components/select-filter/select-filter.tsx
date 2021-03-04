@@ -6,6 +6,7 @@ import Select, {
 } from 'react-select';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
 import { TableKeysType } from 'core/roadmap';
+import { globalFilters } from 'core/app-constants';
 import {
   ActiveFiltersProps,
   OptionProps,
@@ -31,7 +32,7 @@ const SelectFilter = ({
   activeFilters,
   hasSorting,
 }: SelectFiltersProps) => {
-  const { setTableContent } = actions;
+  const { setTableContent, changeActiveFilters } = actions;
   let initialValue: any = null;
   const [value, setInputValue] = useState(initialValue);
 
@@ -41,6 +42,10 @@ const SelectFilter = ({
       <p className="seacrh-select__placeholder-text">Search</p>
     </div>
   );
+
+  if (hasSorting) {
+    changeActiveFilters(globalFilters);
+  }
 
   const onChange = (
     option: OptionProps,

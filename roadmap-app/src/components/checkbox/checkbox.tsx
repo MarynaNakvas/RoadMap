@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import { Checkbox } from '@material-ui/core';
+import { ReactComponent as IconStar } from 'assets/icons/icon-star.svg';
 import { get } from 'lodash';
 import { FormikProps } from 'formik';
+import './checkbox.scss';
 
 interface CheckBoxProps {
   name: any;
@@ -14,13 +16,13 @@ const CheckBox = ({ name, formik, className }: CheckBoxProps) => {
   const isChecked = get(values, name, false);
 
   const toggleChecked = useCallback(() => {
-    console.log('toggle');
-
     setFieldValue(name, !isChecked);
   }, [name, isChecked, setFieldValue]);
 
   return (
     <Checkbox
+      icon={<IconStar />}
+      checkedIcon={<IconStar />}
       className={className}
       checked={isChecked}
       onChange={toggleChecked}
