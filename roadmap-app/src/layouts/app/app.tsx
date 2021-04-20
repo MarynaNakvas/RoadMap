@@ -10,7 +10,6 @@ import List from 'components/list';
 import Routing from 'layouts/routing';
 import { roadMapSelectors } from 'core/roadmap';
 import { PAGE_PATH } from 'core/app-constants';
-import ReactTable from 'modules/react-table';
 
 const RoadMapApp = withRouter(({ location }) => {
   const errors = useSelector(roadMapSelectors.getErrors);
@@ -30,7 +29,6 @@ const RoadMapApp = withRouter(({ location }) => {
           <Switch>
             <Route exact path={PAGE_PATH.HOME}>
               <div className="message">Nakvas Marina roadmap</div>
-              {/* <ReactTable /> */}
             </Route>
             <Route exact path={PAGE_PATH.TABLE} component={Table} />
             <Route exact path={PAGE_PATH.ERRORS}>

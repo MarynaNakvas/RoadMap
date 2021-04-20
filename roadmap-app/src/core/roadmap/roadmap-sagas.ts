@@ -22,10 +22,7 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
 
     const url =
       'https://roadmap-29e3e-default-rtdb.firebaseio.com/posts.json';
-    // 'https://roadmap-29e3e-default-rtdb.firebaseio.com/posts.json';
-    // 'https://app.fakejson.com/q/ePNmHUee?token=Ao7nQtvP3G6muZKNI7fguQ';
-    // 'https://mockend.com/marfuny51/RoadMap/posts';
-    // 'https://my-json-server.typicode.com/marfuny51/RoadMap/posts';
+
     const response = yield call(createApiCall, url, options);
 
     const dataList = yield call(normalizeData, response);
