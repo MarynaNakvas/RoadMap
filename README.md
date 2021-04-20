@@ -5,6 +5,6 @@ The application created using React, Redux and TypeScript. Remote API is a Fireb
 ## Quick start
 
 1. Clone this repo <br />
-2. Move to the appropriate directory <br />
-3. Run `yarn install` in order to install dependencies.<br />
-4. You can run `yarn start` to see the app at `http://localhost:3001`.<br />
+2. Move to the development branch <br />
+3. Run `npm install` to install dependencies.<br />
+4. You can run `npm start` to see the app at `http://localhost:3001`.<br />
