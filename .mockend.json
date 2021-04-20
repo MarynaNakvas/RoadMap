@@ -1,9 +1,0 @@
-{
-  "Post": {
-    "id": "string",
-    "title": "string",
-    "author": "string",
-    "date": "date",
-    "raiting": "int"
-  }
-}
