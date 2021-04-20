@@ -9,16 +9,18 @@
   &-link {
     @extend .text;
     margin-right: 20px;
+    color: $color-secondary;
+    font-size: 18px;
     text-decoration: none;
 
     &:hover {
       opacity: 0.8;
     }
-  }
-}
 
-.active {
-  color: $color-primary;
-  font-style: italic;
-  text-decoration: underline;
+    &--active {
+      color: $color-active-link;
+      font-style: italic;
+      text-decoration: underline;
+    }
+  }
 }

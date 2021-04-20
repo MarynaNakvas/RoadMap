@@ -5,6 +5,7 @@ import {
   ActiveFiltersProps,
   Collection,
   CollectionMap,
+  SotringRulesProps,
   TableActionProps,
 } from '../table.model';
 import './table-filters.scss';
@@ -14,7 +15,7 @@ interface TableFiltersProps {
   dataList: TableKeysType[];
   tableContent: TableKeysType[];
   activeFilters: ActiveFiltersProps;
-  hasSorting: boolean;
+  sortRules: SotringRulesProps;
 }
 
 const TableFilters = ({
@@ -22,7 +23,7 @@ const TableFilters = ({
   actions,
   tableContent,
   activeFilters,
-  hasSorting,
+  sortRules,
 }: TableFiltersProps) => {
   const filtersOptions: Collection = {};
   const map: CollectionMap = {};
@@ -31,8 +32,9 @@ const TableFilters = ({
     TableKeys.Title,
     TableKeys.Author,
     TableKeys.Date,
-    TableKeys.Raiting,
+    TableKeys.Rating,
   ];
+
   optionGroups.forEach((key) => {
     map[key] = new Set();
     filtersOptions[key] = [];
@@ -59,7 +61,7 @@ const TableFilters = ({
         actions={actions}
         dataList={dataList}
         activeFilters={activeFilters}
-        hasSorting={hasSorting}
+        sortRules={sortRules}
       />
     </div>
   ));

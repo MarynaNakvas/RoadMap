@@ -7,7 +7,7 @@ export const PAGE_PATH = {
 };
 
 export const globalFilters: ActiveFiltersProps = {
-  raiting: '',
+  rating: '',
   title: '',
   date: '',
   author: '',

@@ -36,10 +36,10 @@ const TableHeader = ({ actions, sortRules }: TableHeadersProps) => {
     title: 'Date',
     dataKey: 'date',
   };
-  const raitingHeading = {
-    id: TableKeys.Raiting,
-    title: 'Raiting',
-    dataKey: 'raiting',
+  const ratingHeading = {
+    id: TableKeys.Rating,
+    title: 'Rating',
+    dataKey: 'rating',
   };
   const emptyHeading = {
     id: TableKeys.Action,
@@ -52,7 +52,7 @@ const TableHeader = ({ actions, sortRules }: TableHeadersProps) => {
     titleHeading,
     authorHeading,
     dateHeading,
-    raitingHeading,
+    ratingHeading,
     emptyHeading,
   ];
 
@@ -60,6 +60,8 @@ const TableHeader = ({ actions, sortRules }: TableHeadersProps) => {
     ({ id, title, dataKey, className }: TextHeading) => {
       const isActiveSortingButton = dataKey === sortRules.dataKey;
       const sort = () => {
+        console.log('Click');
+
         clearAllFilters();
         sortData(dataKey);
       };

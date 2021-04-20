@@ -55,8 +55,6 @@ const Table = () => {
 
   const { items, sortData, sortRules } = useSortData(dataList);
 
-  const hasSorting = !!sortRules.dataKey;
-
   const dataListWithPriority = useMemo(
     () => checkDataPriority({ tableContent: items }),
     [items],
@@ -165,7 +163,7 @@ const Table = () => {
             actions={actions}
             tableContent={tableContent}
             activeFilters={activeFilters}
-            hasSorting={hasSorting}
+            sortRules={sortRules}
           />
           <Spinner isFetching={isDataListFetching}>
             {!isEmptyTableContent && (

@@ -2,8 +2,11 @@
 @import 'styles/typography';
 
 body {
+  min-height: 100vh;
   margin: 0;
-  background-color: $color-background-body;
+  overflow: hidden;
+  background: no-repeat url('./assets/icons/background.jpg');
+  background-size: cover;
 }
 
 .message {
@@ -11,7 +14,9 @@ body {
   display: flex;
   justify-content: center;
   padding-top: 50px;
-  font-size: 20px;
+  color: $color-secondary;
+  font-size: 33px;
+  letter-spacing: 1.5px;
 }
 
 .slide-enter {

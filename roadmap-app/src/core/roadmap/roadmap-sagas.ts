@@ -2,7 +2,7 @@ import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
 import { differenceBy } from 'lodash';
 import { createApiCall } from 'services/api-service';
-import { rejectedAction, resolvedAction } from 'utils';
+import { rejectedAction, resolvedAction } from 'utils/actions';
 import { types as actionsTypes } from './roadmap-actions';
 import { normalizeData } from './roadmap-service';
 import { AppMeta } from './roadmap.model';

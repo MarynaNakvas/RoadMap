@@ -8,7 +8,7 @@ module.exports = function () {
 				title: faker.lorem.sentence(3),
 				author: faker.name.findName(),
 				date: faker.date.between('2015-01-01', '2020-01-01'),
-				raiting: faker.random.number({
+				rating: faker.random.number({
 					'min': 0,
 					'max': 2000,
 				}),

@@ -122,12 +122,6 @@ function Table({ columns, data }: any) {
     [prepareRow, rows],
   );
 
-  // function main(depth: number) {
-  // 	return depth%5 ? Math.trunc(depth/5 + 1) : Math.trunc(depth/5);
-  // };
-
-  // console.log('main', main(128));
-
   return (
     <div className="content">
       <div {...getTableProps()} className="react-table">
@@ -138,37 +132,32 @@ function Table({ columns, data }: any) {
               {...headerGroup.getHeaderGroupProps()}
               className="tr"
             >
-              {headerGroup.headers.map((column: any) => {
-                console.log('column', column.isSorted);
-
-                return (
-                  <div
-                    key={2}
-                    {...column.getHeaderProps(
-                      column.getSortByToggleProps(),
-                    )}
+              {headerGroup.headers.map((column: any) => (
+                <div
+                  key={2}
+                  {...column.getHeaderProps(
+                    column.getSortByToggleProps(),
+                  )}
+                >
+                  {column.render('Header')}
+                  <button
+                    className={classNames('sorting-button', {
+                      // 'sorting-button__active': isActiveSortingButton,
+                      'sorting-button__increase': !column.isSortedDesc,
+                      'sorting-button__decrease': column.isSortedDesc,
+                    })}
                   >
-                    {column.render('Header')}
-                    <button
-                      className={classNames('sorting-button', {
-                        // 'sorting-button__active': isActiveSortingButton,
-                        'sorting-button__increase': !column.isSortedDesc,
-                        'sorting-button__decrease':
-                          column.isSortedDesc,
-                      })}
-                    >
-                      <SortingIcon />
-                    </button>
-                    {/* <span>
-											{column.isSorted
-												? column.isSortedDesc
-													? ' 🔽'
-													: ' 🔼'
-												: ''}
-										</span> */}
-                  </div>
-                );
-              })}
+                    <SortingIcon />
+                  </button>
+                  {/* <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span> */}
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -255,8 +244,8 @@ const ReactTable = () => {
         accessor: 'date',
       },
       {
-        Header: 'Raiting',
-        accessor: 'raiting',
+        Header: 'Rating',
+        accessor: 'rating',
       },
       {
         Header: 'Priority',

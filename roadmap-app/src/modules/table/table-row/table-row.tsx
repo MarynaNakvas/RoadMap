@@ -24,7 +24,7 @@ const TableRow = ({ rowData, formik }: TableRowProps) => {
       [TableKeys.Title]: title,
       [TableKeys.Author]: author,
       [TableKeys.Date]: date,
-      [TableKeys.Raiting]: raiting,
+      [TableKeys.Rating]: rating,
     } = rowData;
 
     const name = `${id}.${TableKeys.isPriority}`;
@@ -41,9 +41,9 @@ const TableRow = ({ rowData, formik }: TableRowProps) => {
       id: TableKeys.Date,
       data: date,
     };
-    const raitingCell = {
-      id: TableKeys.Raiting,
-      data: raiting,
+    const ratingCell = {
+      id: TableKeys.Rating,
+      data: rating,
     };
 
     const actionCell = {
@@ -61,7 +61,7 @@ const TableRow = ({ rowData, formik }: TableRowProps) => {
       titleCell,
       authorCell,
       dateCell,
-      raitingCell,
+      ratingCell,
       actionCell,
     ];
 

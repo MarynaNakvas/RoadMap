@@ -10,22 +10,22 @@ const Routing: React.FunctionComponent = () => (
       <NavLink
         exact
         to={PAGE_PATH.HOME}
-        activeClassName="active"
         className="routing-link"
+        activeClassName="routing-link--active"
       >
         Main
       </NavLink>
       <NavLink
         to={PAGE_PATH.TABLE}
-        activeClassName="active"
         className="routing-link"
+        activeClassName="routing-link--active"
       >
         Table
       </NavLink>
       <NavLink
         to={PAGE_PATH.ERRORS}
-        activeClassName="active"
         className="routing-link"
+        activeClassName="routing-link--active"
       >
         Show Errors
       </NavLink>

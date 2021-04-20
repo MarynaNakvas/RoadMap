@@ -3,12 +3,34 @@
 
 .table {
   @extend .text;
+  max-width: 60vw;
   background-color: $color-background-primary;
   border-radius: 10px;
   box-shadow: $shadow-table;
 
   &-rows__wrapper {
-    height: 75vh;
+    height: 65vh;
+  }
+
+  &-rows {
+    &::-webkit-scrollbar {
+      position: absolute;
+      width: 10px;
+
+      &:horizontal {
+        height: 5px;
+      }
+
+      &-track {
+        box-shadow: $shadow_scrollbar;
+      }
+
+      &-thumb {
+        min-height: 30px;
+        background-color: $color-primary-80;
+        border-radius: 5px;
+      }
+    }
   }
 
   &-rows__description {

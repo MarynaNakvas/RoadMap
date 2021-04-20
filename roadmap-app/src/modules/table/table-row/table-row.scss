@@ -22,6 +22,10 @@
         padding: 0;
       }
 
+      &.MuiCheckbox-colorSecondary.Mui-checked {
+        color: $color-sort-arrow-active;
+      }
+
       &.MuiCheckbox-root {
         padding: 0;
         color: $color-not-priority;

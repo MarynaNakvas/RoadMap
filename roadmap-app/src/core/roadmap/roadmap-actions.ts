@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { createConstants } from 'utils';
+import { createConstants } from 'utils/actions';
 
 const typesNames = ['FETCH_DATA_LIST', 'MAKE_PRIORITY'] as const;
 

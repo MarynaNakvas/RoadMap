@@ -6,10 +6,10 @@ import Select, {
 } from 'react-select';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
 import { TableKeysType } from 'core/roadmap';
-import { globalFilters } from 'core/app-constants';
 import {
   ActiveFiltersProps,
   OptionProps,
+  SotringRulesProps,
   TableActionProps,
 } from 'modules/table/table.model';
 import { filterDataWithValue } from 'utils/filter-data';
@@ -21,7 +21,7 @@ interface SelectFiltersProps extends Props {
   actions: TableActionProps;
   dataList: TableKeysType[];
   activeFilters: ActiveFiltersProps;
-  hasSorting: boolean;
+  sortRules: SotringRulesProps;
 }
 
 const SelectFilter = ({
@@ -30,9 +30,9 @@ const SelectFilter = ({
   dataList,
   byKey,
   activeFilters,
-  hasSorting,
+  sortRules,
 }: SelectFiltersProps) => {
-  const { setTableContent, changeActiveFilters } = actions;
+  const { setTableContent } = actions;
   let initialValue: any = null;
   const [value, setInputValue] = useState(initialValue);
 
@@ -43,14 +43,15 @@ const SelectFilter = ({
     </div>
   );
 
-  if (hasSorting) {
-    changeActiveFilters(globalFilters);
-  }
+  const hasSorting = !!sortRules.dataKey;
 
   const onChange = (
     option: OptionProps,
     actionMeta?: ActionMeta<any>,
   ) => {
+    if (hasSorting) {
+      sortRules.dataKey = '';
+    }
     const updateDataList = filterDataWithValue({
       option,
       actionMeta,

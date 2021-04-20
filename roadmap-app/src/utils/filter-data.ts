@@ -48,7 +48,7 @@ export const filterDataWithValue = ({
   let isFirst = true;
   let clearDataList: TableKeysType[] = [];
   const globalFilters: ActiveFiltersProps = {
-    raiting: '',
+    rating: '',
     title: '',
     date: '',
     author: '',

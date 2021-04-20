@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 import { createReducer } from 'redux-create-reducer';
-import { rejected, resolved } from 'utils';
+import { rejected, resolved } from 'utils/actions';
 import { types as actionsTypes } from './roadmap-actions';
 import { Action, TableKeysType } from './roadmap.model';
 

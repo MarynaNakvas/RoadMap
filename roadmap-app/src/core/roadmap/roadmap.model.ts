@@ -3,7 +3,7 @@ export enum TableKeys {
   Title = 'title',
   Author = 'author',
   Date = 'date',
-  Raiting = 'raiting',
+  Rating = 'rating',
   Action = 'action',
   isPriority = 'isPriority',
 }
@@ -13,7 +13,7 @@ export interface TableKeysType {
   [TableKeys.Title]: string;
   [TableKeys.Author]: string;
   [TableKeys.Date]: string;
-  [TableKeys.Raiting]: number;
+  [TableKeys.Rating]: number;
   [TableKeys.isPriority]: any;
 }
 

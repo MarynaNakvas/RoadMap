@@ -7,7 +7,7 @@ import {
 } from 'react-transition-group';
 import Table from 'modules/table';
 import List from 'components/list';
-import Routing from 'components/routing';
+import Routing from 'layouts/routing';
 import { roadMapSelectors } from 'core/roadmap';
 import { PAGE_PATH } from 'core/app-constants';
 import ReactTable from 'modules/react-table';
@@ -32,8 +32,8 @@ const RoadMapApp = withRouter(({ location }) => {
               <div className="message">Nakvas Marina roadmap</div>
               {/* <ReactTable /> */}
             </Route>
-            <Route path={PAGE_PATH.TABLE} component={Table} />
-            <Route path={PAGE_PATH.ERRORS}>
+            <Route exact path={PAGE_PATH.TABLE} component={Table} />
+            <Route exact path={PAGE_PATH.ERRORS}>
               <List data={errors} />
             </Route>
             <Route>
