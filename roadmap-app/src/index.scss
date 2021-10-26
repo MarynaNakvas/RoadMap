@@ -9,16 +9,6 @@ body {
   background-size: cover;
 }
 
-.message {
-  @extend .text;
-  display: flex;
-  justify-content: center;
-  padding-top: 50px;
-  color: $color-secondary;
-  font-size: 33px;
-  letter-spacing: 1.5px;
-}
-
 .slide-enter {
   transform: translate(350%, 0);
 }

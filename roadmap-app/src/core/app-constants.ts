@@ -6,6 +6,12 @@ export const PAGE_PATH = {
   ERRORS: '/errors',
 };
 
+export const PAGE_TITLES = {
+  HOME: 'Main',
+  TABLE: 'Table',
+  ERRORS: 'Show Errors',
+};
+
 export const globalFilters: ActiveFiltersProps = {
   rating: '',
   title: '',

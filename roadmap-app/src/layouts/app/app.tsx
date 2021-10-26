@@ -1,45 +1,47 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
-import Table from 'modules/table';
-import List from 'components/list';
-import Routing from 'layouts/routing';
-import { roadMapSelectors } from 'core/roadmap';
+import AppContainer from 'layouts/app-container';
+import appRoutes from 'core/app-routes';
 import { PAGE_PATH } from 'core/app-constants';
 
 const RoadMapApp = withRouter(({ location }) => {
-  const errors = useSelector(roadMapSelectors.getErrors);
   const firstChild = (props: any) => {
     const childrenArray = React.Children.toArray(props.children);
     return childrenArray[0] || null;
   };
   return (
     <div>
-      <Routing />
-      <TransitionGroup component={firstChild}>
-        <CSSTransition
-          key={location.key}
-          classNames="slide"
-          timeout={700}
-        >
-          <Switch>
-            <Route exact path={PAGE_PATH.HOME}>
-              <div className="message">Nakvas Marina roadmap</div>
-            </Route>
-            <Route exact path={PAGE_PATH.TABLE} component={Table} />
-            <Route exact path={PAGE_PATH.ERRORS}>
-              <List data={errors} />
-            </Route>
-            <Route>
-              <div className="message">Nothing found</div>
-            </Route>
-          </Switch>
-        </CSSTransition>
-      </TransitionGroup>
+      <AppContainer>
+        <TransitionGroup component={firstChild}>
+          <CSSTransition
+            key={location.key}
+            classNames="slide"
+            timeout={700}
+          >
+            <Switch>
+              {appRoutes.map((
+                { path, component: Component, title },
+                  index: number,
+                ) => (
+                  <Route
+                    exact={!index}
+                    key={path}
+                    path={path}
+                    render={() => (
+                      <Component/>
+                    )}
+                  />
+                ),
+                )}
+              <Redirect to={PAGE_PATH.HOME} />
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
+      </AppContainer>
     </div>
   );
 });
