@@ -1,34 +1,59 @@
 @import 'styles/variables';
 @import 'styles/typography';
 
+.sidebar-menu__wrapper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
 .sidebar-menu {
-	position: absolute;
-	height: 100vh;
+  position: absolute;
+  z-index: 1;
   width: 0;
-	transition: 0.2s min-width, 0.2s width;
-	background-color: rgb(172, 223, 236);
+  height: 100vh;
+  background-color: rgb(172, 223, 236);
+  transition: 0.2s min-width, 0.2s width;
 
-	&__navigation {
-		height: 100%;
-	}
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
 
-	&__menu-container {
-		display: none;
-		height: 100%;
+  &__drag {
+    display: none;
+  }
 
-		& > * {
-			color: $color-secondary;
-			text-decoration: none;
-			display: block;
-		}
-	}
+  &__navigation {
+    height: 100%;
+  }
 
-	&_expanded {
-    width: 208px;
-    min-width: 208px;
+  &__menu-container {
+    display: none;
+    height: 100%;
 
-		& .sidebar-menu__menu-container {
-			display: block;
-		}
-	}
+    & > * {
+      display: block;
+      color: $color-secondary;
+      text-decoration: none;
+    }
+  }
+
+  &_expanded {
+    width: 200px;
+
+    & .sidebar-menu__menu-container {
+      display: block;
+    }
+
+    & .sidebar-menu__drag {
+      display: block;
+      margin-right: -19px;
+      color: white;
+      font-size: 25px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  }
 }
