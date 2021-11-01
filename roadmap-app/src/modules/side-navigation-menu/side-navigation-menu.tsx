@@ -15,10 +15,16 @@ export default class SideNavigationMenu extends Component {
       x: 0,
     },
     dims: {
-      w: 200,
+      w: 0,
     },
     ref: React.createRef<HTMLButtonElement>(),
   };
+
+  componentDidMount() {
+    const storagedWidth = localStorage.getItem('width');
+    const width = storagedWidth ? Number(storagedWidth) : 200;
+    this.setState({ dims: { w: width } });
+  }
 
   toggleSidebar = () => {
     this.setState({
@@ -52,6 +58,7 @@ export default class SideNavigationMenu extends Component {
 
   stopResize = () => {
     this.setState({ drag: { ...this.state.drag, active: false } });
+    localStorage.setItem('width', `${this.state.dims.w}`);
   };
 
   render() {
