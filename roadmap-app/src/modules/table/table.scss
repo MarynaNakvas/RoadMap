@@ -3,6 +3,7 @@
 
 .table {
   @extend .text;
+  z-index: 1;
   max-width: 60vw;
   background-color: $color-background-primary;
   border-radius: 10px;

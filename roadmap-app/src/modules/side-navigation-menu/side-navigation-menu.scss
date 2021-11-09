@@ -3,57 +3,117 @@
 
 .sidebar-menu__wrapper {
   position: absolute;
+  z-index: 0;
   width: 100vw;
   height: 100vh;
+
+  &-expanded {
+    z-index: 2;
+  }
 }
 
 .sidebar-menu {
   position: absolute;
-  z-index: 1;
   width: 0;
   height: 100vh;
-  background-color: rgb(172, 223, 236);
+  background-color: $color-background-secondary;
   transition: 0.2s min-width, 0.2s width;
 
   &__buttons {
     display: flex;
-    justify-content: space-between;
   }
 
-  &__drag {
-    display: none;
+  &__button {
+    &-burger {
+      z-index: 0;
+      display: block;
+      min-width: 40px;
+      min-height: 40px;
+      background-color: $color-background-secondary;
+      border: none;
+
+      &:hover {
+        background-color: $color-background-primary-hover;
+        cursor: pointer;
+      }
+    }
+
+    &-close {
+      display: none;
+    }
+
+    &-drag {
+      display: none;
+    }
   }
 
   &__navigation {
     height: 100%;
   }
 
-  &__menu-container {
+  &__container {
     display: none;
     height: 100%;
 
     & > * {
       display: block;
-      color: $color-secondary;
+      padding: 0 0 10px 10px;
       text-decoration: none;
+
+      @extend .text;
+
+      &:hover {
+        color: $color-primary;
+      }
     }
   }
 
-  &_expanded {
+  &-expanded {
     width: 200px;
 
-    & .sidebar-menu__menu-container {
-      display: block;
-    }
+    & .sidebar-menu {
+      &__container {
+        display: block;
+        padding-top: 40px;
+      }
 
-    & .sidebar-menu__drag {
-      display: block;
-      margin-right: -19px;
-      color: white;
-      font-size: 25px;
-      background: none;
-      border: none;
-      cursor: pointer;
+      &__button-close {
+        position: absolute;
+        right: 10px;
+        display: block;
+        min-width: 40px;
+        min-height: 40px;
+        background-color: $color-background-secondary;
+        border: none;
+
+        &:hover {
+          background-color: $color-background-primary-hover;
+          border-radius: 20px;
+          cursor: pointer;
+        }
+      }
+
+      &__button-burger {
+        display: none;
+      }
+
+      &__button-drag {
+        position: absolute;
+        right: 0;
+        display: block;
+        height: 100vh;
+        margin-right: -10px;
+        padding: 0;
+        font-size: 25px;
+        background: none;
+        border: none;
+        opacity: 0;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 1;
+        }
+      }
     }
   }
 }

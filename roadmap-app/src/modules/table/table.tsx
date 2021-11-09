@@ -21,18 +21,19 @@ import TableHeader from './table-header';
 import TableRow from './table-row';
 import './table.scss';
 
+const TABLE_ROW_HEIGHT = 41;
+
 type AutoSizerType = {
   width: number;
   height: number;
 };
+
 type VariableSizeListType = {
   index: number;
   style: CSSProperties;
 };
 
 const Table = () => {
-  const TABLE_ROW_HEIGHT = 41;
-
   const dataList = useSelector(roadMapSelectors.getDataList);
 
   const isDataListFetching = useSelector(

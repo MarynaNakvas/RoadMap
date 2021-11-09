@@ -1,8 +1,9 @@
 import React, { Component, MouseEvent } from 'react';
 import { NavLink } from 'react-router-dom';
-import classNames from 'clsx';
 
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
+import { ReactComponent as CloseIcon } from 'assets/icons/close.svg';
+import { ReactComponent as DragIcon } from 'assets/icons/double-horizontal-arrow.svg';
 import appRoutes from 'core/app-routes';
 
 import './side-navigation-menu.scss';
@@ -17,7 +18,6 @@ export default class SideNavigationMenu extends Component {
     dims: {
       w: 0,
     },
-    ref: React.createRef<HTMLButtonElement>(),
   };
 
   componentDidMount() {
@@ -33,6 +33,7 @@ export default class SideNavigationMenu extends Component {
   };
 
   startResize = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     this.setState({
       drag: {
         active: true,
@@ -42,6 +43,7 @@ export default class SideNavigationMenu extends Component {
   };
 
   resizeFrame = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     const { active, x } = this.state.drag;
     if (active) {
       const xDiff = Math.abs(x - e.clientX);
@@ -56,7 +58,8 @@ export default class SideNavigationMenu extends Component {
     }
   };
 
-  stopResize = () => {
+  stopResize = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     this.setState({ drag: { ...this.state.drag, active: false } });
     localStorage.setItem('width', `${this.state.dims.w}`);
   };
@@ -65,14 +68,20 @@ export default class SideNavigationMenu extends Component {
     return (
       <React.Fragment>
         <div
-          className="sidebar-menu__wrapper"
+          className={`sidebar-menu__wrapper ${
+            this.state.isSidebarExpanded
+              ? 'sidebar-menu__wrapper-expanded'
+              : ''
+          }`}
           onMouseMove={this.resizeFrame}
           onMouseUp={this.stopResize}
         >
           <div
-            className={classNames('sidebar-menu', {
-              'sidebar-menu_expanded': this.state.isSidebarExpanded,
-            })}
+            className={`sidebar-menu ${
+              this.state.isSidebarExpanded
+                ? 'sidebar-menu-expanded'
+                : ''
+            }`}
             style={
               this.state.isSidebarExpanded
                 ? { width: `${this.state.dims.w}px` }
@@ -84,20 +93,28 @@ export default class SideNavigationMenu extends Component {
                 <button
                   type="button"
                   onClick={this.toggleSidebar}
-                  className="sidebar-menu__burger"
+                  className="sidebar-menu__button-burger"
                 >
                   <MenuIcon />
                 </button>
+
                 <button
                   type="button"
-                  className="sidebar-menu__drag"
-                  ref={this.state.ref}
+                  onClick={this.toggleSidebar}
+                  className="sidebar-menu__button-close"
+                >
+                  <CloseIcon />
+                </button>
+
+                <button
+                  type="button"
+                  className="sidebar-menu__button-drag"
                   onMouseDown={this.startResize}
                 >
-                  <MenuIcon />
+                  <DragIcon />
                 </button>
               </div>
-              <div className="sidebar-menu__menu-container">
+              <div className="sidebar-menu__container">
                 {appRoutes.map((item, index) => (
                   <NavLink
                     key={index}
