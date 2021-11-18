@@ -33,7 +33,7 @@ export default class SideNavigationMenu extends Component {
   };
 
   startResize = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+    e.preventDefault();
     this.setState({
       drag: {
         active: true,
@@ -43,7 +43,7 @@ export default class SideNavigationMenu extends Component {
   };
 
   resizeFrame = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
+    e.preventDefault();
     const { active, x } = this.state.drag;
     if (active) {
       const xDiff = Math.abs(x - e.clientX);
@@ -59,7 +59,7 @@ export default class SideNavigationMenu extends Component {
   };
 
   stopResize = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
+    e.preventDefault();
     this.setState({ drag: { ...this.state.drag, active: false } });
     localStorage.setItem('width', `${this.state.dims.w}`);
   };

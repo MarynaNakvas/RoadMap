@@ -12,13 +12,16 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { roadMapActions, roadMapSelectors } from 'core/roadmap';
 import { globalFilters } from 'core/app-constants';
-import Form from 'components/formik';
+
 import { checkDataPriority } from 'utils/data-priority';
 import { useSortData } from 'utils/sort-data';
 import Spinner from 'components/spinner';
+import Form from 'components/formik';
+
 import TableFilters from './table-filters';
 import TableHeader from './table-header';
 import TableRow from './table-row';
+
 import './table.scss';
 
 const TABLE_ROW_HEIGHT = 41;
@@ -33,7 +36,7 @@ type VariableSizeListType = {
   style: CSSProperties;
 };
 
-const Table = () => {
+const Table: React.FunctionComponent = () => {
   const dataList = useSelector(roadMapSelectors.getDataList);
 
   const isDataListFetching = useSelector(

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'clsx';
 
-import { TableKeys } from 'core/roadmap';
+import { TableKeys } from 'core/roadmap/roadmap.model';
 import { ReactComponent as SortingIcon } from 'assets/icons/arrow-sort.svg';
 import { SotringRulesProps } from '../table.model';
 
@@ -60,8 +60,6 @@ const TableHeader = ({ actions, sortRules }: TableHeadersProps) => {
     ({ id, title, dataKey, className }: TextHeading) => {
       const isActiveSortingButton = dataKey === sortRules.dataKey;
       const sort = () => {
-        console.log('Click');
-
         clearAllFilters();
         sortData(dataKey);
       };
