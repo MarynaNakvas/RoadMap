@@ -8,22 +8,37 @@ import appRoutes from 'core/app-routes';
 
 import './side-navigation-menu.scss';
 
-export default class SideNavigationMenu extends Component {
-  state = {
-    isSidebarExpanded: false,
-    drag: {
-      active: false,
-      x: 0,
-    },
-    dims: {
-      w: 0,
-    },
-  };
+interface SideNavigationMenuDrag {
+  active: boolean;
+  x: number;
+}
+
+interface SideNavigationMenuState {
+  isSidebarExpanded: boolean;
+  drag: SideNavigationMenuDrag;
+  width: number;
+}
+
+export default class SideNavigationMenu extends Component<
+  any,
+  SideNavigationMenuState
+> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      isSidebarExpanded: false,
+      drag: {
+        active: false,
+        x: 0,
+      },
+      width: 0,
+    };
+  }
 
   componentDidMount() {
     const storagedWidth = localStorage.getItem('width');
     const width = storagedWidth ? Number(storagedWidth) : 200;
-    this.setState({ dims: { w: width } });
+    this.setState({ width: width });
   }
 
   toggleSidebar = () => {
@@ -47,13 +62,13 @@ export default class SideNavigationMenu extends Component {
     const { active, x } = this.state.drag;
     if (active) {
       const xDiff = Math.abs(x - e.clientX);
-      const newW =
+      const newWidth =
         x > e.clientX
-          ? this.state.dims.w - xDiff
-          : this.state.dims.w + xDiff;
+          ? this.state.width - xDiff
+          : this.state.width + xDiff;
       this.setState({
         drag: { ...this.state.drag, x: e.clientX },
-        dims: { w: newW },
+        width: newWidth,
       });
     }
   };
@@ -61,7 +76,7 @@ export default class SideNavigationMenu extends Component {
   stopResize = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     this.setState({ drag: { ...this.state.drag, active: false } });
-    localStorage.setItem('width', `${this.state.dims.w}`);
+    localStorage.setItem('width', `${this.state.width}`);
   };
 
   render() {
@@ -84,7 +99,7 @@ export default class SideNavigationMenu extends Component {
             }`}
             style={
               this.state.isSidebarExpanded
-                ? { width: `${this.state.dims.w}px` }
+                ? { width: `${this.state.width}px` }
                 : {}
             }
           >
