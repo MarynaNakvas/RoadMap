@@ -16,7 +16,6 @@
     "immutability-helper": "3.1.1",
     "localforage": "1.9.0",
     "lodash": "4.17.20",
-    "node-sass": "4.14.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-redux": "7.2.2",
@@ -28,6 +27,7 @@
     "react-spring": "^8.0.27",
     "react-table": "^7.6.3",
     "react-transition-group": "^4.4.1",
+    "react-use": "^17.4.0",
     "react-virtualized-auto-sizer": "^1.0.4",
     "react-window": "^1.8.6",
     "redux-actions": "2.6.5",
@@ -48,11 +48,6 @@
     "lint:eslint": "eslint --fix --ext .tsx,.ts src/",
     "lint:stylelint": "stylelint --fix 'src/**/**/*.scss'",
     "lint:prettier": "prettier --write src/**/**/*.{ts,tsx,json,scss}"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": "eslint --fix",
@@ -89,6 +84,7 @@
     "husky": "4.3.6",
     "lint-staged": "10.5.3",
     "prettier": "2.2.1",
+    "sass": "^1.55.0",
     "stylelint": "13.8.0",
     "stylelint-config-htmlacademy": "0.1.4",
     "stylelint-config-rational-order": "0.1.2"

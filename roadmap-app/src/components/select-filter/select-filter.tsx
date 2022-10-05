@@ -1,91 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import Select, {
   Props,
   InputActionMeta,
-  ActionMeta,
+  ValueType,
 } from 'react-select';
-import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
-import { TableKeysType } from 'core/roadmap';
-import {
-  ActiveFiltersProps,
-  OptionProps,
-  SotringRulesProps,
-  TableActionProps,
-} from 'modules/table/table.model';
-import { filterDataWithValue } from 'utils/filter-data';
+
+import { ReactComponent as SearchIcon } from 'assets/icons/search-sm.svg';
+import { OptionProps } from 'core/roadmap';
 import { customStyles } from './select-filter.utils';
 
-interface SelectFiltersProps extends Props {
-  byKey: string;
-  options: any;
-  actions: TableActionProps;
-  dataList: TableKeysType[];
-  activeFilters: ActiveFiltersProps;
-  sortRules: SotringRulesProps;
+export interface TableSelectFilterProps extends Props {
+  styles?: {
+    [key: string]: any;
+  };
+  hasDropdownIndicator?: boolean;
 }
 
 const SelectFilter = ({
   options,
-  actions,
-  dataList,
-  byKey,
-  activeFilters,
-  sortRules,
-}: SelectFiltersProps) => {
-  const { setTableContent } = actions;
-  let initialValue: any = null;
-  const [value, setInputValue] = useState(initialValue);
-
+  onSearch,
+  onSelect,
+  initialValue,
+  value = null,
+  placeholder = 'Search',
+  hasDropdownIndicator = true,
+  ...selectProps
+}: TableSelectFilterProps) => {
   const placeholderComponent = (
     <div className="seacrh-select__placeholder">
       <SearchIcon />
-      <p className="seacrh-select__placeholder-text">Search</p>
+      <p className="seacrh-select__placeholder-text">{placeholder}</p>
     </div>
   );
-
-  const hasSorting = !!sortRules.dataKey;
-
-  const onChange = (
-    option: OptionProps,
-    actionMeta?: ActionMeta<any>,
-  ) => {
-    if (hasSorting) {
-      sortRules.dataKey = '';
-    }
-    const updateDataList = filterDataWithValue({
-      option,
-      actionMeta,
-      dataList,
-      byKey,
-      activeFilters,
-      actions,
-    });
-    const newValue = option ? option : null;
-    setInputValue(newValue);
-    setTableContent(updateDataList);
-  };
-
   const onInputChange = (
-    inputValue: string,
-    reasons: InputActionMeta,
+    term: string | null,
+    meta: InputActionMeta,
   ) => {
-    if (reasons.action === 'input-change') {
-      const option: OptionProps = {
-        value: inputValue,
-        label: inputValue,
-      };
-      onChange(option);
+    if (onSearch) {
+      onSearch({ term, meta });
     }
   };
-
-  useEffect(() => {
-    setInputValue(initialValue);
-  }, [initialValue]);
+  const onChange = (selected: any) => {
+    if (selected) {
+      const selectAll = selected.selectAll;
+      if (selectAll) {
+        onSelect({ selected: null });
+        return;
+      }
+    }
+    onSelect({ selected });
+  };
 
   return (
     <Select
-      value={hasSorting ? null : value}
-      isClearable
+      value={value}
       options={options}
       placeholder={placeholderComponent}
       openMenuOnClick={false}
@@ -96,6 +64,7 @@ const SelectFilter = ({
       }
       onChange={onChange}
       onInputChange={onInputChange}
+      {...selectProps}
     />
   );
 };

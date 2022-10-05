@@ -1,29 +1,24 @@
-import React from 'react';
-import classNames from 'clsx';
+import React, { ReactNode } from 'react';
 
 import SideNavigationMenu from 'modules/side-navigation-menu';
-
-import './app-container.scss';
+import Header from 'modules/header';
 
 interface AppContainerProps {
-  children: any;
+  title: string;
+  children: ReactNode;
 }
 
-const AppContainer = ({ children }: AppContainerProps) => (
+const AppContainer = ({ title, children }: AppContainerProps) => (
   <>
     <SideNavigationMenu />
-    <div
-      className={classNames('main-content layout-body', {
-        'main-content_collapsed': false,
-      })}
-    >
 
-      <div className="content">
-        {React.Children.map(
-          children,
-          (item) => item,
-        )}
-      </div>
+    <Header title={title} />
+
+    <div className="content">
+      {React.Children.map(
+        children,
+        (item) => item,
+      )}
     </div>
   </>
 );

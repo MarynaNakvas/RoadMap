@@ -21,7 +21,7 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
     };
 
     const url =
-      'https://roadmap-29e3e-default-rtdb.firebaseio.com/posts.json';
+      'https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
 
     const response = yield call(createApiCall, url, options);
 
@@ -53,7 +53,7 @@ function* makePriorityHandler({
       ...array.map((item: any) =>
         call(
           createApiCall,
-          `https://roadmap-29e3e-default-rtdb.firebaseio.com/posts/${item.id}/.json`,
+          `https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${item.id}/.json`,
           {
             method: 'PATCH',
             body: JSON.stringify(item),

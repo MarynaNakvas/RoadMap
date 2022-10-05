@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import {
   TransitionGroup,
@@ -6,16 +6,19 @@ import {
 } from 'react-transition-group';
 import AppContainer from 'layouts/app-container';
 import appRoutes from 'core/app-routes';
-import { PAGE_PATH } from 'core/app-constants';
+import { PAGE_PATH, PAGE_TITLES } from 'core/app-constants';
 
 const RoadMapApp = withRouter(({ location }) => {
   const firstChild = (props: any) => {
     const childrenArray = React.Children.toArray(props.children);
     return childrenArray[0] || null;
   };
+
+  const [title, setTitle] = useState(PAGE_TITLES.HOME);
+
   return (
     <div>
-      <AppContainer>
+      <AppContainer title={title}>
         <TransitionGroup component={firstChild}>
           <CSSTransition
             key={location.key}
@@ -32,7 +35,10 @@ const RoadMapApp = withRouter(({ location }) => {
                     key={path}
                     path={path}
                     render={() => (
-                      <Component/>
+                      <Component
+                        title={title}
+                        setTitle={setTitle}
+                      />
                     )}
                   />
                 ),

@@ -1,105 +1,57 @@
-import React from 'react';
-import classNames from 'clsx';
+import React, { memo } from 'react';
 
-import { TableKeys } from 'core/roadmap/roadmap.model';
-import { ReactComponent as SortingIcon } from 'assets/icons/arrow-sort.svg';
-import { SotringRulesProps } from '../table.model';
+import { TableKeys, SortingProps } from 'core/roadmap/roadmap.model';
+import SortingButton from 'components/sorting-button';
 
 import './table-header.scss';
 
-interface TextHeading {
-  id: string;
-  title: string;
-  dataKey: string;
-  className?: string;
-}
 
-interface TableHeadersProps {
-  actions: any;
-  sortRules: SotringRulesProps;
-}
-
-const TableHeader = ({ actions, sortRules }: TableHeadersProps) => {
-  const { sortData, clearAllFilters } = actions;
-  const titleHeading = {
-    id: TableKeys.Title,
+const HEADINGS = [
+  {
+    id: TableKeys.title,
     title: 'Title',
-    dataKey: 'title',
-  };
-  const authorHeading = {
-    id: TableKeys.Author,
+  },
+  {
+    id: TableKeys.author,
     title: 'Author',
-    dataKey: 'author',
-  };
-  const dateHeading = {
-    id: TableKeys.Date,
+  },
+  {
+    id: TableKeys.date,
     title: 'Date',
-    dataKey: 'date',
-  };
-  const ratingHeading = {
-    id: TableKeys.Rating,
+  },
+  {
+    id: TableKeys.rating,
     title: 'Rating',
-    dataKey: 'rating',
-  };
-  const emptyHeading = {
-    id: TableKeys.Action,
-    title: 'Priority',
-    dataKey: 'action',
-    className: 'table-headers__item-action',
-  };
+  },
+];
 
-  const tableHeadings = [
-    titleHeading,
-    authorHeading,
-    dateHeading,
-    ratingHeading,
-    emptyHeading,
-  ];
+interface TableHeaderProps {
+  sortingRules: SortingProps;
+  changeSortingRules(id: string): void;
+}
 
-  const headings = tableHeadings.map(
-    ({ id, title, dataKey, className }: TextHeading) => {
-      const isActiveSortingButton = dataKey === sortRules.dataKey;
-      const sort = () => {
-        clearAllFilters();
-        sortData(dataKey);
-      };
-      return id === 'action' ? (
-        <div
-          key={id}
-          className={classNames('table-headers__item', className)}
-        >
-          {title}
-        </div>
-      ) : (
-        <div
-          key={id}
-          className={classNames('table-headers__item', { className })}
-          onClick={sort}
-        >
-          {title}
-          <button
+const TableHeader: React.FunctionComponent<TableHeaderProps> =
+  memo(({ sortingRules, changeSortingRules }) => (
+    <div className="table-header">
+      {HEADINGS.map(({ id, title }) => (
+        <div key={id}>
+          <SortingButton
             key={id}
-            className={classNames('sorting-button', {
-              'sorting-button__active': isActiveSortingButton,
-              'sorting-button__increase':
-                isActiveSortingButton &&
-                sortRules.direction === 'increase',
-              'sorting-button__decrease':
-                isActiveSortingButton &&
-                sortRules.direction === 'decrease',
-            })}
-            onClick={sort}
-          >
-            <SortingIcon />
-          </button>
+            id={id}
+            title={title}
+            sortingRules={sortingRules}
+            changeSortingRules={changeSortingRules}
+          />
         </div>
-      );
-    },
-  );
+      ))}
 
-  return <div className="table-headers">{headings}</div>;
-};
+      <span className="table-header__action">
+        Actions
+      </span>
+    </div>
+  ));
 
 TableHeader.displayName = 'TableHeader';
 
 export default TableHeader;
+

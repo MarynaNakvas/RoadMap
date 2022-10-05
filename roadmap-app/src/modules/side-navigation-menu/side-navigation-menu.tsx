@@ -1,6 +1,7 @@
 import React, { Component, MouseEvent } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { ReactComponent as Logo } from 'assets/icons/logo.svg';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as CloseIcon } from 'assets/icons/close.svg';
 import { ReactComponent as DragIcon } from 'assets/icons/double-horizontal-arrow.svg';
@@ -81,7 +82,7 @@ export default class SideNavigationMenu extends Component<
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <div
           className={`sidebar-menu__wrapper ${
             this.state.isSidebarExpanded
@@ -104,6 +105,7 @@ export default class SideNavigationMenu extends Component<
             }
           >
             <div className="sidebar-menu__navigation">
+              <Logo />
               <div className="sidebar-menu__buttons">
                 <button
                   type="button"
@@ -144,7 +146,7 @@ export default class SideNavigationMenu extends Component<
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

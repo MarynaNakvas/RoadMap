@@ -1,0 +1,27 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.screen-placeholder {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  text-align: center;
+
+  &__title.MuiTypography-root {
+    color: $color-medium-grey;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  &__description.MuiTypography-root {
+    margin-top: 8px;
+    color: $color-medium-grey;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0.2px;
+  }
+}

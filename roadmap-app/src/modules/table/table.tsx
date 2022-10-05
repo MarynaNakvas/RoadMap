@@ -1,197 +1,207 @@
 import React, {
-  CSSProperties,
+  memo,
   useCallback,
   useEffect,
   useMemo,
-  useRef,
-  useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormikConfig, FormikValues, useFormik } from 'formik';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { VariableSizeList } from 'react-window';
-import { roadMapActions, roadMapSelectors } from 'core/roadmap';
-import { globalFilters } from 'core/app-constants';
+import { get, isEqual } from 'lodash';
 
-import { checkDataPriority } from 'utils/data-priority';
-import { useSortData } from 'utils/sort-data';
+import { roadMapActions, roadMapSelectors } from 'core/roadmap';
+import { TableKeys, Table } from 'core/roadmap/roadmap.model';
+import {
+  NO_ITEMS_PLACEHOLDER_DESCRIPTION,
+  NO_SELECTED_ITEMS_PLACEHOLDER_TITLE,
+  NO_SELECTED_ITEMS_PLACEHOLDER_DESCRIPTION,
+} from 'core/app-constants';
+import ScreenPlaceholder from 'components/screen-placeholder';
 import Spinner from 'components/spinner';
 import Form from 'components/formik';
+import { debounce } from 'utils/debounce';
+import { useSorting } from 'utils/sorting';
 
-import TableFilters from './table-filters';
+import TableFilters, { useFiltering } from './table-filters';
 import TableHeader from './table-header';
 import TableRow from './table-row';
+import { processData, addRow, removeRow } from './table-utils';
 
 import './table.scss';
 
-const TABLE_ROW_HEIGHT = 41;
-
-type AutoSizerType = {
-  width: number;
-  height: number;
-};
-
-type VariableSizeListType = {
-  index: number;
-  style: CSSProperties;
-};
-
-const Table: React.FunctionComponent = () => {
-  const dataList = useSelector(roadMapSelectors.getDataList);
+const TableComponent: React.FunctionComponent = memo(() => {
+  const dispatch = useDispatch();
 
   const isDataListFetching = useSelector(
     roadMapSelectors.getIsDataListFetched,
   );
 
-  const isMakePriorityFetching = useSelector(
-    roadMapSelectors.getIsMakePriorityFetched,
-  );
-
-  const dispatch = useDispatch();
-
-  const data = useCallback(() => {
-    dispatch(roadMapActions.fetchDataList());
-  }, [dispatch]);
-
-  const [activeFilters, changeActiveFilters] = useState(
-    globalFilters,
-  );
-
-  const { items, sortData, sortRules } = useSortData(dataList);
-
-  const dataListWithPriority = useMemo(
-    () => checkDataPriority({ tableContent: items }),
-    [items],
-  );
-
-  const [tableContent, setTableContent] = useState(
-    dataListWithPriority,
-  );
-
-  const initialValues = useMemo(() => dataList, [dataList]);
-
-  const makePriority = useCallback(
-    (payload) => {
-      dispatch(roadMapActions.makePriority(payload));
-    },
-    [dispatch],
-  );
-
-  const clearAllFilters = () =>
-    checkDataPriority({ tableContent: dataList });
+  const dataList = useSelector(roadMapSelectors.getDataList);
 
   const formikConfig = useMemo(
-    (): FormikConfig<FormikValues> => ({
+    (): FormikConfig<Table[]> => ({
+      validateOnChange: true,
+      validateOnBlur: true,
       enableReinitialize: true,
-      initialValues,
-      onSubmit: (values: any) => {
-        makePriority({ values, initialValues });
-      },
+      initialValues: dataList,
+      onSubmit: (values) => console.log(values),
     }),
-    [initialValues],
+    [dataList],
   );
 
   const formik = useFormik(formikConfig);
+  const { values, resetForm, isSubmitting } = formik;
+  const isTouched = useMemo(
+    () => !isEqual(values, dataList) || isSubmitting,
+    [values, dataList, isSubmitting],
+  );
+  const data = values;
 
-  const { handleSubmit } = formik;
-
-  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    handleSubmit();
-  };
-
-  const getItemSize = () => TABLE_ROW_HEIGHT;
-  const lineHeights = getItemSize() * tableContent.length;
-
-  const listRef = useRef<VariableSizeList>(null);
-  useEffect(() => {
-    if (listRef.current) {
-      listRef.current.resetAfterIndex(0);
-    }
-  }, [listRef, lineHeights]);
-
-  const Row = ({ index, style }: VariableSizeListType) => (
-    <div style={style}>
-      <TableRow
-        key={index}
-        rowData={tableContent[index]}
-        formik={formik}
-      />
-    </div>
+  // Sorting and filtering.
+  const { sortingRules, changeSortingRules } = useSorting(
+    TableKeys.rating,
+    false,
+  );
+  const {
+    title,
+    author,
+    rating,
+    hasFilters,
+    resetFilters,
+  } = useFiltering(data);
+  const processedData = useMemo(
+    () =>
+      processData(
+        data,
+        sortingRules,
+        title.value,
+        author.value,
+        rating.value,
+      ),
+    [
+      data,
+      sortingRules,
+      title.value,
+      author.value,
+      rating.value,
+    ],
   );
 
-  const tableAllContent: any = useMemo(
-    () => (
-      <AutoSizer disableWidth>
-        {({ height }: AutoSizerType) => (
-          <VariableSizeList
-            className="table-rows"
-            ref={listRef}
-            width="auto"
-            height={height}
-            itemCount={tableContent.length}
-            itemSize={getItemSize}
-          >
-            {Row}
-          </VariableSizeList>
-        )}
-      </AutoSizer>
+  // Add and remove
+  const addEntry = useCallback(
+    debounce(() =>
+      formik.setValues(addRow(data)),
     ),
-    [tableContent, formik],
+    [data, formik.setValues],
+  );
+  const removeEntry = useCallback(
+    (originIndex: number) =>
+      formik.setValues(removeRow(data, originIndex)),
+    [data, formik.setValues],
   );
 
-  const isEmptyTableContent = tableContent.length;
-
-  const actions = {
-    setTableContent,
-    changeActiveFilters,
-    sortData,
-    clearAllFilters,
-  };
-
   useEffect(() => {
-    data();
-  }, []);
+    dispatch(
+      dispatch(roadMapActions.fetchDataList()),
+    );
+  }, [dispatch]);
 
-  useEffect(() => {
-    setTableContent(dataListWithPriority);
-  }, [dataList, changeActiveFilters]);
+  // useEffect(
+  //   () => () => {
+  //     dispatch(roadMapActions.resetDataList());
+  //   },
+  //   [dispatch],
+  // );
 
   return (
-    <div className="content">
-      <div className="table">
-        <Form formik={formik}>
-          <TableHeader actions={actions} sortRules={sortRules} />
-          <TableFilters
-            dataList={dataList}
-            actions={actions}
-            tableContent={tableContent}
-            activeFilters={activeFilters}
-            sortRules={sortRules}
+    <div className="table">
+      <Form formik={formik}>
+        <div className="table__content-wrapper">
+          <div className="table__controls">
+            <div className="table__title">
+              Posts
+            </div>
+
+            <div className="table__buttons">
+              {hasFilters && (
+                <button
+                  type="button"
+                  className="table__button--text"
+                  onClick={resetFilters}
+                >
+                  <span>Clear filters</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                className="table__button-action"
+                onClick={addEntry}
+              >
+                <span>Create new</span>
+              </button>
+            </div>
+          </div>
+
+          <TableHeader
+            sortingRules={sortingRules}
+            changeSortingRules={changeSortingRules}
           />
+
+          <TableFilters
+            title={title}
+            author={author}
+            date={date}
+            rating={rating}
+          />
+
           <Spinner isFetching={isDataListFetching}>
-            {!isEmptyTableContent && (
-              <div className="table-rows__description">
-                Sorry, no content matched your criteria.
+            {processedData.length ? (
+              <div className="table__rows">
+                {processedData.map((item) => {
+                  const id = get(
+                    item,
+                    TableKeys.originIndex,
+                  );
+                  return (
+                    <TableRow
+                      key={id}
+                      formik={formik}
+                      item={item}
+                      remove={removeEntry}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="table__placeholder-wrapper">
+                <ScreenPlaceholder
+                  title={
+                    hasFilters
+                      ? NO_SELECTED_ITEMS_PLACEHOLDER_TITLE
+                      : ''
+                  }
+                  description={
+                    hasFilters
+                      ? NO_SELECTED_ITEMS_PLACEHOLDER_DESCRIPTION
+                      : NO_ITEMS_PLACEHOLDER_DESCRIPTION
+                  }
+                />
               </div>
             )}
-            <div className="table-rows__wrapper">
-              {tableAllContent}
-            </div>
           </Spinner>
-          <div className="table-buttons">
-            <Spinner isFetching={isMakePriorityFetching}>
-              <button className="table-button" onClick={onClick}>
-                Make a priority
-              </button>
-            </Spinner>
-          </div>
-        </Form>
-      </div>
+        </div>
+        <StickyFormControls
+          className="table__form-controls"
+          inProgress={false}
+          isTouched={isTouched}
+          resetForm={resetForm}
+          title="Save Changes"
+        />
+      </Form>
     </div>
   );
-};
+});
 
-Table.displayName = 'Table';
+TableComponent.displayName = 'TableComponent';
 
-export default Table;
+export default TableComponent;

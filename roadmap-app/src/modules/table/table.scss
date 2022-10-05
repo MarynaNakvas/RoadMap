@@ -2,15 +2,18 @@
 @import 'styles/typography';
 
 .table {
-  @extend .text;
-  z-index: 1;
-  max-width: 60vw;
-  background-color: $color-background-primary;
-  border-radius: 10px;
-  box-shadow: $shadow-table;
+  padding: 20px;
+  
+  &-content {
+    @extend .text;
+    z-index: 1;
+    background-color: $color-background-primary;
+    border-radius: 10px;
+    box-shadow: $shadow-table;
+  }
 
   &-rows__wrapper {
-    height: 65vh;
+    height: 55vh;
   }
 
   &-rows {
@@ -40,16 +43,6 @@
     justify-content: center;
     padding: 20px;
     letter-spacing: 0.3px;
-  }
-
-  &-buttons {
-    display: flex;
-    justify-content: flex-end;
-
-    & .spinner {
-      justify-content: flex-end;
-      margin-right: 80px;
-    }
   }
 
   &-button {
@@ -85,10 +78,4 @@
       }
     }
   }
-}
-
-.content {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
 }

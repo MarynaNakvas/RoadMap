@@ -1,11 +1,11 @@
-$font-primary: 'Etelka', arial, sans-serif;
+$font-primary: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 
 $color-text: black;
 $color-background-body: #f5f5f5;
 $color-background-primary: #f2fbf2;
 $color-background-primary-hover: #b0ecb0;
 $color-background-secondary: #d0f2d0;
-$color-primary: green;
+$color-primary: #3a953a;
 $color-primary-80: rgba($color-primary, 0.5);
 $color-secondary: #e7f4e0;
 $color-active-link: #5ef400;
@@ -13,6 +13,8 @@ $color-border-20: rgba($color-primary, 0.2);
 $color-sort-arrow-active: #f36d38;
 $color-placeholder: #8d8d8d;
 $color-not-priority: #c3bcbc;
+$color-white: #ffffff;
+$color-medium-grey: #8d8d8d;
 
 $shadow-table: 0 2px 2px rgba(0, 0, 0, 0.1);
 $shadow_scrollbar: inset 0 0 10px rgba(0, 0, 0, 0.17);

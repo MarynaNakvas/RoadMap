@@ -1,83 +1,84 @@
-import React, { useMemo } from 'react';
-import classNames from 'clsx';
-import CheckBox from 'components/checkbox';
+import React, { memo } from 'react';
 import { FormikProps } from 'formik';
-import { TableKeys } from 'core/roadmap';
+import { get } from 'lodash';
+
+import FormField from 'components/formik/field';
+import CheckBox from 'components/checkbox';
+import { TableKeys, Table } from 'core/roadmap';
 
 import './table-row.scss';
 
-interface TextCell {
-  id: string;
-  data?: string | number | Date | JSX.Element;
-  className?: string;
-}
-
 interface TableRowProps {
-  rowData: any;
-  formik: FormikProps<any>;
+  formik: FormikProps<Table[]>;
+  item: Table;
+  remove(originIndex: number): void;
 }
 
-const TableRow = ({ rowData, formik }: TableRowProps) => {
-  const cells = useMemo(() => {
-    const {
-      [TableKeys.id]: id,
-      [TableKeys.Title]: title,
-      [TableKeys.Author]: author,
-      [TableKeys.Date]: date,
-      [TableKeys.Rating]: rating,
-    } = rowData;
+const TableRow: React.FunctionComponent<TableRowProps> =
+  memo(
+    ({
+      formik,
+      item,
+      remove,
+    }) => {
+      const originIndex = get(item, TableKeys.originIndex);
 
-    const name = `${id}.${TableKeys.isPriority}`;
+      return (
+        <div className="table-row">
+          <div className="table-row__column">
+            <FormField
+              formik={formik}
+              name={`${originIndex}.${TableKeys.title}`}
+              placeholder="Title"
+              fullWidth
+            />
+          </div>
 
-    const titleCell = {
-      id: TableKeys.Title,
-      data: title,
-    };
-    const authorCell = {
-      id: TableKeys.Author,
-      data: author,
-    };
-    const dateCell = {
-      id: TableKeys.Date,
-      data: date,
-    };
-    const ratingCell = {
-      id: TableKeys.Rating,
-      data: rating,
-    };
+          <div className="table-row__column">
+            <FormField
+              formik={formik}
+              name={`${originIndex}.${TableKeys.author}`}
+              placeholder="Author"
+              fullWidth
+            />
+          </div>
 
-    const actionCell = {
-      id: TableKeys.Action,
-      data: (
-        <CheckBox
-          className="table-row__item-action"
-          name={name}
-          formik={formik}
-        />
-      ),
-    };
+          <div className="table-row__column">
+            <FormField
+              formik={formik}
+              name={`${originIndex}.${TableKeys.date}`}
+              placeholder="Date"
+              fullWidth
+            />
+          </div>
 
-    const tableCells = [
-      titleCell,
-      authorCell,
-      dateCell,
-      ratingCell,
-      actionCell,
-    ];
+          <div className="table-row__column">
+            <FormField
+              formik={formik}
+              name={`${originIndex}.${TableKeys.rating}`}
+              placeholder="Rating"
+              fullWidth
+            />
+          </div>
 
-    return tableCells.map(({ id, data, className }: TextCell) => (
-      <div
-        key={id}
-        className={classNames('table-row__item', { className })}
-      >
-        {data}
-      </div>
-    ));
-  }, [rowData, formik]);
+          <div className="table-row__column">
+            <CheckBox
+              formik={formik}
+              name={`${originIndex}.${TableKeys.isPriority}`}
+              className="table-row__item-action"
+            />
+          </div>
 
-  return <div className="table-row">{cells}</div>;
-};
+          <button type="button" onClick={() => remove(originIndex)}>
+            {/* {icon} */}
+            <span>Delete</span>
+          </button>
+        </div>
+      );
+    },
+  );
 
 TableRow.displayName = 'TableRow';
 
 export default TableRow;
+

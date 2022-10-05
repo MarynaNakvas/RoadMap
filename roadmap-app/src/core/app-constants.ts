@@ -1,5 +1,3 @@
-import { ActiveFiltersProps } from 'modules/table/table.model';
-
 export const PAGE_PATH = {
   HOME: '/',
   TABLE: '/table',
@@ -12,9 +10,11 @@ export const PAGE_TITLES = {
   ERRORS: 'Show Errors',
 };
 
-export const globalFilters: ActiveFiltersProps = {
-  rating: '',
-  title: '',
-  date: '',
-  author: '',
-};
+export const NO_SELECTED_ITEMS_PLACEHOLDER_TITLE =
+  'Sorry, no content matched your criteria.';
+
+export const NO_SELECTED_ITEMS_PLACEHOLDER_DESCRIPTION =
+  'Please, change the selected filters';
+
+export const NO_ITEMS_PLACEHOLDER_DESCRIPTION =
+  'There are no items for now.';
