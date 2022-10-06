@@ -1,45 +1,11 @@
 @import 'styles/variables';
+@import 'styles/typography';
+@import 'styles/mixins/table';
+@import '../table.scss';
 
 .table-row {
-  display: grid;
-  grid-template-columns: minmax(200px, 100fr) minmax(175px, 75fr) minmax(125px, 50fr) minmax(125px, 50fr) minmax(60px, 20fr);
-  align-items: center;
-  padding: 8px 0;
-  background-color: inherit;
-  border-bottom: 1px solid $color-border-20;
-
-  &:hover {
-    background-color: $color-background-primary-hover;
-    cursor: pointer;
-  }
-
-  &__item {
-    display: flex;
-    padding-left: 10px;
-
-    &-action {
-      &.PrivateSwitchBase-root-1 {
-        padding: 0;
-      }
-
-      &.MuiCheckbox-colorSecondary.Mui-checked {
-        color: $color-sort-arrow-active;
-      }
-
-      &.MuiCheckbox-root {
-        padding: 0;
-        color: $color-not-priority;
-
-        & .MuiIconButton-label {
-          &:focus {
-            outline: none;
-          }
-        }
-
-        & .MuiTouchRipple-root {
-          display: none;
-        }
-      }
-    }
-  }
+  @include table-grid();
+  grid-template-columns: $table-columns;
+  align-items: flex-start;
+  min-height: 39px;
 }

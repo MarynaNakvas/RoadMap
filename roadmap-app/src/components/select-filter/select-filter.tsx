@@ -1,12 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Select, {
   Props,
   InputActionMeta,
-  ValueType,
 } from 'react-select';
 
-import { ReactComponent as SearchIcon } from 'assets/icons/search-sm.svg';
-import { OptionProps } from 'core/roadmap';
+import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
 import { customStyles } from './select-filter.utils';
 
 export interface TableSelectFilterProps extends Props {

@@ -1,16 +1,16 @@
-import { dateFormat } from 'utils/date-formater';
-import { TableKeys, TableKeysType } from './roadmap.model';
+import { dateFormat } from 'utils/date-formatter';
+import { TableKeys, Table } from './roadmap.model';
 
-export const normalizeData = (data: TableKeysType[]) =>
-  data.map((item: TableKeysType) => {
+export const normalizeData = (data: Table[]) =>
+  data.map((item) => {
     const { id, title, author, date, rating, isPriority } = item;
 
     return {
       [TableKeys.id]: id,
-      [TableKeys.Title]: title,
-      [TableKeys.Author]: author,
-      [TableKeys.Date]: dateFormat(new Date(date)),
-      [TableKeys.Rating]: rating,
+      [TableKeys.title]: title,
+      [TableKeys.author]: author,
+      [TableKeys.date]: dateFormat(new Date(date)),
+      [TableKeys.rating]: rating,
       [TableKeys.isPriority]: isPriority,
     };
   });

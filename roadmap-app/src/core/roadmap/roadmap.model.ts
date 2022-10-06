@@ -38,7 +38,7 @@ export interface SortingProps {
 }
 
 export interface OptionProps {
-  value: string;
+  value: any;
   label: string;
 }
 

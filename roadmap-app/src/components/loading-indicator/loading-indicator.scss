@@ -1,0 +1,50 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+$dot-quantity: 3;
+
+.loading-indicator {
+  display: flex;
+  align-self: center;
+  box-sizing: border-box;
+  margin-right: 4px;
+  padding: 8px;
+  color: hsl(0, 0%, 80%);
+  font-size: 4px;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  transition: color 150ms;
+
+  &__dot {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: top;
+    background-color: currentcolor;
+    border-radius: 1em;
+    animation: animated-dot 1s ease-in-out 0ms infinite;
+
+    @for $i from 1 to $dot-quantity {
+      &:nth-child(#{$i + 1}) {
+        animation-delay: #{$i * 160}ms;
+      }
+    }
+
+    &:not(:first-child) {
+      margin-left: 4px;
+    }
+  }
+}
+
+@keyframes animated-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+}

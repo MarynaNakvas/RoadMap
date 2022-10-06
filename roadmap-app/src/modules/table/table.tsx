@@ -16,6 +16,7 @@ import {
   NO_SELECTED_ITEMS_PLACEHOLDER_DESCRIPTION,
 } from 'core/app-constants';
 import ScreenPlaceholder from 'components/screen-placeholder';
+import StickyFormControls from 'components/sticky-form-controls';
 import Spinner from 'components/spinner';
 import Form from 'components/formik';
 import { debounce } from 'utils/debounce';

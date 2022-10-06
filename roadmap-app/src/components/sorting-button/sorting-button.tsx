@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import clsx from 'clsx';
 
 import { SortingProps } from 'core/roadmap';
-import { ReactComponent as ArrowDownIcon } from 'assets/icons/arrow-sort-down-small.svg';
+import { ReactComponent as ArrowDownIcon } from 'assets/icons/arrow-sort.svg';
 
 import './sorting-button.scss';
 

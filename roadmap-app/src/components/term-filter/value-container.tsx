@@ -3,7 +3,7 @@ import React from 'react';
 import { components, ValueContainerProps } from 'react-select';
 import { Box } from '@material-ui/core';
 
-const ValueContainer = (props: ValueContainerProps<any>) => {
+const ValueContainer = (props: ValueContainerProps<any, false>) => {
   const { hasValue, children, ...restProps } = props;
   if (!hasValue) {
     return <components.ValueContainer {...props} />;

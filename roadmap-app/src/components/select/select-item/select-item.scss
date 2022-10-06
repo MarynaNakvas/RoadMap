@@ -1,0 +1,21 @@
+@import 'styles/variables';
+
+.select-item {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s background-color;
+
+  &__icon {
+    align-self: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    color: $color-primary;
+  }
+
+  &__icon + &__status {
+    font-size: 15px;
+  }
+}

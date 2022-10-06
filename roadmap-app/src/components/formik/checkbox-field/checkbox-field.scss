@@ -1,0 +1,10 @@
+.checkbox-field.MuiFormControl-root {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & > .MuiFormLabel-root {
+    margin-bottom: 0;
+    margin-left: 8px;
+  }
+}

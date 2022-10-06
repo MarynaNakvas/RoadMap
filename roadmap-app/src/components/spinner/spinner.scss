@@ -1,4 +1,5 @@
 @import 'styles/variables';
+@import 'styles/typography';
 
 .spinner {
   display: flex;
@@ -6,8 +7,5 @@
   align-items: center;
   align-self: center;
   justify-content: center;
-
-  & .MuiCircularProgress-colorPrimary {
-    color: $color-primary;
-  }
+  overflow: hidden;
 }

@@ -2,14 +2,14 @@ import update from 'immutability-helper';
 import { createReducer } from 'redux-create-reducer';
 import { rejected, resolved } from 'utils/actions';
 import { types as actionsTypes } from './roadmap-actions';
-import { Action, TableKeysType } from './roadmap.model';
+import { Action, Table } from './roadmap.model';
 
 export interface ReducerType {
   errors: {
     [key: string]: string;
   };
   isDataListFetched: boolean;
-  dataList: TableKeysType[];
+  dataList: Table[];
   isMakePriorityFetched: boolean;
 }
 
@@ -30,7 +30,7 @@ export const roadMapReducer = createReducer(defaultState, {
 
   [resolved(actionsTypes.FETCH_DATA_LIST)](
     state: ReducerType,
-    action: Action<TableKeysType[]>,
+    action: Action<Table[]>,
   ) {
     const payload = action.payload ? action.payload : [];
     return update(state, {
@@ -41,7 +41,7 @@ export const roadMapReducer = createReducer(defaultState, {
 
   [rejected(actionsTypes.FETCH_DATA_LIST)](
     state: ReducerType,
-    action: Action<TableKeysType[]>,
+    action: Action<Table[]>,
   ) {
     const message = action.meta ? action.meta.message : '';
     return update(state, {
@@ -68,7 +68,7 @@ export const roadMapReducer = createReducer(defaultState, {
 
   [rejected(actionsTypes.MAKE_PRIORITY)](
     state: ReducerType,
-    action: Action<TableKeysType[]>,
+    action: Action<Table[]>,
   ) {
     const message = action.meta ? action.meta.message : '';
     return update(state, {
