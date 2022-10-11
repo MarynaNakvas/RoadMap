@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { TableKeys, SortingProps } from 'core/roadmap/roadmap.model';
+import { TableKeys, SortingProps } from 'core/roadmap/table.model';
 import SortingButton from 'components/sorting-button';
 
 import './table-header.scss';

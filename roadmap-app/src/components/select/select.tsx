@@ -15,7 +15,6 @@ import { SelectBase } from '.';
 
 export interface SelectOption extends OptionProps<any, false> {
   value?: any;
-  icon: React.FunctionComponent<any>;
   sortOrder?: number;
 }
 
@@ -26,7 +25,6 @@ export interface SelectOptionsMap {
 export interface SelectConfig extends Props {
   options: SelectOption[];
   optionsMap: SelectOptionsMap;
-  initialValue?: number | string;
 }
 
 interface SelectProps extends SelectConfig {
@@ -34,10 +32,7 @@ interface SelectProps extends SelectConfig {
   name: string;
   formik: FormikProps<any>;
   className?: string;
-  classNamePrefix?: string | null;
   disabled?: boolean;
-  isLoading?: boolean;
-  isTableSelectStyles?: boolean;
 }
 
 const Select: React.FunctionComponent<SelectProps> = memo(
@@ -47,7 +42,6 @@ const Select: React.FunctionComponent<SelectProps> = memo(
     formik,
     className,
     onChange,
-    isMulti,
     ...innerProps
   }) => {
     const {
@@ -74,16 +68,12 @@ const Select: React.FunctionComponent<SelectProps> = memo(
         } else {
           let value = null;
           if (option != null) {
-            if (isMulti && Array.isArray(option)) {
-              value = (option as any[]).map(({ value }) => value);
-            } else {
-              value = option.value;
-            }
+            value = option.value;
           }
           setFieldValue(name, value, hasErrors);
         }
       },
-      [onChange, isMulti, hasErrors, name, setFieldValue],
+      [onChange, hasErrors, name, setFieldValue],
     );
 
     const handleBlur = useCallback(
@@ -119,7 +109,6 @@ const Select: React.FunctionComponent<SelectProps> = memo(
           hasErrors={hasErrors}
           onBlur={handleBlur}
           handleChange={handleChange}
-          isMulti={isMulti}
           {...innerProps}
         />
       </FormControl>

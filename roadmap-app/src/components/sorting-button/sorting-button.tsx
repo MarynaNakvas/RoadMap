@@ -11,17 +11,15 @@ interface SortingButtonProps {
   title: string | JSX.Element;
   sortingRules?: SortingProps;
   changeSortingRules(id: string): void;
-  classNames?: string;
 }
 
-const SortingButton = memo(
+const SortingButton: React.FunctionComponent<SortingButtonProps> = memo(
   ({
     id,
     title,
-    classNames,
     sortingRules,
     changeSortingRules,
-  }: SortingButtonProps) => {
+  }) => {
     const isActive = sortingRules?.id === id;
     const isReversed = sortingRules?.isReversed;
 
@@ -31,7 +29,7 @@ const SortingButton = memo(
 
     return (
       <button
-        className={clsx('sorting-button', classNames)}
+        className="sorting-button"
         onClick={onClick}
         type="button"
       >

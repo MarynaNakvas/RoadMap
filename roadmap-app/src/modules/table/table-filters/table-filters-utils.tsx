@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { get } from 'lodash';
 
-import { TableKeys, Table } from 'core/roadmap/roadmap.model';
+import { TableKeys, Table } from 'core/roadmap/table.model';
 import {
   FiltersOptions,
   useFilter,

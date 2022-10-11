@@ -1,5 +1,4 @@
 import React, {
-  FunctionComponent,
   ReactElement,
   memo,
   useMemo,
@@ -22,7 +21,7 @@ interface UpdatedTooltipProps {
 type TooltipProps = UpdatedTooltipProps &
   Omit<RawTooltipProps, keyof UpdatedTooltipProps>;
 
-const Tooltip: FunctionComponent<TooltipProps> = memo(
+const Tooltip: React.FunctionComponent<TooltipProps> = memo(
   ({
     className,
     title,

@@ -1,23 +1,25 @@
 import update from 'immutability-helper';
 import { createReducer } from 'redux-create-reducer';
 import { rejected, resolved } from 'utils/actions';
-import { types as actionsTypes } from './roadmap-actions';
-import { Action, Table } from './roadmap.model';
+import { types as actionsTypes } from './table-actions';
+import { Action, Table } from './table.model';
 
 export interface ReducerType {
-  errors: {
-    [key: string]: string;
-  };
   isDataListFetched: boolean;
   dataList: Table[];
   isMakePriorityFetched: boolean;
+
+  errors: {
+    [key: string]: string;
+  };
 }
 
 const defaultState: ReducerType = {
-  errors: {},
   isDataListFetched: false,
   dataList: [],
   isMakePriorityFetched: false,
+
+  errors: {},
 };
 
 export const roadMapReducer = createReducer(defaultState, {
@@ -43,12 +45,12 @@ export const roadMapReducer = createReducer(defaultState, {
     state: ReducerType,
     action: Action<Table[]>,
   ) {
-    const message = action.meta ? action.meta.message : '';
+    const message = action.meta ? action.meta.toaster?.riseToast?.message : '';
     return update(state, {
       isDataListFetched: { $set: false },
       errors: {
         $merge: {
-          [message]: message,
+          ['1']: message,
         },
       },
     });
@@ -70,12 +72,12 @@ export const roadMapReducer = createReducer(defaultState, {
     state: ReducerType,
     action: Action<Table[]>,
   ) {
-    const message = action.meta ? action.meta.message : '';
+    const message = action.meta ? action.meta.toaster?.riseToast?.message : '';
     return update(state, {
       isMakePriorityFetched: { $set: false },
       errors: {
         $merge: {
-          [message]: message,
+          ['2']: message,
         },
       },
     });

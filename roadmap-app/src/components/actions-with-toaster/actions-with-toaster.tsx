@@ -1,32 +1,25 @@
-import React, { FunctionComponent, ReactNode, memo } from 'react';
+import React, { ReactNode, memo } from 'react';
 import { ToastContainer } from 'react-toastify';
-import clsx from 'clsx';
 
 import './actions-with-toaster.scss';
 
-// We may use simple container for wrapping actions with toaster.
-// This container includes common required styles.
-
 interface ActionsWithToasterProps {
   autoCloseTimeout?: number;
-  containerId?: string;
   className?: string;
   children: ReactNode;
 }
 
-const ActionsWithToaster: FunctionComponent<ActionsWithToasterProps> =
+const ActionsWithToaster: React.FunctionComponent<ActionsWithToasterProps> =
   memo(
     ({
       autoCloseTimeout = 2000,
-      containerId = 'COMMON_ACTIONS_CONTAINER_ID',
-      className,
       children,
     }) => (
-      <div className={clsx('actions-with-toaster', className)}>
+      <div className="actions-with-toaster">
         {children}
 
         <ToastContainer
-          containerId={containerId}
+          containerId="COMMON_ACTIONS_CONTAINER_ID"
           autoClose={autoCloseTimeout}
           closeButton={false}
           draggable={false}

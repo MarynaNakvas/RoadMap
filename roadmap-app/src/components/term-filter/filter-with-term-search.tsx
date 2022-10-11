@@ -9,7 +9,6 @@ import SelectFilter from '../select-filter';
 
 interface FilterWithTermSearchProps {
   filter: FilterProps<any>;
-  styles?: any;
   // other props
   [key: string]: any;
 }
@@ -17,7 +16,7 @@ interface FilterWithTermSearchProps {
 const components = { ValueContainer };
 
 const FilterWithTermSearch: React.FunctionComponent<FilterWithTermSearchProps> =
-  memo(({ filter, styles, ...otherProps }) => {
+  memo(({ filter, ...otherProps }) => {
     const debouncedSearch = useCallback(
       debounce(
         (term) =>
@@ -51,7 +50,6 @@ const FilterWithTermSearch: React.FunctionComponent<FilterWithTermSearchProps> =
         components={components}
         onSearch={onSearch}
         onSelect={onSelect}
-        styles={styles}
         isClearable
         openMenuOnClick={false}
         hasDropdownIndicator={false}

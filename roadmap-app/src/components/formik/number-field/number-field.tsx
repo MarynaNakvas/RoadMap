@@ -1,11 +1,11 @@
-import React, { FunctionComponent, memo, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import TextField, { TextFieldProps } from '../text-field';
 import ReactNumberFormat from './react-number-format';
 
 export type NumberFieldProps = TextFieldProps;
 
-const NumberField: FunctionComponent<NumberFieldProps> = memo(
+const NumberField: React.FunctionComponent<NumberFieldProps> = memo(
   (props) => {
     const { InputProps, ...otherProps } = props;
 

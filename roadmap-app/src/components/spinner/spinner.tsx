@@ -1,5 +1,4 @@
-import React, { ReactNode } from 'react';
-import classNames from 'clsx';
+import React, { memo, ReactNode } from 'react';
 import { CircularProgress } from '@material-ui/core';
 
 import './spinner.scss';
@@ -7,22 +6,21 @@ import './spinner.scss';
 interface SpinnerProps {
   isFetching?: boolean;
   circleSize?: number;
-  className?: string;
   children?: ReactNode;
 }
-const Spinner: React.FunctionComponent<SpinnerProps> = ({
+const Spinner: React.FunctionComponent<SpinnerProps> = memo(({
   children,
   isFetching,
   circleSize = 40,
-  className,
 }) =>
   isFetching ? (
-    <div className={classNames('spinner', className)}>
+    <div className="spinner">
       <CircularProgress size={circleSize} />
     </div>
   ) : (
     <>{children}</>
-  );
+  ),
+);
 
 Spinner.displayName = 'Spinner';
 

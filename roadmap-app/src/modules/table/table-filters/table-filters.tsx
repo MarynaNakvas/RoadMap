@@ -10,12 +10,12 @@ import './table-filters.scss';
 interface TableFiltersProps {
   title: FilterProps<string>;
   author: FilterProps<string>;
-  date: FilterProps<string>;
+  // date: FilterProps<string>;
   rating: FilterProps<number>;
 }
 
 const TableFilters: React.FunctionComponent<TableFiltersProps> =
-  memo(({ title, author, date, rating }) => (
+  memo(({ title, author, rating }) => (
     <div className="table-filters">
       <div className="table-filters__column">
         <FilterWithTermSearch
@@ -27,13 +27,6 @@ const TableFilters: React.FunctionComponent<TableFiltersProps> =
       <div className="table-filters__column">
         <FilterWithTermSearch
           filter={author}
-          placeholder="Search"
-        />
-      </div>
-
-      <div className="table-filters__column">
-        <FilterWithTermSearch
-          filter={date}
           placeholder="Search"
         />
       </div>

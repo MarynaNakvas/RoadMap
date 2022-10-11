@@ -1,10 +1,7 @@
 import React, {
-  FunctionComponent,
-  RefObject,
   memo,
-  forwardRef,
 } from 'react';
-import { IconButton, PopperProps, Tooltip } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import classNames from 'clsx';
 
 import './action-item.scss';
@@ -21,55 +18,35 @@ const defaultPopperProps = {
 };
 
 export interface ActionItemProps {
-  ref?: RefObject<any>;
-  id?: string;
   icon?: JSX.Element;
   onClick?(
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ): void;
-  disabled?: boolean;
   tooltip: string;
-  className?: string;
-  popperProps?: PopperProps;
 }
 
-const ActionItem: FunctionComponent<ActionItemProps> = memo(
-  forwardRef<HTMLDivElement, ActionItemProps>(
-    (
-      {
-        id,
-        icon,
-        onClick,
-        tooltip,
-        disabled,
-        className,
-        popperProps = defaultPopperProps,
-      },
-      ref,
-    ) => {
+const ActionItem: React.FunctionComponent<ActionItemProps> = memo(
+  ({
+    icon,
+    onClick,
+    tooltip,
+  }) => {
       const classes = {
         popper: classNames('tooltip'),
       };
       return icon ? (
         <Tooltip
-          ref={ref}
-          title={disabled ? '' : tooltip}
+          title={tooltip}
           placement="top"
-          disableFocusListener={disabled}
-          disableHoverListener={disabled}
-          disableTouchListener={disabled}
-          PopperProps={popperProps}
+          PopperProps={defaultPopperProps}
           classes={classes}
         >
           <IconButton
-            disabled={disabled}
-            onClick={disabled ? () => null : onClick}
-            className={classNames('action-item', {
-              [`action-item-${id}`]: id,
-            })}
+            onClick={onClick}
+            className="action-item"
           >
             <span
-              className={classNames('action-item__icon', className)}
+              className={classNames('action-item__icon')}
             >
               {icon}
             </span>
@@ -77,7 +54,6 @@ const ActionItem: FunctionComponent<ActionItemProps> = memo(
         </Tooltip>
       ) : null;
     },
-  ),
 );
 
 ActionItem.displayName = 'ActionItem';

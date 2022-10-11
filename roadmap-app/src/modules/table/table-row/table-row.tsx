@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { FormikProps } from 'formik';
+import { FormikProps, FormikValues } from 'formik';
 import { get } from 'lodash';
 
 import FormField from 'components/formik/field';
@@ -9,7 +9,7 @@ import { TableKeys, Table } from 'core/roadmap';
 import './table-row.scss';
 
 interface TableRowProps {
-  formik: FormikProps<Table[]>;
+  formik: FormikProps<FormikValues>;
   item: Table;
   remove(originIndex: number): void;
 }

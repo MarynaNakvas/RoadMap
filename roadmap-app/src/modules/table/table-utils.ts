@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import { TableKeys, Table, SortingProps } from 'core/roadmap/roadmap.model';
+import { TableKeys, Table, SortingProps } from 'core/roadmap/table.model';
 import { stringCompareFunction } from 'utils/sorting';
 
 export const TABLE_ROW_INITIAL_VALUES: Table = {

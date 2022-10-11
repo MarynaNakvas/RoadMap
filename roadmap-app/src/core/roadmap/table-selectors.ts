@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { ReducerType } from './roadmap-reducer';
+import { ReducerType } from './table-reducer';
 
 export interface StateType {
   roadMap: ReducerType;

@@ -33,6 +33,7 @@ $color-label: rgba(0, 0, 0, 0.54);
 
 $shadow-block: 0 2px 2px rgba(0, 0, 0, 0.1);
 $shadow_scrollbar: inset 0 0 10px rgba(0, 0, 0, 0.17);
+$shadow-action-bar: 0 -2px 2px rgba(0, 0, 0, 0.12);
 
 // backgrounds
 $background-select-filter-active: linear-gradient(
@@ -47,3 +48,5 @@ $background-select-filter-hover: linear-gradient(
     rgba($color-text, 0.14)
   ),
   $color-dark-green;
+
+$button-width: 165px;

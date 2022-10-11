@@ -1,4 +1,11 @@
 import { InputActionMeta } from 'react-select';
+import { AppMeta } from 'utils/actions';
+
+export interface Action<T> {
+  type: string;
+  payload?: T;
+  meta?: AppMeta;
+}
 
 export enum TableKeys {
   id = 'id',
@@ -19,17 +26,6 @@ export interface Table {
   [TableKeys.rating]: number | null;
   [TableKeys.isPriority]: boolean;
   [TableKeys.originIndex]: number;
-}
-
-export interface AppMeta {
-  message: string;
-  requestOptions?: RequestInit;
-}
-
-export interface Action<T> {
-  type: string;
-  payload?: T;
-  meta?: AppMeta;
 }
 
 export interface SortingProps {

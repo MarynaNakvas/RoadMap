@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { roadMapSelectors } from 'core/roadmap';
+import { tableSelectors } from 'core/roadmap';
 import List from 'components/list';
 
 import './errors.scss';
@@ -12,7 +12,7 @@ interface ErrorsPageProps {
 }
 
 const ErrorsPage = ({ title, setTitle }: ErrorsPageProps) => {
-  const errors = useSelector(roadMapSelectors.getErrors);
+  const errors = useSelector(tableSelectors.getErrors);
 
   useEffect(() => {
     setTitle(title);

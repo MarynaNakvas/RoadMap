@@ -2,17 +2,17 @@ import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
 import { differenceBy } from 'lodash';
 import { createApiCall } from 'services/api-service';
-import { rejectedAction, resolvedAction } from 'utils/actions';
-import { types as actionsTypes } from './roadmap-actions';
-import { normalizeData } from './roadmap-service';
-import { AppMeta } from './roadmap.model';
-import { roadMapActions } from '.';
+import { resolvedAction, AppMeta } from 'utils/actions';
+import { types as actionsTypes } from './table-actions';
+import { normalizeData } from './table-service';
+import { putError } from './table-utils';
+import { tableActions } from '.';
 
 /*
  * Sagas
  */
 
-function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
+function* fetchDataListHandler({ type, meta }: ActionMeta<any, AppMeta>) {
   try {
     const { requestOptions } = meta;
     const options = {
@@ -31,16 +31,12 @@ function* fetchDataListHandler({ meta }: ActionMeta<any, AppMeta>) {
       resolvedAction(actionsTypes.FETCH_DATA_LIST, dataList),
     );
   } catch (error) {
-    const { message } = error;
-    yield put(
-      rejectedAction(actionsTypes.FETCH_DATA_LIST, null, {
-        message: message,
-      }),
-    );
+    yield putError(error as Error, type);
   }
 }
 
 function* makePriorityHandler({
+  type,
   payload,
   meta,
 }: ActionMeta<any, AppMeta>) {
@@ -64,15 +60,10 @@ function* makePriorityHandler({
     ]);
     return yield all([
       put(resolvedAction(actionsTypes.MAKE_PRIORITY)),
-      put(roadMapActions.fetchDataList()),
+      put(tableActions.fetchDataList()),
     ]);
   } catch (error) {
-    const { message } = error;
-    yield put(
-      rejectedAction(actionsTypes.MAKE_PRIORITY, null, {
-        message: message,
-      }),
-    );
+    yield putError(error as Error, type);
   }
 }
 

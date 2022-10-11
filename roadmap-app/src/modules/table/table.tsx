@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FormikConfig, FormikValues, useFormik } from 'formik';
 import { get, isEqual } from 'lodash';
 
-import { roadMapActions, roadMapSelectors } from 'core/roadmap';
-import { TableKeys, Table } from 'core/roadmap/roadmap.model';
+import { tableActions, tableSelectors } from 'core/roadmap';
+import { TableKeys, Table } from 'core/roadmap/table.model';
 import {
   NO_ITEMS_PLACEHOLDER_DESCRIPTION,
   NO_SELECTED_ITEMS_PLACEHOLDER_TITLE,
@@ -33,14 +33,14 @@ const TableComponent: React.FunctionComponent = memo(() => {
   const dispatch = useDispatch();
 
   const isDataListFetching = useSelector(
-    roadMapSelectors.getIsDataListFetched,
+    tableSelectors.getIsDataListFetched,
   );
 
-  const dataList = useSelector(roadMapSelectors.getDataList);
+  const dataList = useSelector(tableSelectors.getDataList);
 
   const formikConfig = useMemo(
     (): FormikConfig<Table[]> => ({
-      validateOnChange: true,
+      // validateOnChange: true,
       validateOnBlur: true,
       enableReinitialize: true,
       initialValues: dataList,
@@ -102,7 +102,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
 
   useEffect(() => {
     dispatch(
-      dispatch(roadMapActions.fetchDataList()),
+      dispatch(tableActions.fetchDataList()),
     );
   }, [dispatch]);
 
@@ -151,7 +151,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
           <TableFilters
             title={title}
             author={author}
-            date={date}
+            // // date={date}
             rating={rating}
           />
 

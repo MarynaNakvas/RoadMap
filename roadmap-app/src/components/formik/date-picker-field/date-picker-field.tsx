@@ -6,7 +6,7 @@ import DatePicker from 'components/date-picker';
 
 import { checkFieldForErrors } from '../field';
 
-const DatePickerField = memo((props: any) => {
+const DatePickerField: React.FunctionComponent = memo((props: any) => {
   const {
     name,
     formik = { values: {} },

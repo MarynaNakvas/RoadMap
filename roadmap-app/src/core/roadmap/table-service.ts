@@ -1,5 +1,5 @@
 import { dateFormat } from 'utils/date-formatter';
-import { TableKeys, Table } from './roadmap.model';
+import { TableKeys, Table } from './table.model';
 
 export const normalizeData = (data: Table[]) =>
   data.map((item) => {

@@ -12,7 +12,6 @@ import './checkbox-field.scss';
 
 interface CheckboxFieldProps {
   className?: string;
-  buttonClassName?: string;
   formik: FormikProps<any>;
   name: string;
   label: string;
@@ -25,7 +24,6 @@ const CheckboxField: React.FunctionComponent<CheckboxFieldProps> =
   memo(
     ({
       className,
-      buttonClassName,
       formik,
       name,
       label,
@@ -53,7 +51,6 @@ const CheckboxField: React.FunctionComponent<CheckboxFieldProps> =
         <FormControl classes={controlClasses}>
           <CheckboxButton
             {...otherProps}
-            className={buttonClassName}
             isChecked={isChecked}
             handleChange={onChange}
             hasErrors={hasErrors}

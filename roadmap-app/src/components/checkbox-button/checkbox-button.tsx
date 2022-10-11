@@ -9,7 +9,6 @@ interface CheckboxButtonProps {
   isChecked?: boolean;
   handleChange(isChecked?: boolean): void;
   hasErrors?: boolean;
-  readOnly?: boolean;
   disabled?: boolean;
 
   // other props
@@ -23,19 +22,16 @@ const CheckboxButton: React.FunctionComponent<CheckboxButtonProps> =
       isChecked,
       handleChange,
       hasErrors,
-      readOnly,
       disabled,
       ...otherProps
     }) => {
-      const isEnabled = !readOnly && !disabled;
-
       const onChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-          if (isEnabled) {
+          if (!disabled) {
             handleChange(event.target.checked);
           }
         },
-        [isEnabled, handleChange],
+        [disabled, handleChange],
       );
 
       return (
@@ -48,7 +44,7 @@ const CheckboxButton: React.FunctionComponent<CheckboxButtonProps> =
           )}
           checked={isChecked}
           onChange={onChange}
-          readOnly={readOnly}
+          readOnly={!disabled}
           disabled={disabled}
         />
       );

@@ -1,7 +1,6 @@
 import React, {
   ComponentType,
   ChangeEvent,
-  FunctionComponent,
   memo,
   useCallback,
   useMemo,
@@ -15,7 +14,6 @@ import {
 import { omit } from 'lodash';
 
 import { ReactComponent as CloseIcon } from 'assets/icons/close-sm.svg';
-import LoadingIndicator from 'components/loading-indicator';
 import Tooltip from 'components/tooltip';
 import { dateFormat } from 'utils/date-formatter';
 
@@ -25,19 +23,13 @@ interface TextFieldBaseProps {
   onChange(arg: ChangeEvent<HTMLInputElement>): void;
   handleClear?(event: React.SyntheticEvent): void;
   disabled?: boolean;
-  isLoading?: boolean;
-  isClearable?: boolean;
-  isLimitExist?: boolean;
-  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
-  withOnFocus?: boolean;
-  focusOnClear?: boolean;
   backsWordIcon?: ComponentType | null;
   prefix?: ComponentType | null;
   suffix?: ComponentType | null;
   [key: string]: any;
 }
 
-const TextFieldBase: FunctionComponent<TextFieldBaseProps> = memo(
+const TextFieldBase: React.FunctionComponent<TextFieldBaseProps> = memo(
   (props) => {
     const {
       inputRef,
@@ -48,12 +40,6 @@ const TextFieldBase: FunctionComponent<TextFieldBaseProps> = memo(
       handleClear,
       InputLabelProps,
       defaultDate,
-      isLoading = false,
-      isClearable = true,
-      isLimitExist = false,
-      onFocus = () => {},
-      withOnFocus = false,
-      focusOnClear = false,
       backsWordIcon: BacksWordIcon,
       prefix: Prefix,
       suffix: Suffix,
@@ -81,24 +67,21 @@ const TextFieldBase: FunctionComponent<TextFieldBaseProps> = memo(
 
     const onClear = useCallback(
       (event: React.SyntheticEvent) => {
-        if (focusOnClear && currentInputRef.current) {
+        if (currentInputRef.current) {
           currentInputRef.current.focus();
         }
         if (handleClear) {
           handleClear(event);
         }
       },
-      [focusOnClear, currentInputRef, handleClear],
+      [currentInputRef, handleClear],
     );
 
     const endAdornment = useMemo(
       () => (
         <>
-          {isLoading && <LoadingIndicator />}
-          {isClearable &&
-            (!!value || value === 0) &&
-            !disabled &&
-            !isLoading && (
+          {(!!value || value === 0) &&
+            !disabled && (
               <InputAdornment className="clear-button" position="end">
                 {!hasDefaultDate && (
                   <Tooltip title="Clear field">
@@ -114,8 +97,6 @@ const TextFieldBase: FunctionComponent<TextFieldBaseProps> = memo(
         </>
       ),
       [
-        isLoading,
-        isClearable,
         value,
         disabled,
         onClear,
@@ -134,18 +115,6 @@ const TextFieldBase: FunctionComponent<TextFieldBaseProps> = memo(
       [InputProps, startAdornment, endAdornment],
     );
 
-    const handleFocus = useCallback(
-      (event: React.FocusEvent<HTMLInputElement>) => {
-        if (withOnFocus) {
-          event.preventDefault();
-          const textInput = event.target as HTMLInputElement;
-          textInput.select();
-        }
-        onFocus(event);
-      },
-      [withOnFocus, onFocus],
-    );
-
     const restProps = omit(props, [
       'isLoading',
       'handleClear',
@@ -153,23 +122,20 @@ const TextFieldBase: FunctionComponent<TextFieldBaseProps> = memo(
       'prefix',
       'suffix',
       'isClearable',
-      'monthPickerFormat',
       'defaultDate',
     ]);
-
-    const valueForRender = !isLimitExist ? value : null;
 
     return (
       <MUITextField
         {...restProps}
         inputRef={currentInputRef}
-        disabled={disabled || isLoading}
-        value={valueForRender == null ? '' : valueForRender}
+        disabled={disabled}
+        value={value}
         variant="outlined"
         onChange={onChange}
         InputProps={inputProps}
         InputLabelProps={inputLabelProps}
-        onFocus={handleFocus}
+        // onFocus={handleFocus}
       />
     );
   },

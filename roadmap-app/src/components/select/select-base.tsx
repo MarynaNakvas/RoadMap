@@ -7,14 +7,12 @@ import {
   OptionProps,
   Props,
 } from 'react-select';
-import CreatableSelect from 'react-select/creatable';
 
 import { ReactComponent as NavigateDownIcon } from 'assets/icons/navigate_down.svg';
 import { ReactComponent as CloseIcon } from 'assets/icons/close.svg';
 import Tooltip from 'components/tooltip';
 
 import SelectItem from './select-item';
-import ValueContainerWithIcon from './value-container-with-icon';
 
 const CustomOption = (optionProps: any) => {
   const { data } = optionProps;
@@ -62,7 +60,6 @@ const ClearIndicator = (props: any) => {
 
 export interface SelectOption extends OptionProps<any, false> {
   value?: any;
-  icon: React.FunctionComponent<any>;
 }
 
 export interface SelectOptionsMap {
@@ -72,39 +69,21 @@ export interface SelectOptionsMap {
 export interface SelectConfig extends Props {
   options: SelectOption[];
   optionsMap: SelectOptionsMap;
-  initialValue?: number | string;
 }
-
-const filterOptionsByStart = (candidate: any, input: any) =>
-  candidate.label
-    .toLocaleLowerCase()
-    .startsWith(input.toLocaleLowerCase());
 
 interface SelectBaseProps extends SelectConfig {
   value: any;
   hasErrors?: boolean;
   handleChange(option: any): void;
-
-  classNamePrefix?: string | null;
   disabled?: boolean;
-  isLoading?: boolean;
-  isTableSelectStyles?: boolean;
-  isAbsoluteMenu?: boolean | null;
-  isFilterOptionByStart?: boolean;
 }
 
 const SelectBase: React.FunctionComponent<SelectBaseProps> = memo(
   ({
-    isCreatable,
-    classNamePrefix,
     optionsMap,
     options = [],
     disabled,
     components: customComponents = {},
-    isLoading = false,
-    isMulti,
-    isAbsoluteMenu = true,
-    isFilterOptionByStart,
 
     value,
     hasErrors,
@@ -123,36 +102,28 @@ const SelectBase: React.FunctionComponent<SelectBaseProps> = memo(
           options.find((option) => value === option.value) || null
         );
       };
-      if (isMulti && Array.isArray(value)) {
-        return (value as any[]).map(getOption);
-      } else {
-        return getOption(value);
-      }
-    }, [isMulti, value, optionsMap, options]);
+      return getOption(value);
+    }, [value, optionsMap, options]);
 
     const selectComponents = useMemo(
       () => ({
         DropdownIndicator,
         ClearIndicator,
         Option: CustomOption,
-        ValueContainer: ValueContainerWithIcon,
         ...customComponents,
       }),
       [customComponents],
     );
 
-    return React.createElement(
-      isCreatable ? CreatableSelect : ReactSelect,
+    return React.createElement(ReactSelect,
       {
-        classNamePrefix: classNamePrefix || 'react-select',
-        isLoading: isLoading,
+        classNamePrefix: 'react-select',
         options: options,
         onChange: handleChange,
-        isSearchable: isCreatable,
+        isSearchable: true,
         defaultValue: selectedOption,
         value: selectedOption,
-        isDisabled: disabled || isLoading,
-        isMulti,
+        isDisabled: disabled,
         components: selectComponents,
         noOptionsMessage: ({ inputValue }: any) =>
           inputValue
@@ -160,10 +131,7 @@ const SelectBase: React.FunctionComponent<SelectBaseProps> = memo(
             : 'Sorry, no options for now',
         hasErrors: hasErrors,
         defaultStyles: false,
-        menuPortalTarget: isAbsoluteMenu ? document.body : undefined,
-        filterOption: isFilterOptionByStart
-          ? filterOptionsByStart
-          : undefined,
+        menuPortalTarget: document.body,
         ...innerProps,
       } as any,
     );

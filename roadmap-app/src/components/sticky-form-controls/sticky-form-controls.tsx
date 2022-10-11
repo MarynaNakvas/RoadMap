@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Button } from '@material-ui/core';
 
 import ActionsBar from 'components/actions-bar';
@@ -19,52 +19,54 @@ interface StickyFormControlsProps {
 
 const StickyFormControls: React.FunctionComponent<
   StickyFormControlsProps
-> = ({
-  className,
-  isTouched,
-  inProgress,
-  resetForm,
-  onclick,
-  title = 'Save changes',
-  cancelTitle = 'Cancel',
-}) => {
-  const onCancel = useCallback(() => resetForm(), [resetForm, isTouched]);
+> = memo(
+    ({
+    className,
+    isTouched,
+    inProgress,
+    resetForm,
+    onclick,
+    title = 'Save changes',
+    cancelTitle = 'Cancel',
+  }) => {
+    const onCancel = useCallback(() => resetForm(), [resetForm, isTouched]);
 
-  return (
-    <ActionsBar
-      className={className}
-      isSticky={isTouched}
-    >
-      <ActionsWithToaster className="sticky-form-controls">
-        <div className="sticky-form-controls__inner-container">
-          <div className="sticky-form-controls__buttons">
-            <Spinner isFetching={inProgress}>
-              <Button
-                type={onclick ? 'button' : 'submit'}
-                variant="contained"
-                color="primary"
-                onClick={onclick}
-                disabled={!isTouched}
-              >
-                {title}
-              </Button>
-              {isTouched && (
+    return (
+      <ActionsBar
+        className={className}
+        isSticky={isTouched}
+      >
+        <ActionsWithToaster className="sticky-form-controls">
+          <div className="sticky-form-controls__inner-container">
+            <div className="sticky-form-controls__buttons">
+              <Spinner isFetching={inProgress}>
                 <Button
-                  type="button"
-                  variant="outlined"
+                  type={onclick ? 'button' : 'submit'}
+                  variant="contained"
                   color="primary"
-                  onClick={onCancel}
+                  onClick={onclick}
+                  disabled={!isTouched}
                 >
-                  {cancelTitle}
+                  {title}
                 </Button>
-              )}
-            </Spinner>
+                {isTouched && (
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    color="primary"
+                    onClick={onCancel}
+                  >
+                    {cancelTitle}
+                  </Button>
+                )}
+              </Spinner>
+            </div>
           </div>
-        </div>
-      </ActionsWithToaster>
-    </ActionsBar>
-  );
-};
+        </ActionsWithToaster>
+      </ActionsBar>
+    );
+  },
+);
 
 StickyFormControls.displayName = 'StickyFormControls';
 

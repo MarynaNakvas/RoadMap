@@ -14,19 +14,17 @@ interface NumberFormatCustomProps {
   required?: boolean;
 }
 
-const ReactNumberFormat = memo((props: NumberFormatCustomProps) => {
-  const { inputRef, onChange, ...other } = props;
-  const { name, required } = other;
-
+const ReactNumberFormat: React.FunctionComponent<NumberFormatCustomProps> = memo(
+  ({ inputRef, onChange, name, defaultValue, required, ...other }) => {
   const onValueChange = useCallback(
     (values: NumberFormatValues) => {
       let value: number | string | null = values.value;
 
       // We need to convert value to the same type as defaultValue.
-      const targetType = typeof props.defaultValue;
+      const targetType = typeof defaultValue;
       if (typeof value != targetType) {
         if (!value && !required) {
-          value = null; //  ! validation on Formik not fire for undefined form values changed to null, need to check the formatting workflow
+          value = null;
         } else {
           const convert = targetType === 'string' ? String : Number;
           value = convert(value);

@@ -1,6 +1,5 @@
 import React, {
   ComponentType,
-  FunctionComponent,
   memo,
   useCallback,
   useMemo,
@@ -21,17 +20,10 @@ export interface TextFieldProps {
   name?: string;
   formik?: FormikProps<any>;
   label?: string;
-  ViewDetail?: ComponentType;
-  InputProps: any;
-  handleBlur?: () => void;
-  disabled?: boolean;
-  validateOnBlur?: boolean;
-  withOnFocus?: boolean;
-  isLabelOnLeft?: boolean;
   [key: string]: any;
 }
 
-const TextField: FunctionComponent<TextFieldProps> = memo(
+const TextField: React.FunctionComponent<TextFieldProps> = memo(
   ({
     className,
     name = '',
@@ -41,13 +33,6 @@ const TextField: FunctionComponent<TextFieldProps> = memo(
       handleBlur: () => {},
     },
     label,
-    ViewDetail,
-    InputProps,
-    handleBlur,
-    disabled = false,
-    validateOnBlur = false,
-    withOnFocus = false,
-    isLabelOnLeft = false,
     ...otherProps
   }) => {
     const {
@@ -59,9 +44,7 @@ const TextField: FunctionComponent<TextFieldProps> = memo(
 
     const controlClasses = useMemo(
       () => ({
-        root: classNames(className, 'text-field', {
-          'text-field--label-on-left': isLabelOnLeft,
-        }),
+        root: classNames(className, 'text-field'),
       }),
       [className],
     );
@@ -75,27 +58,21 @@ const TextField: FunctionComponent<TextFieldProps> = memo(
       ({
         target: { value },
       }: React.ChangeEvent<HTMLInputElement>) => {
-        setFieldValue(name, value, validateOnBlur || hasErrors);
+        setFieldValue(name, value, hasErrors);
       },
-      [setFieldValue, name, hasErrors, validateOnBlur],
+      [setFieldValue, name, hasErrors],
     );
 
     const handleClear = useCallback(() => {
-      let value = get(InputProps, 'inputProps.defaultValue');
-      if (value == null) {
-        value = '';
-      }
-      setFieldValue(name, value, validateOnBlur || hasErrors);
-    }, [setFieldValue, name, InputProps, validateOnBlur, hasErrors]);
+      const value = '';
+      setFieldValue(name, value, hasErrors);
+    }, [setFieldValue, name, hasErrors]);
 
     const onBlur = useCallback(
       (e: any) => {
-        if (handleBlur) {
-          handleBlur();
-        }
         formikHandleBlur(e);
       },
-      [handleBlur, formikHandleBlur],
+      [formikHandleBlur],
     );
 
     return (
@@ -111,8 +88,6 @@ const TextField: FunctionComponent<TextFieldProps> = memo(
               {label}
             </InputLabel>
           )}
-
-          {ViewDetail && <ViewDetail />}
         </div>
 
         <TextFieldBase
@@ -124,12 +99,9 @@ const TextField: FunctionComponent<TextFieldProps> = memo(
           name={name}
           value={field}
           error={hasErrors}
-          disabled={disabled}
-          InputProps={InputProps}
           onBlur={onBlur}
           onChange={handleChange}
           handleClear={handleClear}
-          withOnFocus={withOnFocus}
           focusOnClear
         />
       </FormControl>

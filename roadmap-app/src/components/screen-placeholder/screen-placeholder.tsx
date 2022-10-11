@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { Typography } from '@material-ui/core';
 
@@ -11,21 +11,23 @@ export interface ScreenPlaceholderProps {
 
 const ScreenPlaceholder: React.FunctionComponent<
   ScreenPlaceholderProps
-> = ({ title, description, children }) => (
-  <div className="screen-placeholder">
-    {!!title && (
-      <Typography className="screen-placeholder__title">
-        {title}
-      </Typography>
-    )}
+> = memo(
+  ({ title, description, children }) => (
+    <div className="screen-placeholder">
+      {!!title && (
+        <Typography className="screen-placeholder__title">
+          {title}
+        </Typography>
+      )}
 
-    {!!description && (
-      <Typography className="screen-placeholder__description">
-        {description}
-      </Typography>
-    )}
-    {children}
-  </div>
+      {!!description && (
+        <Typography className="screen-placeholder__description">
+          {description}
+        </Typography>
+      )}
+      {children}
+    </div>
+  ),
 );
 
 ScreenPlaceholder.displayName = 'ScreenPlaceholder';
