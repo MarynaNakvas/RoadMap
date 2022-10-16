@@ -104,5 +104,9 @@
     &--link {
       color: $color-text;
     }
+
+    & .MuiInputBase-root {
+      @extend .text-subhead;
+    }
   }
 }
