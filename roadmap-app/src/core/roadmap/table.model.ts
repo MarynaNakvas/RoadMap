@@ -1,5 +1,16 @@
+import { CSSProperties } from 'react';
 import { InputActionMeta } from 'react-select';
 import { AppMeta } from 'utils/actions';
+
+export type AutoSizerType = {
+  width: number;
+  height: number;
+};
+
+export type VariableSizeListType = {
+  index: number;
+  style: CSSProperties;
+};
 
 export interface Action<T> {
   type: string;

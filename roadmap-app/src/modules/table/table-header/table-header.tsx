@@ -45,6 +45,8 @@ const TableHeader: React.FunctionComponent<TableHeaderProps> =
         </div>
       ))}
 
+      <span />
+
       <span className="table-header__action">
         Actions
       </span>

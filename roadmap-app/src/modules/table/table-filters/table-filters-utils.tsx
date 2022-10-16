@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { get } from 'lodash';
 
 import { TableKeys, Table } from 'core/roadmap/table.model';
@@ -54,13 +54,15 @@ export const useFiltering = (
 
   const title = useFilter<string>(undefined, titleOptions);
   const author = useFilter<string>(undefined, authorOptions);
+  const date = useFilter<Date>(undefined);
   const rating = useFilter<number>(undefined, ratingOptions);
 
-  const filters = [title, author, rating];
+  const filters = [title, author, date, rating];
 
   return {
     title,
     author,
+    date,
     rating,
     hasFilters: useHasFilters(filters),
     resetFilters: useResetFilters(filters),

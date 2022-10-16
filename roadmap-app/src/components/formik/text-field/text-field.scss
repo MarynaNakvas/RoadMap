@@ -2,6 +2,10 @@
 @import 'styles/typography';
 
 .text-field {
+  &.MuiFormControl-root {
+    width: 100%;
+  }
+
   &--label-on-left {
     &.MuiFormControl-root {
       flex-direction: row;
@@ -46,6 +50,10 @@
 
     &.MuiInputBase-adornedEnd {
       padding-right: 0;
+    }
+    
+    .MuiOutlinedInput-inputAdornedEnd {
+      padding: 6px 0 7px 5px;
     }
   }
 }

@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from 'react';
-import { Button } from '@material-ui/core';
 
 import ActionsBar from 'components/actions-bar';
 import ActionsWithToaster from 'components/actions-with-toaster';
@@ -40,24 +39,19 @@ const StickyFormControls: React.FunctionComponent<
           <div className="sticky-form-controls__inner-container">
             <div className="sticky-form-controls__buttons">
               <Spinner isFetching={inProgress}>
-                <Button
+                <button
                   type={onclick ? 'button' : 'submit'}
-                  variant="contained"
-                  color="primary"
-                  onClick={onclick}
                   disabled={!isTouched}
                 >
                   {title}
-                </Button>
+                </button>
                 {isTouched && (
-                  <Button
+                  <button
                     type="button"
-                    variant="outlined"
-                    color="primary"
                     onClick={onCancel}
                   >
                     {cancelTitle}
-                  </Button>
+                  </button>
                 )}
               </Spinner>
             </div>

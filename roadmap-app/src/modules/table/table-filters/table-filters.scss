@@ -1,7 +1,7 @@
 @import 'styles/mixins/table';
 @import '../table.scss';
 
-.pre-approved-entries-filters {
+.table-filters {
   @include table-filters();
   grid-template-columns: $table-columns;
 }

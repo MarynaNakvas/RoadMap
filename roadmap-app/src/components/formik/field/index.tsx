@@ -11,9 +11,6 @@ export * from './helpers';
 export * from './helper-utils';
 
 const areErrorsEqual = (prevProps: any, nextProps: any) => {
-  /*
-  ! TODO add get from lodash to errors check
-  */
   const prevFormik = prevProps.formik;
   const nextFormik = nextProps.formik;
 

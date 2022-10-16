@@ -1,5 +1,6 @@
 @import 'styles/variables';
 @import 'styles/typography';
+@import 'styles/mixins/buttons';
 
 $button-width: 176px;
 
@@ -35,11 +36,20 @@ $button-width: 176px;
     padding: 16px 0;
 
     > * {
+      @extend .button-common;
+
       width: $button-width;
       height: min-content;
 
       &:not(:last-of-type) {
         margin-right: 24px;
+        background-color: $color-primary;
+        color: $color-white;
+
+        &:hover {
+          background-color: $color-dark-green;
+          border-color: $color-dark-green;
+        }
       }
     }
   }

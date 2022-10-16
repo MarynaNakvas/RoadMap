@@ -7,14 +7,13 @@ import React, {
   useRef,
 } from 'react';
 import {
-  IconButton,
   TextField as MUITextField,
   InputAdornment,
 } from '@material-ui/core';
 import { omit } from 'lodash';
 
 import { ReactComponent as CloseIcon } from 'assets/icons/close-sm.svg';
-import Tooltip from 'components/tooltip';
+import ActionItem from 'components/action-item';
 import { dateFormat } from 'utils/date-formatter';
 
 interface TextFieldBaseProps {
@@ -84,11 +83,13 @@ const TextFieldBase: React.FunctionComponent<TextFieldBaseProps> = memo(
             !disabled && (
               <InputAdornment className="clear-button" position="end">
                 {!hasDefaultDate && (
-                  <Tooltip title="Clear field">
-                    <IconButton onClick={onClear}>
+                  <ActionItem
+                    icon={
                       <CloseIcon />
-                    </IconButton>
-                  </Tooltip>
+                    }
+                    onClick={onClear}
+                    tooltip={'Clear field'}
+                  />
                 )}
               </InputAdornment>
             )}

@@ -1,6 +1,6 @@
 import React, { useMemo, memo } from 'react';
 
-import { InputAdornment, IconButton } from '@material-ui/core';
+import { InputAdornment } from '@material-ui/core';
 import {
   default as ReactSelect,
   components,
@@ -10,7 +10,7 @@ import {
 
 import { ReactComponent as NavigateDownIcon } from 'assets/icons/navigate_down.svg';
 import { ReactComponent as CloseIcon } from 'assets/icons/close.svg';
-import Tooltip from 'components/tooltip';
+import ActionItem from 'components/action-item';
 
 import SelectItem from './select-item';
 
@@ -48,11 +48,12 @@ const ClearIndicator = (props: any) => {
           }
         }}
       >
-        <Tooltip title="Clear field">
-          <IconButton>
+        <ActionItem
+          icon={
             <CloseIcon />
-          </IconButton>
-        </Tooltip>
+          }
+          tooltip={'Clear field'}
+        />
       </InputAdornment>
     </components.ClearIndicator>
   );

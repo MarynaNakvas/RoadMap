@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import { get } from 'lodash';
 
+import { ReactComponent as DeleteIcon } from 'assets/icons/delete.svg';
 import FormField from 'components/formik/field';
 import CheckBox from 'components/checkbox';
 import { TableKeys, Table } from 'core/roadmap';
@@ -24,7 +25,7 @@ const TableRow: React.FunctionComponent<TableRowProps> =
       const originIndex = get(item, TableKeys.originIndex);
 
       return (
-        <div className="table-row">
+        <>
           <div className="table-row__column">
             <FormField
               formik={formik}
@@ -47,8 +48,8 @@ const TableRow: React.FunctionComponent<TableRowProps> =
             <FormField
               formik={formik}
               name={`${originIndex}.${TableKeys.date}`}
-              placeholder="Date"
-              fullWidth
+              fieldType="datePicker"
+              isFormView
             />
           </div>
 
@@ -69,11 +70,15 @@ const TableRow: React.FunctionComponent<TableRowProps> =
             />
           </div>
 
-          <button type="button" onClick={() => remove(originIndex)}>
-            {/* {icon} */}
+          <button
+            className="table-row__column table-row__column-action"
+            type="button"
+            onClick={() => remove(originIndex)}
+          >
+            <DeleteIcon />
             <span>Delete</span>
           </button>
-        </div>
+        </>
       );
     },
   );

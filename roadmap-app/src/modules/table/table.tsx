@@ -3,13 +3,16 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormikConfig, FormikValues, useFormik } from 'formik';
-import { get, isEqual } from 'lodash';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { VariableSizeList } from 'react-window';
+import { FormikConfig, useFormik } from 'formik';
+import { isEqual } from 'lodash';
 
 import { tableActions, tableSelectors } from 'core/roadmap';
-import { TableKeys, Table } from 'core/roadmap/table.model';
+import { TableKeys, VariableSizeListType, AutoSizerType } from 'core/roadmap/table.model';
 import {
   NO_ITEMS_PLACEHOLDER_DESCRIPTION,
   NO_SELECTED_ITEMS_PLACEHOLDER_TITLE,
@@ -29,6 +32,8 @@ import { processData, addRow, removeRow } from './table-utils';
 
 import './table.scss';
 
+const TABLE_ROW_HEIGHT = 41;
+
 const TableComponent: React.FunctionComponent = memo(() => {
   const dispatch = useDispatch();
 
@@ -39,8 +44,8 @@ const TableComponent: React.FunctionComponent = memo(() => {
   const dataList = useSelector(tableSelectors.getDataList);
 
   const formikConfig = useMemo(
-    (): FormikConfig<Table[]> => ({
-      // validateOnChange: true,
+    (): FormikConfig<any> => ({
+      validateOnChange: true,
       validateOnBlur: true,
       enableReinitialize: true,
       initialValues: dataList,
@@ -65,6 +70,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
   const {
     title,
     author,
+    date,
     rating,
     hasFilters,
     resetFilters,
@@ -76,6 +82,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
         sortingRules,
         title.value,
         author.value,
+        date.value,
         rating.value,
       ),
     [
@@ -83,6 +90,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
       sortingRules,
       title.value,
       author.value,
+      date.value,
       rating.value,
     ],
   );
@@ -112,6 +120,27 @@ const TableComponent: React.FunctionComponent = memo(() => {
   //   },
   //   [dispatch],
   // );
+
+  const getItemSize = () => TABLE_ROW_HEIGHT;
+  const lineHeights = getItemSize() * processedData.length;
+
+  const listRef = useRef<VariableSizeList>(null);
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.resetAfterIndex(0);
+    }
+  }, [listRef, lineHeights]);
+
+  const Row = ({ index, style }: VariableSizeListType) => (
+    <div className="table-row" style={style}>
+      <TableRow
+        key={index}
+        formik={formik}
+        item={processedData[index]}
+        remove={removeEntry}
+      />
+    </div>
+  );
 
   return (
     <div className="table">
@@ -151,27 +180,29 @@ const TableComponent: React.FunctionComponent = memo(() => {
           <TableFilters
             title={title}
             author={author}
-            // // date={date}
+            date={date}
             rating={rating}
           />
 
           <Spinner isFetching={isDataListFetching}>
             {processedData.length ? (
               <div className="table__rows">
-                {processedData.map((item) => {
-                  const id = get(
-                    item,
-                    TableKeys.originIndex,
-                  );
-                  return (
-                    <TableRow
-                      key={id}
-                      formik={formik}
-                      item={item}
-                      remove={removeEntry}
-                    />
-                  );
-                })}
+                <AutoSizer
+                  className="table__rows-auto-sizer"
+                  disableWidth
+                >
+                  {({ height }: AutoSizerType) => (
+                    <VariableSizeList
+                      ref={listRef}
+                      width="auto"
+                      height={height}
+                      itemCount={processedData.length}
+                      itemSize={getItemSize}
+                    >
+                      {Row}
+                    </VariableSizeList>
+                  )}
+                </AutoSizer>
               </div>
             ) : (
               <div className="table__placeholder-wrapper">

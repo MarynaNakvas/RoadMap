@@ -24,40 +24,11 @@
     background-color: $color-primary;
   }
 
-  &:active {
-    color: $color-white;
-    background-color: $color-dark-green;
-    border-color: $color-dark-green;
-  }
-
   &:disabled {
     color: $color-white;
     background-color: $color-light-grey;
     border-color: $color-light-grey;
     cursor: initial;
-  }
-
-  &--primary {
-    color: $color-white;
-    background-color: $color-primary;
-
-    &:hover:not(:disabled) {
-      color: $color-white;
-      background-color: $color-dark-green;
-      border-color: $color-dark-green;
-    }
-  }
-
-  &--checked {
-    color: $color-dark-grey;
-    background-color: $color-light-grey;
-    border-color: $color-light-grey;
-
-    &:hover {
-      color: $color-dark-grey;
-      background-color: $color-medium-grey-50;
-      border-color: transparent;
-    }
   }
 
   &--text {
@@ -69,19 +40,5 @@
     &:hover {
       text-decoration: none;
     }
-  }
-}
-
-.button--for-table-row {
-  @extend .button-common--text;
-  @extend .text-caption-regular;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    margin-right: 8px;
   }
 }

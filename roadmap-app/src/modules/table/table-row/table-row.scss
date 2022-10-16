@@ -4,8 +4,20 @@
 @import '../table.scss';
 
 .table-row {
-  @include table-grid();
+  @include table-row();
   grid-template-columns: $table-columns;
-  align-items: flex-start;
   min-height: 39px;
+
+  &__column-action {
+    @extend .button-common--text;
+    
+    cursor: pointer;
+
+    & svg {
+      max-width: 15px;
+      max-height: 15px;
+      margin-right: 4px;
+      padding-left: 4px;
+    }
+  } 
 }

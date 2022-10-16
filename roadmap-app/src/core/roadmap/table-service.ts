@@ -2,7 +2,7 @@ import { dateFormat } from 'utils/date-formatter';
 import { TableKeys, Table } from './table.model';
 
 export const normalizeData = (data: Table[]) =>
-  data.map((item) => {
+  data.map((item, index) => {
     const { id, title, author, date, rating, isPriority } = item;
 
     return {
@@ -12,5 +12,6 @@ export const normalizeData = (data: Table[]) =>
       [TableKeys.date]: dateFormat(new Date(date)),
       [TableKeys.rating]: rating,
       [TableKeys.isPriority]: isPriority,
+      [TableKeys.originIndex]: index,
     };
   });

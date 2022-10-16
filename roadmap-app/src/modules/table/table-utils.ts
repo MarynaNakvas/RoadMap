@@ -18,7 +18,7 @@ export const processData = (
   sortingRules: SortingProps,
   titleValue: string | undefined | null,
   authorValue: string | undefined | null,
-  // dateValue: string | undefined | null,
+  dateValue: Date | undefined | null,
   ratingValue: number | undefined | null,
 ) => {
   let items = data;
@@ -26,7 +26,7 @@ export const processData = (
   if (
     titleValue != null ||
     authorValue != null ||
-    // dateValue != null ||
+    dateValue != null ||
     ratingValue != null
   ) {
     items = items.filter((item) => {

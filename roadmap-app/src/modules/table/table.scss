@@ -1,13 +1,15 @@
 @import 'styles/variables';
 @import 'styles/typography';
 @import 'styles/mixins/content';
+@import 'styles/mixins/scrollbar';
+@import 'styles/mixins/buttons';
 
 $table-title: minmax(200px, 100fr);
 $table-author: minmax(175px, 75fr);
 $table-date: minmax(125px, 50fr);
 $table-rating: minmax(125px, 50fr);
-$table-isPriority: minmax(60px, 20fr);
-$table-action: 88px;
+$table-isPriority: 60px;
+$table-action: 100px;
 
 $table-columns: $table-title $table-author
 $table-date $table-rating $table-isPriority
@@ -18,7 +20,7 @@ $table-action;
   overflow: inherit;
 
   &__button-action {
-    @extend .buttons-small;
+    @extend .button-common;
 
     padding: 4px 30px;
   }
@@ -26,6 +28,14 @@ $table-action;
   &__form-controls {
     & .sticky-form-controls__buttons > * {
       max-width: 165px;
+    }
+  }
+
+  &__rows {
+    height: 45vh;
+
+    &-auto-sizer > div {
+      @include custom-scrollbar();
     }
   }
 }

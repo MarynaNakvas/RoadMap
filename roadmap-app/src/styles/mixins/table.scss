@@ -13,10 +13,12 @@
   background-color: $color-light-grey-20;
 
   > * {
+    @extend .text-header;
+
     display: flex;
     flex-direction: row;
     align-items: center;
-    min-height: 48px;
+    min-height: 32px;
     padding: 8px;
 
     &:first-child {
@@ -31,11 +33,6 @@
   &__column--right {
     justify-content: flex-end;
   }
-
-  button {
-    @extend .text-caption-regular;
-    padding: 0;
-  }
 }
 
 @mixin table-filters() {
@@ -45,6 +42,8 @@
   border-width: 1px;
 
   > * {
+    @extend .text-caption-regular;
+
     height: 100%;
     border-left: 1px solid $color-light-grey;
 
@@ -78,14 +77,15 @@
 
   &__column {
     @extend .text-caption-regular;
+
     display: flex;
     flex-direction: row;
     align-items: center;
     min-height: 39px;
-    padding: 4px 8px;
+    padding: 2px 8px;
 
     &:first-child {
-      padding-left: 24px;
+      padding-left: 8px;
     }
 
     &:last-child {
