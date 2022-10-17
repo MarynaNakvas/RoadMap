@@ -1,4 +1,5 @@
 import { get } from 'lodash';
+import { isEqual } from 'date-fns';
 
 import { TableKeys, Table, SortingProps } from 'core/roadmap/table.model';
 import { stringCompareFunction } from 'utils/sorting';
@@ -32,7 +33,8 @@ export const processData = (
     items = items.filter((item) => {
       const title = get(item, TableKeys.title);
       const author = get(item, TableKeys.author);
-      const date = get(item, TableKeys.date);
+      const rawDate = get(item, TableKeys.date);
+      const date = new Date(rawDate);
       const rating = get(
         item,
         TableKeys.rating,
@@ -49,13 +51,11 @@ export const processData = (
               .toLocaleLowerCase()
               .includes(authorValue.toLocaleLowerCase())
           : true) &&
-        // (dateValue
-        //   ? date
-        //       .toLocaleLowerCase()
-        //       .includes(dateValue.toLocaleLowerCase())
-        //   : true) &&
+        (dateValue
+          ? isEqual(date, dateValue)
+          : true) && 
         (ratingValue
-          ? rating === ratingValue
+          ? rating === Number(ratingValue)
           : true)
       );
     });

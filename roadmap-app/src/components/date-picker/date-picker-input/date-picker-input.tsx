@@ -4,7 +4,7 @@ import { NumericFormat } from 'react-number-format';
 import TextFieldBase from 'components/text-field-base';
 
 const DatePickerInput = memo((props: any) => {
-  const { onChange } = props;
+  const { onChange, value } = props;
   const changeDate = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.match(/\d\d\/\d\d\/\d\d\d\d/)) {
       onChange(e);

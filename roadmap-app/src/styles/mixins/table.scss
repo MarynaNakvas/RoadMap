@@ -6,6 +6,10 @@
   align-items: center;
   width: 100%;
   min-width: min-content;
+
+  .MuiIconButton-root {
+    padding: 6px;
+  }
 }
 
 @mixin table-header() {

@@ -3,8 +3,8 @@ import { FormikProps, FormikValues } from 'formik';
 import { get } from 'lodash';
 
 import { ReactComponent as DeleteIcon } from 'assets/icons/delete.svg';
+import { ReactComponent as IconStar } from 'assets/icons/icon-star.svg';
 import FormField from 'components/formik/field';
-import CheckBox from 'components/checkbox';
 import { TableKeys, Table } from 'core/roadmap';
 
 import './table-row.scss';
@@ -57,16 +57,20 @@ const TableRow: React.FunctionComponent<TableRowProps> =
             <FormField
               formik={formik}
               name={`${originIndex}.${TableKeys.rating}`}
+              fieldType="numberField"
               placeholder="Rating"
               fullWidth
             />
           </div>
 
           <div className="table-row__column">
-            <CheckBox
+            <FormField
               formik={formik}
               name={`${originIndex}.${TableKeys.isPriority}`}
-              className="table-row__item-action"
+              fieldType="checkbox"
+              icon={<IconStar />}
+              checkedIcon={<IconStar />}
+              fullWidth
             />
           </div>
 

@@ -1,5 +1,24 @@
+@import 'styles/variables';
+
 .action-item {
   &__icon {
     display: grid;
+  }
+}
+
+.tooltip {
+  .MuiTooltip-tooltip {
+    padding: 1px 8px;
+    color: $color-dark-grey;
+    text-transform: uppercase;
+    background-color: $color-light-grey;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 12px;
+  }
+
+  .MuiTooltip-tooltipPlacementTop {
+    margin: 0 0 -2px 0;
   }
 }

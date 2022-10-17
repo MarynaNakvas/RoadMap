@@ -30,6 +30,7 @@ export interface DatePickerProps
   hasError?: boolean;
   defaultDate?: Date | null;
   disabled?: boolean;
+  isFormView?: boolean;
   onCalendarClose?: () => void;
 }
 
@@ -41,6 +42,7 @@ const DatePicker = memo(
   hasError = false,
   defaultDate = null,
   disabled,
+  isFormView = false,
   onCalendarClose,
   calendarClassName,
   ...restProps
@@ -141,7 +143,9 @@ const DatePicker = memo(
         'date-picker--with-date': !isDateDefault,
         'date-picker--with-default-date':
           defaultDateView || isDateDefault,
+        'date-picker--with-form-date': isFormView,
         'date-picker--with-error': hasError,
+        
       })}
     >
       <ReactDatePicker

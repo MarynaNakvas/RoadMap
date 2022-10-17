@@ -15,14 +15,14 @@
   }
 
   &.MuiButtonBase-root.MuiIconButton-root {
-    padding: 7px;
+    padding: 4px;
 
     &.MuiCheckbox-root {
-      color: $color-primary-40;
+      color: $color-medium-grey;
     }
 
     &.Mui-checked {
-      color: $color-primary;
+      color: $color-orange;
     }
   }
 }
