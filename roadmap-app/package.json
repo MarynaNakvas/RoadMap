@@ -5,9 +5,9 @@
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@types/lodash": "^4.14.182",
-    "@types/react": "^18.0.21",
+    "@types/react": "^17.0.39",
     "@types/react-datepicker": "^4.4.1",
-    "@types/react-dom": "^18.0.6",
+    "@types/react-dom": "^18.0.5",
     "@types/react-redux": "^7.1.24",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-select": "3.0.16",
