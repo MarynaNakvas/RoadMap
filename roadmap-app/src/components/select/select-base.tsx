@@ -54,7 +54,7 @@ const ClearIndicator = (props: any) => {
   );
 };
 
-export interface SelectOption extends OptionProps<any, false> {
+export interface SelectOption extends OptionProps<any> {
   value?: any;
 }
 

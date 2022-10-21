@@ -1,5 +1,5 @@
 import React, { ChangeEvent, memo } from 'react';
-import { NumericFormat } from 'react-number-format';
+import NumberFormat from 'react-number-format';
 
 import TextFieldBase from 'components/text-field-base';
 
@@ -12,7 +12,7 @@ const DatePickerInput = memo((props: any) => {
   };
 
   return (
-    <NumericFormat
+    <NumberFormat
       {...props}
       onChange={changeDate}
       customInput={TextFieldBase}

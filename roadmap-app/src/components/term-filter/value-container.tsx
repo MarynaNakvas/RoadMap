@@ -4,7 +4,7 @@ import { components, ValueContainerProps } from 'react-select';
 import { Box } from '@material-ui/core';
 
 const ValueContainer: React.FunctionComponent<
-  ValueContainerProps<any, false>
+  ValueContainerProps<any>
 > = memo((props) => {
   const { hasValue, children, ...restProps } = props;
   if (!hasValue) {

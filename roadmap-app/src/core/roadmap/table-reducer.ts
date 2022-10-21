@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { createReducer } from 'redux-create-reducer';
+import createReducer from 'utils/create-reducer';
 import { rejected, resolved } from 'utils/actions';
 import { types as actionsTypes } from './table-actions';
 import { Action, Table } from './table.model';

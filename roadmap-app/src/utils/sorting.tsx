@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { compareAsc, compareDesc } from 'date-fns';
 
 const defaultOptions = {

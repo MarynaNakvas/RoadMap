@@ -13,7 +13,7 @@ import { checkFieldForErrors } from 'components/formik/field';
 
 import { SelectBase } from '.';
 
-export interface SelectOption extends OptionProps<any, false> {
+export interface SelectOption extends OptionProps<any> {
   value?: any;
   sortOrder?: number;
 }

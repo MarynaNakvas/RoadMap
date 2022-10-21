@@ -1,6 +1,5 @@
 import React, { RefObject, memo, useCallback } from 'react';
-import {
-  NumericFormat,
+import NumberFormat, {
   NumberFormatValues,
 } from 'react-number-format';
 
@@ -52,7 +51,7 @@ const ReactNumberFormat: React.FunctionComponent<NumberFormatCustomProps> = memo
       name === 'numberFilterWithThousandSeparator';
 
     return (
-      <NumericFormat
+      <NumberFormat
         {...other}
         getInputRef={inputRef}
         onValueChange={onValueChange}
