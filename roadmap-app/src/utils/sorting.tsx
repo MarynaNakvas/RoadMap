@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useUpdateEffect } from 'react-use';
 import { compareAsc, compareDesc } from 'date-fns';
 
 const defaultOptions = {
@@ -99,10 +98,7 @@ export const useSorting = (
   const [isSortingReversed, setIsSortingReversed] = useState(
     isDefaultSortingReversed || false,
   );
-  useUpdateEffect(
-    () => setSortBy(defaultSortBy || ''),
-    [setSortBy, defaultSortBy],
-  );
+
   const sortingRules = useMemo(
     () => ({
       id: sortBy,
@@ -110,6 +106,7 @@ export const useSorting = (
     }),
     [sortBy, isSortingReversed],
   );
+
   const changeSortingRules = useCallback(
     (value: string) => {
       if (value === sortBy) {
@@ -121,6 +118,7 @@ export const useSorting = (
     },
     [sortBy, setSortBy, setIsSortingReversed],
   );
+
   const resetSortingRules = useCallback(() => {
     setSortBy(defaultSortBy || '');
     setIsSortingReversed(isDefaultSortingReversed || false);
@@ -130,6 +128,7 @@ export const useSorting = (
     setIsSortingReversed,
     isDefaultSortingReversed,
   ]);
+
   return {
     sortingRules,
     changeSortingRules,

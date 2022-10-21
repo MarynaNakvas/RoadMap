@@ -16,10 +16,8 @@ interface StickyFormControlsProps {
   cancelTitle?: string;
 }
 
-const StickyFormControls: React.FunctionComponent<
-  StickyFormControlsProps
-> = memo(
-    ({
+const StickyFormControls: React.FunctionComponent<StickyFormControlsProps> = memo(
+  ({
     className,
     isTouched,
     inProgress,
@@ -28,13 +26,13 @@ const StickyFormControls: React.FunctionComponent<
     title = 'Save changes',
     cancelTitle = 'Cancel',
   }) => {
-    const onCancel = useCallback(() => resetForm(), [resetForm, isTouched]);
+    const onCancel = useCallback(() => resetForm(), [
+      resetForm,
+      isTouched,
+    ]);
 
     return (
-      <ActionsBar
-        className={className}
-        isSticky={isTouched}
-      >
+      <ActionsBar className={className} isSticky={isTouched}>
         <ActionsWithToaster className="sticky-form-controls">
           <div className="sticky-form-controls__inner-container">
             <div className="sticky-form-controls__buttons">
@@ -46,10 +44,7 @@ const StickyFormControls: React.FunctionComponent<
                   {title}
                 </button>
                 {isTouched && (
-                  <button
-                    type="button"
-                    onClick={onCancel}
-                  >
+                  <button type="button" onClick={onCancel}>
                     {cancelTitle}
                   </button>
                 )}

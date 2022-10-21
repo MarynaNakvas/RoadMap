@@ -1,7 +1,11 @@
 import { get } from 'lodash';
 import { isEqual } from 'date-fns';
 
-import { TableKeys, Table, SortingProps } from 'core/roadmap/table.model';
+import {
+  TableKeys,
+  Table,
+  SortingProps,
+} from 'core/roadmap/table.model';
 import { stringCompareFunction } from 'utils/sorting';
 
 export const TABLE_ROW_INITIAL_VALUES: Table = {
@@ -35,10 +39,7 @@ export const processData = (
       const author = get(item, TableKeys.author);
       const rawDate = get(item, TableKeys.date);
       const date = new Date(rawDate);
-      const rating = get(
-        item,
-        TableKeys.rating,
-      );
+      const rating = get(item, TableKeys.rating);
 
       return (
         (titleValue
@@ -51,26 +52,16 @@ export const processData = (
               .toLocaleLowerCase()
               .includes(authorValue.toLocaleLowerCase())
           : true) &&
-        (dateValue
-          ? isEqual(date, dateValue)
-          : true) && 
-        (ratingValue
-          ? rating === Number(ratingValue)
-          : true)
+        (dateValue ? isEqual(date, dateValue) : true) &&
+        (ratingValue ? rating === Number(ratingValue) : true)
       );
     });
   }
 
   return items.slice().sort((leftItem, rightItem) => {
     // New items should not be sorted.
-    const leftID = get(
-      leftItem,
-      TableKeys.id,
-    );
-    const rightID = get(
-      rightItem,
-      TableKeys.id,
-    );
+    const leftID = get(leftItem, TableKeys.id);
+    const rightID = get(rightItem, TableKeys.id);
     if (leftID == null || rightID == null) {
       return 0;
     }
@@ -86,28 +77,21 @@ export const processData = (
   });
 };
 
-export const addRow = (
-  data: Table[],
-) => [
+export const addRow = (data: Table[]) => [
   {
     ...TABLE_ROW_INITIAL_VALUES,
     [TableKeys.originIndex]: 0,
   },
   ...data.map((item) => ({
     ...item,
-    [TableKeys.originIndex]:
-      get(item, TableKeys.originIndex) + 1,
+    [TableKeys.originIndex]: get(item, TableKeys.originIndex) + 1,
   })),
 ];
 
-export const removeRow = (
-  data: Table[],
-  originIndex: number,
-) =>
+export const removeRow = (data: Table[], originIndex: number) =>
   data
     .filter(
-      (item) =>
-        get(item, TableKeys.originIndex) !== originIndex,
+      (item) => get(item, TableKeys.originIndex) !== originIndex,
     )
     .map((item, index) => ({
       ...item,

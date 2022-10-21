@@ -9,9 +9,7 @@ export interface ScreenPlaceholderProps {
   description?: string;
 }
 
-const ScreenPlaceholder: React.FunctionComponent<
-  ScreenPlaceholderProps
-> = memo(
+const ScreenPlaceholder: React.FunctionComponent<ScreenPlaceholderProps> = memo(
   ({ title, description, children }) => (
     <div className="screen-placeholder">
       {!!title && (

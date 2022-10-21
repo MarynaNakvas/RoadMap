@@ -9,28 +9,24 @@ interface ActionsWithToasterProps {
   children: ReactNode;
 }
 
-const ActionsWithToaster: React.FunctionComponent<ActionsWithToasterProps> =
-  memo(
-    ({
-      autoCloseTimeout = 2000,
-      children,
-    }) => (
-      <div className="actions-with-toaster">
-        {children}
+const ActionsWithToaster: React.FunctionComponent<ActionsWithToasterProps> = memo(
+  ({ autoCloseTimeout = 2000, children }) => (
+    <div className="actions-with-toaster">
+      {children}
 
-        <ToastContainer
-          containerId="COMMON_ACTIONS_CONTAINER_ID"
-          autoClose={autoCloseTimeout}
-          closeButton={false}
-          draggable={false}
-          enableMultiContainer
-          hideProgressBar
-          limit={1}
-          pauseOnHover={false}
-        />
-      </div>
-    ),
-  );
+      <ToastContainer
+        containerId="COMMON_ACTIONS_CONTAINER_ID"
+        autoClose={autoCloseTimeout}
+        closeButton={false}
+        draggable={false}
+        enableMultiContainer
+        hideProgressBar
+        limit={1}
+        pauseOnHover={false}
+      />
+    </div>
+  ),
+);
 
 ActionsWithToaster.displayName = 'ActionsWithToaster';
 

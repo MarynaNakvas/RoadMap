@@ -15,79 +15,73 @@ interface TableRowProps {
   remove(originIndex: number): void;
 }
 
-const TableRow: React.FunctionComponent<TableRowProps> =
-  memo(
-    ({
-      formik,
-      item,
-      remove,
-    }) => {
-      const originIndex = get(item, TableKeys.originIndex);
+const TableRow: React.FunctionComponent<TableRowProps> = memo(
+  ({ formik, item, remove }) => {
+    const originIndex = get(item, TableKeys.originIndex);
 
-      return (
-        <>
-          <div className="table-row__column">
-            <FormField
-              formik={formik}
-              name={`${originIndex}.${TableKeys.title}`}
-              placeholder="Title"
-              fullWidth
-            />
-          </div>
+    return (
+      <>
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`${originIndex}.${TableKeys.title}`}
+            placeholder="Title"
+            fullWidth
+          />
+        </div>
 
-          <div className="table-row__column">
-            <FormField
-              formik={formik}
-              name={`${originIndex}.${TableKeys.author}`}
-              placeholder="Author"
-              fullWidth
-            />
-          </div>
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`${originIndex}.${TableKeys.author}`}
+            placeholder="Author"
+            fullWidth
+          />
+        </div>
 
-          <div className="table-row__column">
-            <FormField
-              formik={formik}
-              name={`${originIndex}.${TableKeys.date}`}
-              fieldType="datePicker"
-              isFormView
-            />
-          </div>
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`${originIndex}.${TableKeys.date}`}
+            fieldType="datePicker"
+            isFormView
+          />
+        </div>
 
-          <div className="table-row__column">
-            <FormField
-              formik={formik}
-              name={`${originIndex}.${TableKeys.rating}`}
-              fieldType="numberField"
-              placeholder="Rating"
-              fullWidth
-            />
-          </div>
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`${originIndex}.${TableKeys.rating}`}
+            fieldType="numberField"
+            placeholder="Rating"
+            fullWidth
+          />
+        </div>
 
-          <div className="table-row__column">
-            <FormField
-              formik={formik}
-              name={`${originIndex}.${TableKeys.isPriority}`}
-              fieldType="checkbox"
-              icon={<IconStar />}
-              checkedIcon={<IconStar />}
-              fullWidth
-            />
-          </div>
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`${originIndex}.${TableKeys.isPriority}`}
+            fieldType="checkbox"
+            icon={<IconStar />}
+            checkedIcon={<IconStar />}
+            fullWidth
+          />
+        </div>
 
-          <button
-            className="table-row__column table-row__column-action"
-            type="button"
-            onClick={() => remove(originIndex)}
-          >
-            <DeleteIcon />
-            <span>Delete</span>
-          </button>
-        </>
-      );
-    },
-  );
+        <button
+          className="table-row__column table-row__column-action"
+          type="button"
+          onClick={() => remove(originIndex)}
+        >
+          <DeleteIcon />
+          <span>Delete</span>
+        </button>
+      </>
+    );
+  },
+);
 
 TableRow.displayName = 'TableRow';
 
 export default TableRow;
-

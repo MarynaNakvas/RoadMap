@@ -13,9 +13,8 @@ interface ActionsBarProps {
 
 const intersectionOptions = {} as IntersectionObserverInit;
 
-const ActionsBar: React.FunctionComponent<ActionsBarProps> = memo((
-  props,
-) => {
+const ActionsBar: React.FunctionComponent<ActionsBarProps> = memo(
+  (props) => {
     const { children, isSticky = false, className } = props;
     const ref = useRef(null);
     const intersection = useIntersection(ref, intersectionOptions);

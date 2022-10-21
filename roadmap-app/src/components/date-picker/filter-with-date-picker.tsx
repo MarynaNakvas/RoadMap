@@ -12,10 +12,8 @@ export interface FilterWithDatePickerProps
   defaultDate?: Date | null;
 }
 
-const FilterWithDatePicker: React.FunctionComponent<
-  FilterWithDatePickerProps
-> = 
-  memo(({ filter, defaultDate, ...otherProps }) => {
+const FilterWithDatePicker: React.FunctionComponent<FilterWithDatePickerProps> = memo(
+  ({ filter, defaultDate, ...otherProps }) => {
     const { date, setDate } = useMemo(() => {
       const setter = getValueSetter;
       return {

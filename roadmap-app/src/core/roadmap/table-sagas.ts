@@ -12,7 +12,10 @@ import { tableActions } from '.';
  * Sagas
  */
 
-function* fetchDataListHandler({ type, meta }: ActionMeta<any, AppMeta>) {
+function* fetchDataListHandler({
+  type,
+  meta,
+}: ActionMeta<any, AppMeta>) {
   try {
     const { requestOptions } = meta;
     const options = {

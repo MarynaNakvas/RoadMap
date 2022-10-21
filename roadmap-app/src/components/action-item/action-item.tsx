@@ -1,6 +1,4 @@
-import React, {
-  memo,
-} from 'react';
+import React, { memo } from 'react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import classNames from 'clsx';
 
@@ -26,34 +24,25 @@ export interface ActionItemProps {
 }
 
 const ActionItem: React.FunctionComponent<ActionItemProps> = memo(
-  ({
-    icon,
-    onClick,
-    tooltip,
-  }) => {
-      const classes = {
-        popper: classNames('tooltip'),
-      };
-      return icon ? (
-        <Tooltip
-          title={tooltip}
-          placement="top"
-          PopperProps={defaultPopperProps}
-          classes={classes}
-        >
-          <IconButton
-            onClick={onClick}
-            className="action-item"
-          >
-            <span
-              className={classNames('action-item__icon')}
-            >
-              {icon}
-            </span>
-          </IconButton>
-        </Tooltip>
-      ) : null;
-    },
+  ({ icon, onClick, tooltip }) => {
+    const classes = {
+      popper: classNames('tooltip'),
+    };
+    return icon ? (
+      <Tooltip
+        title={tooltip}
+        placement="top"
+        PopperProps={defaultPopperProps}
+        classes={classes}
+      >
+        <IconButton onClick={onClick} className="action-item">
+          <span className={classNames('action-item__icon')}>
+            {icon}
+          </span>
+        </IconButton>
+      </Tooltip>
+    ) : null;
+  },
 );
 
 ActionItem.displayName = 'ActionItem';

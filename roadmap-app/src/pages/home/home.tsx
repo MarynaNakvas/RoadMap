@@ -12,11 +12,7 @@ const HomePage = ({ title, setTitle }: HomePageProps) => {
     setTitle(title);
   }, [title, setTitle]);
 
-  return (
-    <div className="home-container">
-      Nakvas Marina roadmap
-    </div>
-  )
+  return <div className="home-container">Nakvas Marina roadmap</div>;
 };
 
 HomePage.displayName = 'HomePage';

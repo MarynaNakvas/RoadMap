@@ -8,18 +8,15 @@ interface SpinnerProps {
   circleSize?: number;
   children?: ReactNode;
 }
-const Spinner: React.FunctionComponent<SpinnerProps> = memo(({
-  children,
-  isFetching,
-  circleSize = 40,
-}) =>
-  isFetching ? (
-    <div className="spinner">
-      <CircularProgress size={circleSize} />
-    </div>
-  ) : (
-    <>{children}</>
-  ),
+const Spinner: React.FunctionComponent<SpinnerProps> = memo(
+  ({ children, isFetching, circleSize = 40 }) =>
+    isFetching ? (
+      <div className="spinner">
+        <CircularProgress size={circleSize} />
+      </div>
+    ) : (
+      <>{children}</>
+    ),
 );
 
 Spinner.displayName = 'Spinner';

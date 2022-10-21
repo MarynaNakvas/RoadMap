@@ -15,8 +15,8 @@ interface FilterWithTermSearchProps {
 
 const components = { ValueContainer };
 
-const FilterWithTermSearch: React.FunctionComponent<FilterWithTermSearchProps> =
-  memo(({ filter, ...otherProps }) => {
+const FilterWithTermSearch: React.FunctionComponent<FilterWithTermSearchProps> = memo(
+  ({ filter, ...otherProps }) => {
     const debouncedSearch = useCallback(
       debounce(
         (term) =>
@@ -56,7 +56,8 @@ const FilterWithTermSearch: React.FunctionComponent<FilterWithTermSearchProps> =
         {...otherProps}
       />
     );
-  });
+  },
+);
 
 FilterWithTermSearch.displayName = 'FilterWithTermSearch';
 

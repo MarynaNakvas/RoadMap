@@ -45,12 +45,14 @@ export const roadMapReducer = createReducer(defaultState, {
     state: ReducerType,
     action: Action<Table[]>,
   ) {
-    const message = action.meta ? action.meta.toaster?.riseToast?.message : '';
+    const message = action.meta
+      ? action.meta.toaster?.riseToast?.message
+      : '';
     return update(state, {
       isDataListFetched: { $set: false },
       errors: {
         $merge: {
-          ['1']: message,
+          '1': message,
         },
       },
     });
@@ -72,12 +74,14 @@ export const roadMapReducer = createReducer(defaultState, {
     state: ReducerType,
     action: Action<Table[]>,
   ) {
-    const message = action.meta ? action.meta.toaster?.riseToast?.message : '';
+    const message = action.meta
+      ? action.meta.toaster?.riseToast?.message
+      : '';
     return update(state, {
       isMakePriorityFetched: { $set: false },
       errors: {
         $merge: {
-          ['2']: message,
+          '2': message,
         },
       },
     });

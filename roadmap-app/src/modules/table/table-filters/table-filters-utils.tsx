@@ -9,9 +9,7 @@ import {
   useResetFilters,
 } from 'utils/filtering';
 
-export const getFiltersOptions = (
-  data: Table[],
-) => {
+export const getFiltersOptions = (data: Table[]) => {
   const filtersOptions = new FiltersOptions([
     TableKeys.title,
     TableKeys.author,
@@ -21,15 +19,9 @@ export const getFiltersOptions = (
   data.forEach((item) => {
     const rating = get(item, TableKeys.rating);
 
-    filtersOptions.add(
-      TableKeys.title,
-      get(item, TableKeys.title),
-    );
+    filtersOptions.add(TableKeys.title, get(item, TableKeys.title));
 
-    filtersOptions.add(
-      TableKeys.author,
-      get(item, TableKeys.author),
-    );
+    filtersOptions.add(TableKeys.author, get(item, TableKeys.author));
 
     filtersOptions.add(
       TableKeys.rating,
@@ -40,14 +32,8 @@ export const getFiltersOptions = (
   return filtersOptions.getOptions();
 };
 
-export const useFiltering = (
-  data: Table[],
-) => {
-  const [
-    titleOptions,
-    authorOptions,
-    ratingOptions,
-  ] = useMemo(
+export const useFiltering = (data: Table[]) => {
+  const [titleOptions, authorOptions, ratingOptions] = useMemo(
     () => getFiltersOptions(data),
     [data],
   );

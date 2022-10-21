@@ -190,17 +190,13 @@ export const useFilter = <ValueType>(
   return useFilterProps<ValueType>(filter, setFilter, options);
 };
 
-export const useHasFilters = (
-  filters: (FilterProps<any>)[],
-) =>
+export const useHasFilters = (filters: FilterProps<any>[]) =>
   useMemo(
     () => filters.some((filter) => get(filter, 'value') != null),
     [filters.map((filter) => get(filter, 'value'))],
   );
 
-export const useResetFilters = (
-  filters: (FilterProps<any>)[],
-) =>
+export const useResetFilters = (filters: FilterProps<any>[]) =>
   useCallback(() => {
     filters.forEach((filter) => get(filter, 'setOption')(undefined));
   }, [filters.map((filter) => get(filter, 'setOption'))]);

@@ -8,12 +8,8 @@ interface HeaderProps {
 
 const Header: React.FunctionComponent<HeaderProps> = ({ title }) => (
   <header className="header">
-    <div className="header-title">
-      Roadmap app
-    </div>
-    <div className="header__page-title">
-      {title}
-    </div>
+    <div className="header-title">Roadmap app</div>
+    <div className="header__page-title">{title}</div>
   </header>
 );
 

@@ -12,7 +12,11 @@ import { FormikConfig, useFormik } from 'formik';
 import { isEqual } from 'lodash';
 
 import { tableActions, tableSelectors } from 'core/roadmap';
-import { TableKeys, VariableSizeListType, AutoSizerType } from 'core/roadmap/table.model';
+import {
+  TableKeys,
+  VariableSizeListType,
+  AutoSizerType,
+} from 'core/roadmap/table.model';
 import {
   NO_ITEMS_PLACEHOLDER_DESCRIPTION,
   NO_SELECTED_ITEMS_PLACEHOLDER_TITLE,
@@ -97,9 +101,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
 
   // Add and remove
   const addEntry = useCallback(
-    debounce(() =>
-      formik.setValues(addRow(data)),
-    ),
+    debounce(() => formik.setValues(addRow(data))),
     [data, formik.setValues],
   );
   const removeEntry = useCallback(
@@ -109,9 +111,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
   );
 
   useEffect(() => {
-    dispatch(
-      dispatch(tableActions.fetchDataList()),
-    );
+    dispatch(dispatch(tableActions.fetchDataList()));
   }, [dispatch]);
 
   // useEffect(
@@ -147,9 +147,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
       <Form formik={formik}>
         <div className="table__content-wrapper">
           <div className="table__controls">
-            <div className="table__title">
-              Posts
-            </div>
+            <div className="table__title">Posts</div>
 
             <div className="table__buttons">
               {hasFilters && (

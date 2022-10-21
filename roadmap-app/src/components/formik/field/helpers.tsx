@@ -8,29 +8,32 @@ import {
   FIELD_COMPONENTS,
 } from './helper-utils';
 
-export const withHelperText =
-  (Component: React.ComponentType) =>
-  ({ helperText = null, name, formik, ...props }: any) => {
-    const hasErrors = checkFieldForErrors(name, formik);
-    const errorMessage = getFieldErrors(name, formik);
+export const withHelperText = (Component: React.ComponentType) => ({
+  helperText = null,
+  name,
+  formik,
+  ...props
+}: any) => {
+  const hasErrors = checkFieldForErrors(name, formik);
+  const errorMessage = getFieldErrors(name, formik);
 
-    return (
-      <>
-        <Component name={name} formik={formik} {...props} />
+  return (
+    <>
+      <Component name={name} formik={formik} {...props} />
 
-        {hasErrors && (
-          <FormHelperText variant="standard" error>
-            {errorMessage}
-          </FormHelperText>
-        )}
-        {!!helperText && !hasErrors && (
-          <FormHelperText variant="standard">
-            {helperText}
-          </FormHelperText>
-        )}
-      </>
-    );
-  };
+      {hasErrors && (
+        <FormHelperText variant="standard" error>
+          {errorMessage}
+        </FormHelperText>
+      )}
+      {!!helperText && !hasErrors && (
+        <FormHelperText variant="standard">
+          {helperText}
+        </FormHelperText>
+      )}
+    </>
+  );
+};
 
 export const getFieldErrors = (name: string, formik: any) => {
   if (formik == null) {

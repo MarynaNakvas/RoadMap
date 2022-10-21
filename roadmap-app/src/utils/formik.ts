@@ -1,7 +1,5 @@
 import { OptionProps } from 'core/roadmap';
-import {
-  dateFormat,
-} from 'utils/date-formatter';
+import { dateFormat } from 'utils/date-formatter';
 
 export const setDateWithFormat = (
   date: Date | undefined | null,

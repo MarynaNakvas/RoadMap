@@ -36,138 +36,129 @@ export interface DatePickerProps
 
 const DatePicker = memo(
   ({
-  date = null,
-  setDate,
-  legend,
-  hasError = false,
-  defaultDate = null,
-  disabled,
-  isFormView = false,
-  onCalendarClose,
-  calendarClassName,
-  ...restProps
-}: DatePickerProps) => {
-  const inputRef = useRef(null);
-  const calendarFef = useRef(null);
+    date = null,
+    setDate,
+    legend,
+    hasError = false,
+    defaultDate = null,
+    disabled,
+    isFormView = false,
+    onCalendarClose,
+    calendarClassName,
+    ...restProps
+  }: DatePickerProps) => {
+    const inputRef = useRef(null);
+    const calendarFef = useRef(null);
 
-  const handleClear = useCallback(
-    (event: MouseEvent) => {
-      if (event) {
-        event.stopPropagation();
-      }
-      defaultDate ? setDate(defaultDate) : setDate(null);
-    },
-    [setDate],
-  );
+    const handleClear = useCallback(
+      (event: MouseEvent) => {
+        if (event) {
+          event.stopPropagation();
+        }
+        defaultDate ? setDate(defaultDate) : setDate(null);
+      },
+      [setDate],
+    );
 
-  const onChange = useCallback(
-    (date: Date) => setDate(date),
-    [setDate],
-  );
+    const onChange = useCallback((date: Date) => setDate(date), [
+      setDate,
+    ]);
 
-  const formatWeekDay = useCallback(
-    (weekName: string) => weekName.slice(0, 3),
-    [],
-  );
+    const formatWeekDay = useCallback(
+      (weekName: string) => weekName.slice(0, 3),
+      [],
+    );
 
-  const renderCustomHeader = useCallback(
-    (props: ReactDatePickerCustomHeaderProps) => (
-      <DatePickerHeader
-        {...props}
-      />
-    ),
-    [],
-  );
+    const renderCustomHeader = useCallback(
+      (props: ReactDatePickerCustomHeaderProps) => (
+        <DatePickerHeader {...props} />
+      ),
+      [],
+    );
 
-  const todayButtonTitle = useMemo(() => {
-    const todayDate = format(new Date(), 'MM/dd/yyyy');
-    return `Today ${todayDate}`;
-  }, []);
+    const todayButtonTitle = useMemo(() => {
+      const todayDate = format(new Date(), 'MM/dd/yyyy');
+      return `Today ${todayDate}`;
+    }, []);
 
-  const backsWordIcon = useCallback(() => {
-    const onClick = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
+    const backsWordIcon = useCallback(() => {
+      const onClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
 
-      const calendarInstance = calendarFef?.current as any;
+        const calendarInstance = calendarFef?.current as any;
 
-      if (calendarInstance) {
-        const isCalendarOpen = calendarInstance.isCalendarOpen();
+        if (calendarInstance) {
+          const isCalendarOpen = calendarInstance.isCalendarOpen();
 
-        calendarInstance.setOpen(!isCalendarOpen);
-      }
-    };
+          calendarInstance.setOpen(!isCalendarOpen);
+        }
+      };
+
+      return (
+        !disabled && (
+          <ActionItem
+            icon={
+              <CalendarIconTable
+                ref={inputRef}
+                className="close-calendar-icon"
+                onClick={onClick}
+              />
+            }
+            onClick={onClick}
+            tooltip={'Calendar'}
+          />
+        )
+      );
+    }, [calendarFef, inputRef, disabled]);
+
+    const customInput = useMemo(
+      () => (
+        <DatePickerInput
+          handleClear={handleClear}
+          backsWordIcon={backsWordIcon}
+          defaultDate={defaultDate}
+        />
+      ),
+      [handleClear, backsWordIcon, defaultDate],
+    );
+
+    const isDateDefault =
+      date == null || defaultDate == null
+        ? date === defaultDate
+        : isEqual(date, defaultDate);
+    const defaultDateView = !date || isDateDefault;
 
     return (
-      !disabled && (
-        <ActionItem
-          icon={
-            <CalendarIconTable
-              ref={inputRef}
-              className="close-calendar-icon"
-              onClick={onClick}
-            />
-          }
-          onClick={onClick}
-          tooltip={'Calendar'}
-        />
-      )
-    );
-  }, [
-    calendarFef,
-    inputRef,
-    disabled,
-  ]);
-
-  const customInput = useMemo(
-    () => (
-      <DatePickerInput
-        handleClear={handleClear}
-        backsWordIcon={backsWordIcon}
-        defaultDate={defaultDate}
-      />
-    ),
-    [handleClear, backsWordIcon, defaultDate],
-  );
-
-  const isDateDefault =
-    date == null || defaultDate == null
-      ? date === defaultDate
-      : isEqual(date, defaultDate);
-  const defaultDateView =
-    (!date || isDateDefault);
-
-  return (
-    <div
-      className={classNames('date-picker', {
-        'date-picker--with-date': !isDateDefault,
-        'date-picker--with-default-date':
-          defaultDateView || isDateDefault,
-        'date-picker--with-form-date': isFormView,
-        'date-picker--with-error': hasError,
-        
-      })}
-    >
-      <ReactDatePicker
-        ref={calendarFef}
-        disabled={disabled}
-        fixedHeight
-        selected={date}
-        showPopperArrow={false}
-        popperContainer={Portal}
-        customInput={customInput}
-        formatWeekDay={formatWeekDay}
-        todayButton={todayButtonTitle}
-        renderCustomHeader={renderCustomHeader}
-        {...restProps}
-        onChange={onChange}
-        calendarClassName={calendarClassName}
+      <div
+        className={classNames('date-picker', {
+          'date-picker--with-date': !isDateDefault,
+          'date-picker--with-default-date':
+            defaultDateView || isDateDefault,
+          'date-picker--with-form-date': isFormView,
+          'date-picker--with-error': hasError,
+        })}
       >
-        {legend}
-      </ReactDatePicker>
-    </div>
-  );
-},
+        <ReactDatePicker
+          ref={calendarFef}
+          disabled={disabled}
+          fixedHeight
+          selected={date}
+          showPopperArrow={false}
+          popperContainer={Portal}
+          customInput={customInput}
+          formatWeekDay={formatWeekDay}
+          todayButton={todayButtonTitle}
+          renderCustomHeader={renderCustomHeader}
+          {...restProps}
+          onChange={onChange}
+          calendarClassName={calendarClassName}
+        >
+          {legend}
+        </ReactDatePicker>
+      </div>
+    );
+  },
 );
 
 DatePicker.displayName = 'DatePicker';

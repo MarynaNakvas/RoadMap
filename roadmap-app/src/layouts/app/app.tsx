@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  withRouter,
+  Redirect,
+} from 'react-router-dom';
 import {
   TransitionGroup,
   CSSTransition,
@@ -26,8 +31,9 @@ const RoadMapApp = withRouter(({ location }) => {
             timeout={700}
           >
             <Switch>
-              {appRoutes.map((
-                { path, component: Component, title },
+              {appRoutes.map(
+                (
+                  { path, component: Component, title },
                   index: number,
                 ) => (
                   <Route
@@ -35,14 +41,11 @@ const RoadMapApp = withRouter(({ location }) => {
                     key={path}
                     path={path}
                     render={() => (
-                      <Component
-                        title={title}
-                        setTitle={setTitle}
-                      />
+                      <Component title={title} setTitle={setTitle} />
                     )}
                   />
                 ),
-                )}
+              )}
               <Redirect to={PAGE_PATH.HOME} />
             </Switch>
           </CSSTransition>

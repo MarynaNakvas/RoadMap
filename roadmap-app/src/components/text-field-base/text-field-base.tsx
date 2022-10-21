@@ -79,31 +79,22 @@ const TextFieldBase: React.FunctionComponent<TextFieldBaseProps> = memo(
     const endAdornment = useMemo(
       () => (
         <>
-          {(!!value || value === 0) &&
-            !disabled && (
-              <InputAdornment className="clear-button" position="end">
-                {!hasDefaultDate && (
-                  <ActionItem
-                    icon={
-                      <CloseIcon />
-                    }
-                    onClick={onClear}
-                    tooltip={'Clear field'}
-                  />
-                )}
-              </InputAdornment>
-            )}
+          {(!!value || value === 0) && !disabled && (
+            <InputAdornment className="clear-button" position="end">
+              {!hasDefaultDate && (
+                <ActionItem
+                  icon={<CloseIcon />}
+                  onClick={onClear}
+                  tooltip={'Clear field'}
+                />
+              )}
+            </InputAdornment>
+          )}
           {BacksWordIcon && <BacksWordIcon />}
           {Suffix && <Suffix />}
         </>
       ),
-      [
-        value,
-        disabled,
-        onClear,
-        BacksWordIcon,
-        Suffix,
-      ],
+      [value, disabled, onClear, BacksWordIcon, Suffix],
     );
 
     const inputProps = useMemo(

@@ -15,41 +15,40 @@ interface CheckboxButtonProps {
   [key: string]: any;
 }
 
-const CheckboxButton: React.FunctionComponent<CheckboxButtonProps> =
-  memo(
-    ({
-      className,
-      isChecked,
-      handleChange,
-      hasErrors,
-      disabled,
-      ...otherProps
-    }) => {
-      const onChange = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-          if (!disabled) {
-            handleChange(event.target.checked);
-          }
-        },
-        [disabled, handleChange],
-      );
+const CheckboxButton: React.FunctionComponent<CheckboxButtonProps> = memo(
+  ({
+    className,
+    isChecked,
+    handleChange,
+    hasErrors,
+    disabled,
+    ...otherProps
+  }) => {
+    const onChange = useCallback(
+      (event: ChangeEvent<HTMLInputElement>) => {
+        if (!disabled) {
+          handleChange(event.target.checked);
+        }
+      },
+      [disabled, handleChange],
+    );
 
-      return (
-        <Checkbox
-          {...otherProps}
-          className={classNames(
-            { 'checkbox-button--errors': hasErrors },
-            'checkbox-button',
-            className,
-          )}
-          checked={isChecked}
-          onChange={onChange}
-          readOnly={!disabled}
-          disabled={disabled}
-        />
-      );
-    },
-  );
+    return (
+      <Checkbox
+        {...otherProps}
+        className={classNames(
+          { 'checkbox-button--errors': hasErrors },
+          'checkbox-button',
+          className,
+        )}
+        checked={isChecked}
+        onChange={onChange}
+        readOnly={!disabled}
+        disabled={disabled}
+      />
+    );
+  },
+);
 
 CheckboxButton.displayName = 'CheckboxButton';
 

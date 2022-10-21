@@ -36,14 +36,7 @@ interface SelectProps extends SelectConfig {
 }
 
 const Select: React.FunctionComponent<SelectProps> = memo(
-  ({
-    label,
-    name,
-    formik,
-    className,
-    onChange,
-    ...innerProps
-  }) => {
+  ({ label, name, formik, className, onChange, ...innerProps }) => {
     const {
       values,
       setFieldValue,
@@ -51,10 +44,9 @@ const Select: React.FunctionComponent<SelectProps> = memo(
     } = formik;
     const value = get(values, name);
 
-    const controlClasses = useMemo(
-      () => ({ root: className }),
-      [className],
-    );
+    const controlClasses = useMemo(() => ({ root: className }), [
+      className,
+    ]);
 
     const hasErrors = useMemo(
       () => checkFieldForErrors(name, formik),

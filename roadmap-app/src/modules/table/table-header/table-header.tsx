@@ -5,7 +5,6 @@ import SortingButton from 'components/sorting-button';
 
 import './table-header.scss';
 
-
 const HEADINGS = [
   {
     id: TableKeys.title,
@@ -30,8 +29,8 @@ interface TableHeaderProps {
   changeSortingRules(id: string): void;
 }
 
-const TableHeader: React.FunctionComponent<TableHeaderProps> =
-  memo(({ sortingRules, changeSortingRules }) => (
+const TableHeader: React.FunctionComponent<TableHeaderProps> = memo(
+  ({ sortingRules, changeSortingRules }) => (
     <div className="table-header">
       {HEADINGS.map(({ id, title }) => (
         <div key={id}>
@@ -47,13 +46,11 @@ const TableHeader: React.FunctionComponent<TableHeaderProps> =
 
       <span />
 
-      <span className="table-header__action">
-        Actions
-      </span>
+      <span className="table-header__action">Actions</span>
     </div>
-  ));
+  ),
+);
 
 TableHeader.displayName = 'TableHeader';
 
 export default TableHeader;
-

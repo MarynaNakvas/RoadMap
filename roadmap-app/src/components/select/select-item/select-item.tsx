@@ -12,9 +12,7 @@ const SelectItem: React.FunctionComponent<SelectItemProps> = ({
   label,
 }) => (
   <div className="select-item">
-    <span className="select-item__status">
-      {label}
-    </span>
+    <span className="select-item__status">{label}</span>
   </div>
 );
 

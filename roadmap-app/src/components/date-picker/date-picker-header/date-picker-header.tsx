@@ -20,11 +20,10 @@ const DatePickerHeader: React.FunctionComponent<ReactDatePickerCustomHeaderProps
     //   () => (showMonthYearPicker ? NavigateNext : NavigateLast),
     //   [showMonthYearPicker],
     // );
-    const headerTitle = useMemo(
-      () => format(date, 'LLLL yyyy'),
-      [date],
-    );
-  
+    const headerTitle = useMemo(() => format(date, 'LLLL yyyy'), [
+      date,
+    ]);
+
     return (
       <div className="date-picker-header">
         <>
@@ -43,15 +42,13 @@ const DatePickerHeader: React.FunctionComponent<ReactDatePickerCustomHeaderProps
             tooltip="Previous Month"
           />
         </>
-  
-        <div
-          className="date-picker-header__date-wrapper"
-        >
+
+        <div className="date-picker-header__date-wrapper">
           <span className="date-picker-header__title">
             {headerTitle}
           </span>
         </div>
-  
+
         <>
           <ActionItem
             icon={
@@ -60,7 +57,7 @@ const DatePickerHeader: React.FunctionComponent<ReactDatePickerCustomHeaderProps
             onClick={increaseMonth}
             tooltip="Next Month"
           />
-  
+
           <ActionItem
             icon={
               <NavigateLast className="date-picker-header__icon date-picker-header__icon--increase" />

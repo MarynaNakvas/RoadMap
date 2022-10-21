@@ -48,12 +48,7 @@ const ClearIndicator = (props: any) => {
           }
         }}
       >
-        <ActionItem
-          icon={
-            <CloseIcon />
-          }
-          tooltip={'Clear field'}
-        />
+        <ActionItem icon={<CloseIcon />} tooltip={'Clear field'} />
       </InputAdornment>
     </components.ClearIndicator>
   );
@@ -116,26 +111,24 @@ const SelectBase: React.FunctionComponent<SelectBaseProps> = memo(
       [customComponents],
     );
 
-    return React.createElement(ReactSelect,
-      {
-        classNamePrefix: 'react-select',
-        options: options,
-        onChange: handleChange,
-        isSearchable: true,
-        defaultValue: selectedOption,
-        value: selectedOption,
-        isDisabled: disabled,
-        components: selectComponents,
-        noOptionsMessage: ({ inputValue }: any) =>
-          inputValue
-            ? 'Sorry, no options \n matched your criteria.'
-            : 'Sorry, no options for now',
-        hasErrors: hasErrors,
-        defaultStyles: false,
-        menuPortalTarget: document.body,
-        ...innerProps,
-      } as any,
-    );
+    return React.createElement(ReactSelect, {
+      classNamePrefix: 'react-select',
+      options: options,
+      onChange: handleChange,
+      isSearchable: true,
+      defaultValue: selectedOption,
+      value: selectedOption,
+      isDisabled: disabled,
+      components: selectComponents,
+      noOptionsMessage: ({ inputValue }: any) =>
+        inputValue
+          ? 'Sorry, no options \n matched your criteria.'
+          : 'Sorry, no options for now',
+      hasErrors: hasErrors,
+      defaultStyles: false,
+      menuPortalTarget: document.body,
+      ...innerProps,
+    } as any);
   },
 );
 

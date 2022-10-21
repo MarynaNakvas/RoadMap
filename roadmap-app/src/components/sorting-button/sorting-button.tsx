@@ -14,12 +14,7 @@ interface SortingButtonProps {
 }
 
 const SortingButton: React.FunctionComponent<SortingButtonProps> = memo(
-  ({
-    id,
-    title,
-    sortingRules,
-    changeSortingRules,
-  }) => {
+  ({ id, title, sortingRules, changeSortingRules }) => {
     const isActive = sortingRules?.id === id;
     const isReversed = sortingRules?.isReversed;
 

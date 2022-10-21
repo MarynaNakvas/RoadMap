@@ -15,10 +15,7 @@ const AppContainer = ({ title, children }: AppContainerProps) => (
     <Header title={title} />
 
     <div className="content">
-      {React.Children.map(
-        children,
-        (item) => item,
-      )}
+      {React.Children.map(children, (item) => item)}
     </div>
   </>
 );

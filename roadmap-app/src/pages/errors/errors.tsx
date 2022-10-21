@@ -18,9 +18,7 @@ const ErrorsPage = ({ title, setTitle }: ErrorsPageProps) => {
     setTitle(title);
   }, [title, setTitle]);
 
-  return (
-    <List data={errors} />
-  )
+  return <List data={errors} />;
 };
 
 ErrorsPage.displayName = 'ErrorsPage';
