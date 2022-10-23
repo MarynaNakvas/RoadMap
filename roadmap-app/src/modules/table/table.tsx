@@ -111,7 +111,9 @@ const TableComponent: React.FunctionComponent = memo(() => {
   );
 
   useEffect(() => {
-    dispatch(dispatch(tableActions.fetchDataList()));
+    console.log('Here');
+    
+    dispatch(tableActions.fetchDataList());
   }, [dispatch]);
 
   // useEffect(

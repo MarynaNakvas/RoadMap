@@ -23,38 +23,35 @@ const defaultState: ReducerType = {
 };
 
 export const roadMapReducer = createReducer(defaultState, {
-  [actionsTypes.FETCH_DATA_LIST](state: ReducerType) {
+  [actionsTypes.SET_INITIAL_STORE](
+    state: any,
+  ) {
     return update(state, {
-      isDataListFetched: { $set: true },
-      dataList: { $set: [] },
+      AAAAAAA: { $set: 'Maryna Nakvas' },
     });
   },
 
+  [actionsTypes.ENABLE_FETCH_DATA_LIST](
+    state: ReducerType,
+  ) {
+    return update(state, {
+      isDataListFetched: { $set: true },
+    });
+  },
   [resolved(actionsTypes.FETCH_DATA_LIST)](
     state: ReducerType,
     action: Action<Table[]>,
   ) {
-    const payload = action.payload ? action.payload : [];
     return update(state, {
       isDataListFetched: { $set: false },
-      dataList: { $set: payload },
+      dataList: { $set: action.payload },
     });
   },
-
   [rejected(actionsTypes.FETCH_DATA_LIST)](
     state: ReducerType,
-    action: Action<Table[]>,
   ) {
-    const message = action.meta
-      ? action.meta.toaster?.riseToast?.message
-      : '';
     return update(state, {
       isDataListFetched: { $set: false },
-      errors: {
-        $merge: {
-          '1': message,
-        },
-      },
     });
   },
 

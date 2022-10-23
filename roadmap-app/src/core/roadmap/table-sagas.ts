@@ -1,11 +1,13 @@
 import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
 import { differenceBy } from 'lodash';
+
 import { createApiCall } from 'services/api-service';
 import { resolvedAction, AppMeta } from 'utils/actions';
 import { types as actionsTypes } from './table-actions';
 import { normalizeData } from './table-service';
 import { putError } from './table-utils';
+
 import { tableActions } from '.';
 
 /*
@@ -31,7 +33,7 @@ function* fetchDataListHandler({
     const dataList = yield call(normalizeData, response);
 
     return yield put(
-      resolvedAction(actionsTypes.FETCH_DATA_LIST, dataList),
+      resolvedAction(type, dataList),
     );
   } catch (error) {
     yield putError(error as Error, type);
@@ -48,7 +50,7 @@ function* makePriorityHandler({
     const { values, initialValues } = payload;
     const array = differenceBy(values, initialValues);
 
-    yield all([
+    const response = yield all([
       ...array.map((item: any) =>
         call(
           createApiCall,
@@ -62,8 +64,8 @@ function* makePriorityHandler({
       ),
     ]);
     return yield all([
-      put(resolvedAction(actionsTypes.MAKE_PRIORITY)),
-      put(tableActions.fetchDataList()),
+      put(resolvedAction(type, response)),
+      // put(tableActions.fetchDataList()),
     ]);
   } catch (error) {
     yield putError(error as Error, type);

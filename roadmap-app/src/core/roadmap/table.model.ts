@@ -14,7 +14,7 @@ export type VariableSizeListType = {
 
 export interface Action<T> {
   type: string;
-  payload?: T;
+  payload: T;
   meta?: AppMeta;
 }
 

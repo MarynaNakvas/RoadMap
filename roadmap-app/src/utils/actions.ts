@@ -39,7 +39,7 @@ export const createConstants = <T>(constants: readonly any[]): T =>
 
 export const resolvedAction = (
   type: string,
-  payload?: any,
+  payload: any,
   meta?: AppMeta | null,
 ) =>
   createAction(
