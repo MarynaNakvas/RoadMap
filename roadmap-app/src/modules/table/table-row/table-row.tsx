@@ -1,11 +1,14 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormikProps, FormikValues } from 'formik';
 import { get } from 'lodash';
+import classNames from 'clsx';
 
 import { ReactComponent as DeleteIcon } from 'assets/icons/delete.svg';
 import { ReactComponent as IconStar } from 'assets/icons/icon-star.svg';
+import { tableActions, tableSelectors, TableKeys, Table } from 'core/roadmap';
 import FormField from 'components/formik/field';
-import { TableKeys, Table } from 'core/roadmap';
+import ActionItem from 'components/action-item';
 
 import './table-row.scss';
 
@@ -17,7 +20,21 @@ interface TableRowProps {
 
 const TableRow: React.FunctionComponent<TableRowProps> = memo(
   ({ formik, item, remove }) => {
-    const originIndex = get(item, TableKeys.originIndex);
+    const dispatch = useDispatch();
+
+    const isPriorityMaking = useSelector(
+      tableSelectors.getIsPriorityMaking,
+    );
+
+    const { originIndex, id, isPriority } = useMemo(() => ({
+      originIndex: get(item, TableKeys.originIndex),
+      id: get(item, TableKeys.id),
+      isPriority: get(item, TableKeys.isPriority),
+    }), [item]);
+
+    const makePriority = useCallback(() =>
+      dispatch(tableActions.makePriority({ id, isPriority: !isPriority })),
+    [id, isPriority]);
 
     return (
       <>
@@ -58,15 +75,25 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
           />
         </div>
 
-        <div className="table-row__column">
-          <FormField
+        <div
+        className={classNames(
+          'table-row__column',
+          { 'table-row__column--priority': isPriority },
+        )}
+        >
+          <ActionItem
+            icon={<IconStar />}
+            onClick={makePriority}
+            tooltip="Make Priority"
+          />
+          {/* <FormField
             formik={formik}
             name={`${originIndex}.${TableKeys.isPriority}`}
             fieldType="checkbox"
             icon={<IconStar />}
             checkedIcon={<IconStar />}
             fullWidth
-          />
+          /> */}
         </div>
 
         <button

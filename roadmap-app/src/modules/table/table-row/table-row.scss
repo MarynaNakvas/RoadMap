@@ -8,16 +8,24 @@
   grid-template-columns: $table-columns;
   min-height: 39px;
 
-  &__column-action {
-    @extend .button-common--text;
-    
-    cursor: pointer;
-
-    & svg {
-      max-width: 15px;
-      max-height: 15px;
-      margin-right: 4px;
-      padding-left: 4px;
+  &__column {
+    &-action {
+      @extend .button-common--text;
+      
+      cursor: pointer;
+  
+      & svg {
+        max-width: 15px;
+        max-height: 15px;
+        margin-right: 4px;
+        padding-left: 4px;
+      }
     }
-  } 
+
+    &--priority {
+      .action-item__icon {
+        color: $color-orange;
+      }
+    }
+  }
 }

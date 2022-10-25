@@ -11,7 +11,7 @@ import { VariableSizeList } from 'react-window';
 import { FormikConfig, useFormik } from 'formik';
 import { isEqual } from 'lodash';
 
-import { tableActions, tableSelectors } from 'core/roadmap';
+import { tableActions, tableSelectors, Table } from 'core/roadmap';
 import {
   TableKeys,
   VariableSizeListType,
@@ -42,10 +42,26 @@ const TableComponent: React.FunctionComponent = memo(() => {
   const dispatch = useDispatch();
 
   const isDataListFetching = useSelector(
-    tableSelectors.getIsDataListFetched,
+    tableSelectors.getIsDataListFetching,
+  );
+
+  const isDataSubmitting = useSelector(
+    tableSelectors.getIsDataSubmitting,
   );
 
   const dataList = useSelector(tableSelectors.getDataList);
+
+  const submit = useCallback(
+    (values: Table[]) => {
+      dispatch(
+        tableActions.submitData({
+          values,
+          initialValues: dataList,
+        }),
+      );
+    },
+    [dispatch, dataList],
+  );
 
   const formikConfig = useMemo(
     (): FormikConfig<any> => ({
@@ -53,7 +69,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
       validateOnBlur: true,
       enableReinitialize: true,
       initialValues: dataList,
-      onSubmit: (values) => console.log(values),
+      onSubmit: submit,
     }),
     [dataList],
   );
@@ -111,17 +127,15 @@ const TableComponent: React.FunctionComponent = memo(() => {
   );
 
   useEffect(() => {
-    console.log('Here');
-    
     dispatch(tableActions.fetchDataList());
   }, [dispatch]);
 
-  // useEffect(
-  //   () => () => {
-  //     dispatch(roadMapActions.resetDataList());
-  //   },
-  //   [dispatch],
-  // );
+  useEffect(
+    () => () => {
+      dispatch(tableActions.resetDataList());
+    },
+    [dispatch],
+  );
 
   const getItemSize = () => TABLE_ROW_HEIGHT;
   const lineHeights = getItemSize() * processedData.length;
@@ -224,7 +238,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
         </div>
         <StickyFormControls
           className="table__form-controls"
-          inProgress={false}
+          inProgress={isDataSubmitting}
           isTouched={isTouched}
           resetForm={resetForm}
           title="Save Changes"

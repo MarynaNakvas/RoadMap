@@ -1,11 +1,11 @@
 import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
-import { differenceBy } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
 import { resolvedAction, AppMeta } from 'utils/actions';
 import { types as actionsTypes } from './table-actions';
-import { normalizeData } from './table-service';
+import { normalizeData, serializeEntriesForSubmit } from './table-service';
+import { MakePriorityPayload, SubmitDataPayload, Table } from './table.model';
 import { putError } from './table-utils';
 
 import { tableActions } from '.';
@@ -28,9 +28,9 @@ function* fetchDataListHandler({
     const url =
       'https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
 
-    const response = yield call(createApiCall, url, options);
+    const response: Table[] = yield call(createApiCall, url, options);
 
-    const dataList = yield call(normalizeData, response);
+    const dataList: Table[] = yield call(normalizeData, response);
 
     return yield put(
       resolvedAction(type, dataList),
@@ -42,30 +42,73 @@ function* fetchDataListHandler({
 
 function* makePriorityHandler({
   type,
-  payload,
+  payload: { id, isPriority },
   meta,
-}: ActionMeta<any, AppMeta>) {
+}: ActionMeta<MakePriorityPayload, AppMeta>) {
   try {
     const { requestOptions } = meta;
-    const { values, initialValues } = payload;
-    const array = differenceBy(values, initialValues);
-
-    const response = yield all([
-      ...array.map((item: any) =>
-        call(
-          createApiCall,
-          `https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${item.id}/.json`,
-          {
-            method: 'PATCH',
-            body: JSON.stringify(item),
-            ...requestOptions,
-          },
-        ),
-      ),
-    ]);
+    yield call(
+      createApiCall,
+      `https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${id}/.json`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({isPriority}),
+        ...requestOptions,
+      },
+    );
     return yield all([
-      put(resolvedAction(type, response)),
-      // put(tableActions.fetchDataList()),
+      put(resolvedAction(type, values)),
+      put(tableActions.fetchDataList()),
+    ]);
+  } catch (error) {
+    yield putError(error as Error, type);
+  }
+}
+
+function* submitDataHandler({
+  type,
+  payload: { values, initialValues },
+  meta,
+}: ActionMeta<SubmitDataPayload, AppMeta>): Generator<
+  any,
+  void,
+  any
+> {
+  try {
+    const { requestOptions } = meta;
+    const url =
+      'https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
+    const {
+      updated: updatedEntries,
+      removed: removedEntries,
+    } = serializeEntriesForSubmit(
+      values,
+      initialValues,
+    );
+
+    const updatedEntriesCalls =
+      updatedEntries.map((entry) =>
+        createApiCall(url, {
+          method: 'POST',
+          ...requestOptions,
+          body: JSON.stringify(entry),
+        }),
+      );
+    const removedEntriesCalls =
+      removedEntries.map((entry: any) =>
+        createApiCall(`https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${entry.id}/.json`, {
+          method: 'DELETE',
+          ...requestOptions,
+        }),
+      );
+    yield all([
+      ...updatedEntriesCalls,
+      ...removedEntriesCalls,
+    ]);
+
+    return yield all([
+      put(resolvedAction(type, values)),
+      put(tableActions.fetchDataList()),
     ]);
   } catch (error) {
     yield putError(error as Error, type);
@@ -87,7 +130,12 @@ function* makePriorityWatcher() {
   yield takeLatest(actionsTypes.MAKE_PRIORITY, makePriorityHandler);
 }
 
+function* submitDataWatcher() {
+  yield takeLatest(actionsTypes.SUBMIT_DATA, submitDataHandler);
+}
+
 export default [
   fork(fetchDataListWatcher),
   fork(makePriorityWatcher),
+  fork(submitDataWatcher),
 ];

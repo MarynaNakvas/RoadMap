@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { ReducerType } from './table-reducer';
 
 export interface StateType {
@@ -12,9 +13,9 @@ const getDataList = createSelector(
   ({ dataList }) => dataList,
 );
 
-const getIsDataListFetched = createSelector(
+const getIsDataListFetching = createSelector(
   getLocalState,
-  ({ isDataListFetched }) => isDataListFetched,
+  ({ isDataListFetching }) => isDataListFetching,
 );
 
 const getErrors = createSelector(
@@ -22,15 +23,20 @@ const getErrors = createSelector(
   ({ errors }) => errors,
 );
 
-const getIsMakePriorityFetched = createSelector(
+const getIsPriorityMaking = createSelector(
   getLocalState,
-  ({ isMakePriorityFetched }) => isMakePriorityFetched,
+  ({ isPriorityMaking }) => isPriorityMaking,
+);
+
+const getIsDataSubmitting = createSelector(
+  getLocalState,
+  ({ isDataSubmitting }) => isDataSubmitting,
 );
 
 export default {
-  getLocalState,
   getDataList,
-  getIsDataListFetched,
+  getIsDataListFetching,
   getErrors,
-  getIsMakePriorityFetched,
+  getIsPriorityMaking,
+  getIsDataSubmitting,
 };

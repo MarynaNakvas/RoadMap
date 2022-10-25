@@ -5,9 +5,10 @@ import actions from 'core/roadmap/table-actions';
 import { AppMeta } from 'utils/actions';
 
 export default (): Middleware =>
-  ({ dispatch }: MiddlewareAPI) =>
+  (store: MiddlewareAPI) =>
   (next: Dispatch) =>
   (action: ActionMeta<any, AppMeta>) => {
+      const { dispatch } = store;
       const { meta = {}, payload } = action;
       const { auth } = meta;
       
@@ -19,7 +20,7 @@ export default (): Middleware =>
 
       if (enableFetch) {
         dispatch(enableFetch(payload));
-        dispatch(actions.setInitialStore());
+        dispatch(actions.setInitialState());
       }
 
       return next(action);

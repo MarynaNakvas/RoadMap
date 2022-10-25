@@ -1,13 +1,15 @@
 import update from 'immutability-helper';
+
 import createReducer from 'utils/create-reducer';
 import { rejected, resolved } from 'utils/actions';
 import { types as actionsTypes } from './table-actions';
 import { Action, Table } from './table.model';
 
 export interface ReducerType {
-  isDataListFetched: boolean;
+  isDataListFetching: boolean;
   dataList: Table[];
-  isMakePriorityFetched: boolean;
+  isPriorityMaking: boolean;
+  isDataSubmitting: boolean;
 
   errors: {
     [key: string]: string;
@@ -15,19 +17,20 @@ export interface ReducerType {
 }
 
 const defaultState: ReducerType = {
-  isDataListFetched: false,
+  isDataListFetching: false,
   dataList: [],
-  isMakePriorityFetched: false,
+  isPriorityMaking: false,
+  isDataSubmitting: false,
 
   errors: {},
 };
 
 export const roadMapReducer = createReducer(defaultState, {
-  [actionsTypes.SET_INITIAL_STORE](
+  [actionsTypes.SET_INITIAL_STATE](
     state: any,
   ) {
     return update(state, {
-      AAAAAAA: { $set: 'Maryna Nakvas' },
+      author: { $set: 'Maryna Nakvas' },
     });
   },
 
@@ -35,7 +38,7 @@ export const roadMapReducer = createReducer(defaultState, {
     state: ReducerType,
   ) {
     return update(state, {
-      isDataListFetched: { $set: true },
+      isDataListFetching: { $set: true },
     });
   },
   [resolved(actionsTypes.FETCH_DATA_LIST)](
@@ -43,7 +46,7 @@ export const roadMapReducer = createReducer(defaultState, {
     action: Action<Table[]>,
   ) {
     return update(state, {
-      isDataListFetched: { $set: false },
+      isDataListFetching: { $set: false },
       dataList: { $set: action.payload },
     });
   },
@@ -51,36 +54,52 @@ export const roadMapReducer = createReducer(defaultState, {
     state: ReducerType,
   ) {
     return update(state, {
-      isDataListFetched: { $set: false },
+      isDataListFetching: { $set: false },
     });
   },
 
-  [actionsTypes.MAKE_PRIORITY](state: ReducerType) {
+  [actionsTypes.ENABLE_MAKE_PRIORITY](state: ReducerType) {
     return update(state, {
-      isMakePriorityFetched: { $set: true },
+      isPriorityMaking: { $set: true },
     });
   },
-
   [resolved(actionsTypes.MAKE_PRIORITY)](state: ReducerType) {
     return update(state, {
-      isMakePriorityFetched: { $set: false },
+      isPriorityMaking: { $set: false },
+    });
+  },
+  [rejected(actionsTypes.MAKE_PRIORITY)](
+    state: ReducerType,
+  ) {
+    return update(state, {
+      isPriorityMaking: { $set: false },
     });
   },
 
-  [rejected(actionsTypes.MAKE_PRIORITY)](
-    state: ReducerType,
-    action: Action<Table[]>,
-  ) {
-    const message = action.meta
-      ? action.meta.toaster?.riseToast?.message
-      : '';
+  [actionsTypes.ENABLE_SUBMIT_DATA](state: ReducerType) {
     return update(state, {
-      isMakePriorityFetched: { $set: false },
-      errors: {
-        $merge: {
-          '2': message,
-        },
-      },
+      isDataSubmitting: { $set: true },
+    });
+  },
+  [resolved(actionsTypes.SUBMIT_DATA)](state: ReducerType) {
+    return update(state, {
+      isDataSubmitting: { $set: false },
+    });
+  },
+  [rejected(actionsTypes.SUBMIT_DATA)](
+    state: ReducerType,
+  ) {
+    return update(state, {
+      isDataSubmitting: { $set: false },
+    });
+  },
+
+  
+  [actionsTypes.RESET_DATA_LIST](
+    state: ReducerType,
+  ) {
+    return update(state, {
+      dataList: { $set: [] },
     });
   },
 });

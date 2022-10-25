@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore, MiddlewareAPI } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history';
@@ -19,9 +19,9 @@ if (dev) {
   middleware = composeWithDevTools(middleware);
 }
 
-const configureStore = (initialState = {}) => {
-  const store: any = createStore(
-    rootReducer(), initialState, middleware,
+const configureStore = () => {
+  const store: MiddlewareAPI | any = createStore(
+    rootReducer(), middleware,
   );
 
   store.asyncReducers = {};
@@ -31,35 +31,28 @@ const configureStore = (initialState = {}) => {
     return store;
   }
 
+  const createSagaInjector = (runSaga: any) => {
+    const injectedSagas: any = {}
   
-const createSagaInjector = (runSaga: any) => {
-  const injectedSagas: any = {}
-
-  const injectSaga = (key: string, saga: any) => {
-    if (injectedSagas[key]) {
-      return injectedSagas[key]
+    const injectSaga = (key: string, saga: any) => {
+      if (injectedSagas[key]) {
+        return injectedSagas[key]
+      }
+  
+      const task = runSaga(saga);
+      injectedSagas[key] = task;
+      return task;
     }
-
-    const task = runSaga(saga);
-    injectedSagas[key] = task;
-    return task;
+  
+    return injectSaga;
   }
-
-  return injectSaga;
-}
-
+  
   store.injectSaga = createSagaInjector(sagaMiddleware.run);
-
-  const rootTask = store.injectSaga('root', rootSaga)
-  // const asyncTasks = Object.entries(extraReducers)
-  //   .filter(([_, storeSlice]) => storeSlice.saga)
-  //   .map(([key, storeSlice]) => store.injectSaga(key, storeSlice.saga))
-console.log('store', store);
+  const rootTask = store.injectSaga('root', rootSaga);
 
   return {
     store,
-    sagaTasks: [rootTask],
-    // runSaga: sagaMiddleware.run(rootSaga),
+    runSaga: rootTask,
   }
 }
 

@@ -39,6 +39,16 @@ export interface Table {
   [TableKeys.originIndex]: number;
 }
 
+export interface MakePriorityPayload {
+  id?: string | null;
+  isPriority: boolean;
+}
+
+export interface SubmitDataPayload {
+  values: Table[];
+  initialValues: Table[];
+}
+
 export interface SortingProps {
   id: number | string;
   isReversed?: boolean;
