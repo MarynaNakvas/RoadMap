@@ -45,8 +45,6 @@ export const serializeEntriesForSubmit = (
     (entry) => {
       const id = get(entry, TableKeys.id);
       if (!id) {
-        console.log('New id');
-        
         return {
           ...entry,
           id: createUID(),

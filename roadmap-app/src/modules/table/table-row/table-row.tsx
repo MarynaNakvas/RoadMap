@@ -98,14 +98,15 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
           /> */}
         </div>
 
-        <button
+        {id ? <button
           className="table-row__column table-row__column-action"
           type="button"
           onClick={() => remove(originIndex)}
         >
           <DeleteIcon />
           <span>Delete</span>
-        </button>
+        </button> : <span/>}
+        
       </>
     );
   },
