@@ -21,10 +21,13 @@ export interface ActionItemProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ): void;
   tooltip: string;
+
+  // other props
+  [key: string]: any;
 }
 
 const ActionItem: React.FunctionComponent<ActionItemProps> = memo(
-  ({ icon, onClick, tooltip }) => {
+  ({ icon, onClick, tooltip, ...otherProps }) => {
     const classes = {
       popper: classNames('tooltip'),
     };
@@ -35,7 +38,7 @@ const ActionItem: React.FunctionComponent<ActionItemProps> = memo(
         PopperProps={defaultPopperProps}
         classes={classes}
       >
-        <IconButton onClick={onClick} className="action-item">
+        <IconButton onClick={onClick} className="action-item" {...otherProps}>
           <span className={classNames('action-item__icon')}>
             {icon}
           </span>

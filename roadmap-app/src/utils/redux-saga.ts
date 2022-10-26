@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { isEqual, omit } from 'lodash';
 
 // We need to split unordered values into 3 arrays: added, updated and removed.
 // If value has no id we may ignore it.

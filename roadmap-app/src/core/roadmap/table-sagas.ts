@@ -1,11 +1,12 @@
 import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
+import { omit, get } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
 import { resolvedAction, AppMeta } from 'utils/actions';
 import { types as actionsTypes } from './table-actions';
 import { normalizeData, serializeEntriesForSubmit } from './table-service';
-import { MakePriorityPayload, SubmitDataPayload, Table } from './table.model';
+import { MakePriorityPayload, SubmitDataPayload, TableKeys } from './table.model';
 import { putError } from './table-utils';
 
 import { tableActions } from '.';
@@ -28,9 +29,9 @@ function* fetchDataListHandler({
     const url =
       'https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
 
-    const response: Table[] = yield call(createApiCall, url, options);
-
-    const dataList: Table[] = yield call(normalizeData, response);
+    const response = yield call(createApiCall, url, options);
+    
+    const dataList = yield call(normalizeData, Object.values(response));
 
     return yield put(
       resolvedAction(type, dataList),
@@ -57,7 +58,7 @@ function* makePriorityHandler({
       },
     );
     return yield all([
-      put(resolvedAction(type, values)),
+      put(resolvedAction(type, isPriority)),
       put(tableActions.fetchDataList()),
     ]);
   } catch (error) {
@@ -76,9 +77,9 @@ function* submitDataHandler({
 > {
   try {
     const { requestOptions } = meta;
-    const url =
-      'https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
+
     const {
+      added: addedEntries,
       updated: updatedEntries,
       removed: removedEntries,
     } = serializeEntriesForSubmit(
@@ -86,22 +87,42 @@ function* submitDataHandler({
       initialValues,
     );
 
-    const updatedEntriesCalls =
-      updatedEntries.map((entry) =>
-        createApiCall(url, {
-          method: 'POST',
+    const addedEntriesCalls =
+      addedEntries.map((entry, index) => {
+        const key = values.length - (1 + index);
+        return createApiCall(
+          `https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json`, {
+          method: 'PATCH',
           ...requestOptions,
           body: JSON.stringify(entry),
-        }),
-      );
+        })
+      });
+
+    const updatedEntriesCalls =
+      updatedEntries.map((entry) => {
+        const updatedEntry = initialValues.find((item) => item.id === entry.id);
+        const key = get(updatedEntry, TableKeys.originIndex);
+         
+        return createApiCall(
+          `https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json`, {
+          method: 'PATCH',
+          ...requestOptions,
+          body: JSON.stringify(entry),
+        })
+      });
+
     const removedEntriesCalls =
-      removedEntries.map((entry: any) =>
-        createApiCall(`https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${entry.id}/.json`, {
+      removedEntries.map((entry) => {
+        const removedEntry = initialValues.find((item) => item.id === entry.id);
+        const key = get(removedEntry, TableKeys.originIndex);  
+        return createApiCall(`https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json`, {
           method: 'DELETE',
           ...requestOptions,
-        }),
-      );
+        })    
+      });
+
     yield all([
+      ...addedEntriesCalls,
       ...updatedEntriesCalls,
       ...removedEntriesCalls,
     ]);

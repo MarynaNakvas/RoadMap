@@ -7,17 +7,20 @@ import { TableKeys, Table } from './table.model';
 
 export const normalizeData = (data: Table[]) =>
   data.map((item, index) => {
-    const { id, title, author, date, rating, isPriority } = item;
+    if (item) {
+      const { id, title, author, date, rating, isPriority } = item;
 
-    return {
-      [TableKeys.id]: id,
-      [TableKeys.title]: title,
-      [TableKeys.author]: author,
-      [TableKeys.date]: dateFormat(new Date(date)),
-      [TableKeys.rating]: rating,
-      [TableKeys.isPriority]: isPriority,
-      [TableKeys.originIndex]: index,
-    };
+      return {
+        [TableKeys.id]: id,
+        [TableKeys.title]: title,
+        [TableKeys.author]: author,
+        [TableKeys.date]: dateFormat(new Date(date)),
+        [TableKeys.rating]: rating,
+        [TableKeys.isPriority]: isPriority,
+        [TableKeys.originIndex]: index,
+      };
+    }
+    return null;
   });
 
 const serializeEntryForSubmit = (
@@ -42,6 +45,8 @@ export const serializeEntriesForSubmit = (
     (entry) => {
       const id = get(entry, TableKeys.id);
       if (!id) {
+        console.log('New id');
+        
         return {
           ...entry,
           id: createUID(),
@@ -57,11 +62,12 @@ export const serializeEntriesForSubmit = (
     serializeEntryForSubmit(
       currentEntries,
     ),
-    'id',
+    TableKeys.id,
   );
 
   return {
-    updated: [...data.added, ...data.updated],
+    added: data.added,
+    updated: data.updated,
     removed: data.removed,
   };
 };

@@ -11,7 +11,7 @@ import { VariableSizeList } from 'react-window';
 import { FormikConfig, useFormik } from 'formik';
 import { isEqual } from 'lodash';
 
-import { tableActions, tableSelectors, Table } from 'core/roadmap';
+import { tableActions, tableSelectors, TableData } from 'core/roadmap';
 import {
   TableKeys,
   VariableSizeListType,
@@ -49,38 +49,38 @@ const TableComponent: React.FunctionComponent = memo(() => {
     tableSelectors.getIsDataSubmitting,
   );
 
-  const dataList = useSelector(tableSelectors.getDataList);
+  const initialValues = useSelector(tableSelectors.getData);
 
   const submit = useCallback(
-    (values: Table[]) => {
+    (values: TableData) => {
       dispatch(
         tableActions.submitData({
-          values,
-          initialValues: dataList,
+          values: values.dataList,
+          initialValues: initialValues.dataList,
         }),
       );
     },
-    [dispatch, dataList],
+    [dispatch, initialValues],
   );
 
   const formikConfig = useMemo(
-    (): FormikConfig<any> => ({
+    (): FormikConfig<TableData> => ({
       validateOnChange: true,
       validateOnBlur: true,
       enableReinitialize: true,
-      initialValues: dataList,
+      initialValues,
       onSubmit: submit,
     }),
-    [dataList],
+    [initialValues],
   );
 
   const formik = useFormik(formikConfig);
   const { values, resetForm, isSubmitting } = formik;
+  const { dataList } = values;
   const isTouched = useMemo(
-    () => !isEqual(values, dataList) || isSubmitting,
-    [values, dataList, isSubmitting],
+    () => !isEqual(values, initialValues) || isSubmitting,
+    [values, initialValues, isSubmitting],
   );
-  const data = values;
 
   // Sorting and filtering.
   const { sortingRules, changeSortingRules } = useSorting(
@@ -94,11 +94,11 @@ const TableComponent: React.FunctionComponent = memo(() => {
     rating,
     hasFilters,
     resetFilters,
-  } = useFiltering(data);
+  } = useFiltering(dataList);
   const processedData = useMemo(
     () =>
       processData(
-        data,
+        dataList,
         sortingRules,
         title.value,
         author.value,
@@ -106,7 +106,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
         rating.value,
       ),
     [
-      data,
+      dataList,
       sortingRules,
       title.value,
       author.value,
@@ -117,13 +117,21 @@ const TableComponent: React.FunctionComponent = memo(() => {
 
   // Add and remove
   const addEntry = useCallback(
-    debounce(() => formik.setValues(addRow(data))),
-    [data, formik.setValues],
+    debounce(() =>
+      formik.setFieldValue(
+        'dataList',
+        addRow(dataList),
+      ),
+    ),
+    [dataList, formik.setFieldValue],
   );
   const removeEntry = useCallback(
     (originIndex: number) =>
-      formik.setValues(removeRow(data, originIndex)),
-    [data, formik.setValues],
+      formik.setFieldValue(
+        'dataList',
+        removeRow(dataList, originIndex),
+      ),
+    [dataList, formik.setFieldValue],
   );
 
   useEffect(() => {
@@ -154,6 +162,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
         formik={formik}
         item={processedData[index]}
         remove={removeEntry}
+        isTouched={isTouched}
       />
     </div>
   );

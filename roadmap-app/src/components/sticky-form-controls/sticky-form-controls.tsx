@@ -36,7 +36,7 @@ const StickyFormControls: React.FunctionComponent<StickyFormControlsProps> = mem
         <ActionsWithToaster className="sticky-form-controls">
           <div className="sticky-form-controls__inner-container">
             <div className="sticky-form-controls__buttons">
-              <Spinner isFetching={inProgress}>
+              <Spinner isFetching={inProgress} circleSize={20} >
                 <button
                   type={onclick ? 'button' : 'submit'}
                   disabled={!isTouched}

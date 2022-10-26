@@ -13,6 +13,11 @@ const getDataList = createSelector(
   ({ dataList }) => dataList,
 );
 
+const getData = createSelector(
+  getDataList,
+  ( dataList ) => ({dataList}),
+);
+
 const getIsDataListFetching = createSelector(
   getLocalState,
   ({ isDataListFetching }) => isDataListFetching,
@@ -35,6 +40,7 @@ const getIsDataSubmitting = createSelector(
 
 export default {
   getDataList,
+  getData,
   getIsDataListFetching,
   getErrors,
   getIsPriorityMaking,

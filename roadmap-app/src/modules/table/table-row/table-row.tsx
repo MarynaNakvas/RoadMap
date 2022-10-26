@@ -1,25 +1,26 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormikProps, FormikValues } from 'formik';
+import { FormikProps } from 'formik';
 import { get } from 'lodash';
 import classNames from 'clsx';
 
 import { ReactComponent as DeleteIcon } from 'assets/icons/delete.svg';
 import { ReactComponent as IconStar } from 'assets/icons/icon-star.svg';
-import { tableActions, tableSelectors, TableKeys, Table } from 'core/roadmap';
+import { tableActions, tableSelectors, TableKeys, Table, TableData } from 'core/roadmap';
 import FormField from 'components/formik/field';
 import ActionItem from 'components/action-item';
 
 import './table-row.scss';
 
 interface TableRowProps {
-  formik: FormikProps<FormikValues>;
+  formik: FormikProps<TableData>;
   item: Table;
   remove(originIndex: number): void;
+  isTouched: boolean;
 }
 
 const TableRow: React.FunctionComponent<TableRowProps> = memo(
-  ({ formik, item, remove }) => {
+  ({ formik, item, remove, isTouched }) => {
     const dispatch = useDispatch();
 
     const isPriorityMaking = useSelector(
@@ -33,15 +34,15 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
     }), [item]);
 
     const makePriority = useCallback(() =>
-      dispatch(tableActions.makePriority({ id, isPriority: !isPriority })),
-    [id, isPriority]);
+      dispatch(tableActions.makePriority({ id: originIndex, isPriority: !isPriority })),
+    [originIndex, isPriority]);
 
     return (
       <>
         <div className="table-row__column">
           <FormField
             formik={formik}
-            name={`${originIndex}.${TableKeys.title}`}
+            name={`dataList.${originIndex}.${TableKeys.title}`}
             placeholder="Title"
             fullWidth
           />
@@ -50,7 +51,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
         <div className="table-row__column">
           <FormField
             formik={formik}
-            name={`${originIndex}.${TableKeys.author}`}
+            name={`dataList.${originIndex}.${TableKeys.author}`}
             placeholder="Author"
             fullWidth
           />
@@ -59,7 +60,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
         <div className="table-row__column">
           <FormField
             formik={formik}
-            name={`${originIndex}.${TableKeys.date}`}
+            name={`dataList.${originIndex}.${TableKeys.date}`}
             fieldType="datePicker"
             isFormView
           />
@@ -68,7 +69,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
         <div className="table-row__column">
           <FormField
             formik={formik}
-            name={`${originIndex}.${TableKeys.rating}`}
+            name={`dataList.${originIndex}.${TableKeys.rating}`}
             fieldType="numberField"
             placeholder="Rating"
             fullWidth
@@ -85,6 +86,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
             icon={<IconStar />}
             onClick={makePriority}
             tooltip="Make Priority"
+            disabled={isTouched || !id}
           />
           {/* <FormField
             formik={formik}

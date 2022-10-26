@@ -34,7 +34,7 @@ export const processData = (
     dateValue != null ||
     ratingValue != null
   ) {
-    items = items.filter((item) => {
+    items = items.filter((item) => !!item).filter((item) => {
       const title = get(item, TableKeys.title);
       const author = get(item, TableKeys.author);
       const rawDate = get(item, TableKeys.date);

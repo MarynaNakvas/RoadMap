@@ -39,8 +39,12 @@ export interface Table {
   [TableKeys.originIndex]: number;
 }
 
+export interface TableData {
+  dataList: Table[];
+}
+
 export interface MakePriorityPayload {
-  id?: string | null;
+  id?: string | number | null;
   isPriority: boolean;
 }
 
