@@ -37,7 +37,7 @@ export default class SideNavigationMenu extends Component<
   }
 
   componentDidMount() {
-    const storagedWidth = localStorage.getItem('width');
+    const storagedWidth = localStorage.getItem('width');   
     const width = storagedWidth ? Number(storagedWidth) : 200;
     this.setState({ width: width });
   }
@@ -69,7 +69,7 @@ export default class SideNavigationMenu extends Component<
           : this.state.width + xDiff;
       this.setState({
         drag: { ...this.state.drag, x: e.clientX },
-        width: newWidth,
+        width: newWidth < 200 ? 200 : newWidth,
       });
     }
   };
@@ -91,6 +91,11 @@ export default class SideNavigationMenu extends Component<
           }`}
           onMouseMove={this.resizeFrame}
           onMouseUp={this.stopResize}
+          style={
+            this.state.isSidebarExpanded
+              ? { width: `${this.state.width + 20}px` }
+              : {}
+          }
         >
           <div
             className={`sidebar-menu ${

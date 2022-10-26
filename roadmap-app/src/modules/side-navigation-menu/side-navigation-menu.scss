@@ -3,9 +3,8 @@
 
 .sidebar-menu__wrapper {
   position: absolute;
-  z-index: -1;
-  width: 100vw;
-  height: 100vh;
+  z-index: 0;
+  height: 100%;
 
   &-expanded {
     z-index: 2;
@@ -15,7 +14,7 @@
 .sidebar-menu {
   position: absolute;
   width: 0;
-  height: 100vh;
+  height: 100%;
   background-color: $color-background-secondary;
   transition: 0.2s min-width, 0.2s width;
 
@@ -53,7 +52,6 @@
 
   &__container {
     display: none;
-    height: 100%;
 
     & > * {
       display: block;
@@ -79,6 +77,7 @@
 
       &__button-close {
         position: absolute;
+        top: 0;
         right: 10px;
         display: block;
         min-width: 40px;
@@ -101,7 +100,7 @@
         position: absolute;
         right: 0;
         display: block;
-        height: 100vh;
+        height: 92%;
         margin-right: -10px;
         padding: 0;
         font-size: 25px;
