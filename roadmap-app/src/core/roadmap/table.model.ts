@@ -26,6 +26,7 @@ export enum TableKeys {
   rating = 'rating',
   action = 'action',
   isPriority = 'isPriority',
+  key = 'key',
   originIndex = 'originIndex',
 }
 
@@ -36,6 +37,7 @@ export interface Table {
   [TableKeys.date]: string;
   [TableKeys.rating]: number | null;
   [TableKeys.isPriority]: boolean;
+  [TableKeys.key]: string | number | null;
   [TableKeys.originIndex]: number;
 }
 

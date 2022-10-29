@@ -27,15 +27,16 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
       tableSelectors.getIsPriorityMaking,
     );
 
-    const { originIndex, id, isPriority } = useMemo(() => ({
+    const { originIndex, id, key, isPriority } = useMemo(() => ({
       originIndex: get(item, TableKeys.originIndex),
       id: get(item, TableKeys.id),
+      key: get(item, TableKeys.key),
       isPriority: get(item, TableKeys.isPriority),
     }), [item]);
 
     const makePriority = useCallback(() =>
-      dispatch(tableActions.makePriority({ id: originIndex, isPriority: !isPriority })),
-    [originIndex, isPriority]);
+      dispatch(tableActions.makePriority({ id: key, isPriority: !isPriority })),
+    [key, isPriority]);
 
     return (
       <>
@@ -98,15 +99,17 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
           /> */}
         </div>
 
-        {id ? <button
-          className="table-row__column table-row__column-action"
-          type="button"
-          onClick={() => remove(originIndex)}
-        >
-          <DeleteIcon />
-          <span>Delete</span>
-        </button> : <span/>}
-        
+        {id
+          ? <button
+              className="table-row__column table-row__column-action"
+              type="button"
+              onClick={() => remove(originIndex)}
+            >
+              <DeleteIcon />
+              <span>Delete</span>
+            </button>
+          : <span/>
+        }  
       </>
     );
   },

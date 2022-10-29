@@ -22,6 +22,7 @@ import {
   NO_SELECTED_ITEMS_PLACEHOLDER_TITLE,
   NO_SELECTED_ITEMS_PLACEHOLDER_DESCRIPTION,
 } from 'core/app-constants';
+import withAsyncStoreSaga from 'core/withAsyncStoreSaga';
 import ScreenPlaceholder from 'components/screen-placeholder';
 import StickyFormControls from 'components/sticky-form-controls';
 import Spinner from 'components/spinner';
@@ -258,5 +259,7 @@ const TableComponent: React.FunctionComponent = memo(() => {
 });
 
 TableComponent.displayName = 'TableComponent';
+
+// const withReducer = withAsyncStoreSaga();
 
 export default TableComponent;

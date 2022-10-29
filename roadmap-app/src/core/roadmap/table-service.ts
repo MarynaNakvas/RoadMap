@@ -5,10 +5,9 @@ import { dateFormat } from 'utils/date-formatter';
 import { updateUnorderedList } from 'utils/redux-saga';
 import { TableKeys, Table } from './table.model';
 
-export const normalizeData = (data: Table[]) =>
-  data.map((item, index) => {
-    if (item) {
-      const { id, title, author, date, rating, isPriority } = item;
+export const normalizeData = (data: any) =>
+  data.map(([key, value]: any, index: number) => {
+    const { id, title, author, date, rating, isPriority } = value;
 
       return {
         [TableKeys.id]: id,
@@ -17,10 +16,9 @@ export const normalizeData = (data: Table[]) =>
         [TableKeys.date]: dateFormat(new Date(date)),
         [TableKeys.rating]: rating,
         [TableKeys.isPriority]: isPriority,
+        [TableKeys.key]: key,
         [TableKeys.originIndex]: index,
       };
-    }
-    return null;
   });
 
 const serializeEntryForSubmit = (

@@ -15,6 +15,7 @@ export const TABLE_ROW_INITIAL_VALUES: Table = {
   [TableKeys.date]: '',
   [TableKeys.rating]: null,
   [TableKeys.isPriority]: false,
+  [TableKeys.key]: null,
   [TableKeys.originIndex]: 0,
 };
 

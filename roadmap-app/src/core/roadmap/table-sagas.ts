@@ -1,6 +1,6 @@
 import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
-import { omit, get } from 'lodash';
+import { get } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
 import { resolvedAction, AppMeta } from 'utils/actions';
@@ -30,8 +30,8 @@ function* fetchDataListHandler({
       'https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
 
     const response = yield call(createApiCall, url, options);
-    
-    const dataList = yield call(normalizeData, Object.values(response));
+
+    const dataList = yield call(normalizeData, Object.entries(response));
 
     return yield put(
       resolvedAction(type, dataList),
@@ -101,7 +101,7 @@ function* submitDataHandler({
     const updatedEntriesCalls =
       updatedEntries.map((entry) => {
         const updatedEntry = initialValues.find((item) => item.id === entry.id);
-        const key = get(updatedEntry, TableKeys.originIndex);
+        const key = get(updatedEntry, TableKeys.key);
          
         return createApiCall(
           `https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json`, {
@@ -114,7 +114,7 @@ function* submitDataHandler({
     const removedEntriesCalls =
       removedEntries.map((entry) => {
         const removedEntry = initialValues.find((item) => item.id === entry.id);
-        const key = get(removedEntry, TableKeys.originIndex);  
+        const key = get(removedEntry, TableKeys.key);  
         return createApiCall(`https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json`, {
           method: 'DELETE',
           ...requestOptions,

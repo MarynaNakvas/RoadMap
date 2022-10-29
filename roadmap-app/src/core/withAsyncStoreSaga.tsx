@@ -18,13 +18,13 @@ const withAsyncStoreSaga = (stores: any) => (WrappedComponent: any) => {
     })
 
     useEffect(() => {
-      customStore.injectReducers(stores)
-
-      // for (const [key, storeSlice] of Object.entries(stores)) {
-      //   if (storeSlice.saga) {
-      //     store.injectSaga(key, storeSlice.saga)
-      //   }
-      // }
+      for (const [key, storeSlice] of Object.entries(stores) as any) {
+        if (!!storeSlice.saga) {
+          customStore.injectSaga(key, storeSlice.saga)
+        }
+      }
+      const newStores = Object.entries(stores).filter(([key, storeSlice]: any) => !storeSlice.saga);   
+      customStore.injectReducer(Object.fromEntries(newStores));
     }, [])
 
     if (!hasStores) {

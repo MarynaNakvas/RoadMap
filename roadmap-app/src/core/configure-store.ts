@@ -19,16 +19,19 @@ if (dev) {
   middleware = composeWithDevTools(middleware);
 }
 
-const configureStore = () => {
+const configureStore = (extraReducers = {}) => {
   const store: MiddlewareAPI | any = createStore(
-    rootReducer(), middleware,
+    rootReducer(extraReducers), middleware,
   );
 
   store.asyncReducers = {};
-  store.injectReducer = (key: string, reducer: any) => {
-    store.asyncReducers[key] = reducer;
-    store.replaceReducer(rootReducer(store.asyncReducers));
-    return store;
+  store.injectReducer = (asyncReducers: any) => {
+    Object.keys(asyncReducers).forEach(key => {
+      if (!store.asyncReducers[key]) {
+        store.asyncReducers[key] = asyncReducers[key]
+      }
+    })
+    store.replaceReducer(rootReducer(store.asyncReducers))
   }
 
   const createSagaInjector = (runSaga: any) => {
@@ -36,11 +39,12 @@ const configureStore = () => {
   
     const injectSaga = (key: string, saga: any) => {
       if (injectedSagas[key]) {
-        return injectedSagas[key]
+        return injectedSagas[key];
       }
-  
+      
       const task = runSaga(saga);
       injectedSagas[key] = task;
+    
       return task;
     }
   
@@ -50,9 +54,13 @@ const configureStore = () => {
   store.injectSaga = createSagaInjector(sagaMiddleware.run);
   const rootTask = store.injectSaga('root', rootSaga);
 
+  const asyncTasks = Object.entries(extraReducers)
+    .filter(([key, storeSlice]: any) => !!storeSlice.saga)
+    .map(([key, storeSlice]: any) => store.injectSaga(key, storeSlice.saga))
+
   return {
     store,
-    runSaga: rootTask,
+    runSaga: [rootTask, ...asyncTasks],
   }
 }
 
