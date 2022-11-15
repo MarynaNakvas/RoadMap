@@ -1,4 +1,4 @@
-import { createAction, Action, ActionMeta } from 'redux-actions';
+import { createAction, ActionMeta } from 'redux-actions';
 
 export const resolved = (type: string) => `${type}_SUCCESS`;
 
@@ -18,11 +18,9 @@ export interface AppMeta {
       message: string;
       reason?: ToastReasonType;
       scrollToTop?: boolean;
-      needToDismissPrevious?: boolean;
     };
     dismissToast?: string;
   };
-  modalConductorAction?: Action<any>;
   auth?: {
     enableFetch?(payload?: any): ActionMeta<any, any>;
   };

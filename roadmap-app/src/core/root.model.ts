@@ -1,18 +1,20 @@
-import { Dispatch, Unsubscribe, AnyAction, Reducer, CombinedState } from 'redux';
+import { Store } from 'redux';
+import { Task } from 'redux-saga';
 
 export interface State {
   roadMap: {}; 
 }
 
-export interface Store {
-  dispatch: Dispatch<AnyAction>;
-  getState(): State;
-  subscribe(listener: () => void): Unsubscribe;
-  replaceReducer(nextReducer: Reducer<State, AnyAction>): void;
+export interface AsyncReducers {
+  [key: string]: (state: any) => void;
 }
 
-export interface CustomStore extends CombinedState<Store> {
-  asyncReducers: any;
-  injectReducer: any;
-  injectSaga: any;
+export interface AsyncSagas {
+  [key: string]: Task;
+}
+
+export interface CustomStore extends Store {
+  asyncReducers?: AsyncReducers;
+  injectReducer?: (props: AsyncReducers) => void;
+  injectSaga?: (key: string, saga: () => Generator<any, void, any>) => Task;
 }

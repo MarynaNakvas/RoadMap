@@ -1,7 +1,6 @@
 import { createAction } from 'redux-actions';
 
 import { createConstants } from 'utils/actions';
-
 import { MakePriorityPayload, SubmitDataPayload } from './table.model';
 
 const typesNames = [

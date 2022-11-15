@@ -1,9 +1,10 @@
 import React from 'react';
+import { Formik, Form } from 'formik';
 
-const Form = ({ formik, children, ...otherProps }: any) => (
-  <form onSubmit={formik?.handleSubmit} {...otherProps}>
-    {children}
-  </form>
+const FormComponent = ({ formik, children, ...otherProps }: any) => (
+  <Formik {...formik} onSubmit={formik.handleSubmit}>
+    <Form {...otherProps}>{children}</Form>
+  </Formik>
 );
 
-export default Form;
+export default FormComponent;

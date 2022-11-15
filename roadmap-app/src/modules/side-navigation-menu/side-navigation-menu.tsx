@@ -143,6 +143,9 @@ export default class SideNavigationMenu extends Component<
                     to={item.path}
                     className="routing-link"
                     activeClassName="routing-link--active"
+                    onClick={() => this.setState({
+                      isSidebarExpanded: false,
+                    })}
                   >
                     {item.title}
                   </NavLink>

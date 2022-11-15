@@ -10,9 +10,10 @@ interface TablePageProps {
 }
 
 const TablePage: React.FunctionComponent<TablePageProps> = memo(
-  ({ title, setTitle }: TablePageProps) => {
-    // setTitle(title);
-    const aaa = 'a';
+  ({ title, setTitle }) => {
+    useEffect(() => {
+      setTitle(title);
+    }, [title, setTitle]);
   
     return (
       <div className="table-container">

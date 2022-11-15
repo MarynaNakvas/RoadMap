@@ -1,11 +1,12 @@
-import { applyMiddleware, createStore, MiddlewareAPI } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { applyMiddleware, createStore } from 'redux';
+import createSagaMiddleware, { Task } from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history';
 
 import { createCustomMiddleWare } from 'core/roadmap';
 import rootSaga from './root-saga';
 import rootReducer from './root-reducer';
+import { CustomStore, AsyncReducers, AsyncSagas } from './root.model';
 
 export const history = createBrowserHistory();
 
@@ -20,24 +21,24 @@ if (dev) {
 }
 
 const configureStore = (extraReducers = {}) => {
-  const store: MiddlewareAPI | any = createStore(
+  const store: CustomStore = createStore(
     rootReducer(extraReducers), middleware,
   );
 
   store.asyncReducers = {};
-  store.injectReducer = (asyncReducers: any) => {
+  store.injectReducer = (asyncReducers: AsyncReducers) => {
     Object.keys(asyncReducers).forEach(key => {
-      if (!store.asyncReducers[key]) {
+      if (store.asyncReducers && !store.asyncReducers[key]) {
         store.asyncReducers[key] = asyncReducers[key]
       }
     })
     store.replaceReducer(rootReducer(store.asyncReducers))
   }
 
-  const createSagaInjector = (runSaga: any) => {
-    const injectedSagas: any = {}
+  const createSagaInjector = (runSaga: (saga: () => Generator<any, void, any>) => Task)=> {
+    const injectedSagas: AsyncSagas = {}
   
-    const injectSaga = (key: string, saga: any) => {
+    const injectSaga = (key: string, saga: () => Generator<any, void, any>) => {
       if (injectedSagas[key]) {
         return injectedSagas[key];
       }
@@ -52,11 +53,11 @@ const configureStore = (extraReducers = {}) => {
   }
   
   store.injectSaga = createSagaInjector(sagaMiddleware.run);
-  const rootTask = store.injectSaga('root', rootSaga);
+  const rootTask = store.injectSaga && store.injectSaga('root', rootSaga);
 
   const asyncTasks = Object.entries(extraReducers)
-    .filter(([key, storeSlice]: any) => !!storeSlice.saga)
-    .map(([key, storeSlice]: any) => store.injectSaga(key, storeSlice.saga))
+    .filter(([storeSlice]: any) => !!storeSlice.saga)
+    .map(([key, storeSlice]: any) => store.injectSaga && store.injectSaga(key, storeSlice.saga))
 
   return {
     store,

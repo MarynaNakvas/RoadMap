@@ -4,12 +4,10 @@ import { get } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
 import { resolvedAction, AppMeta } from 'utils/actions';
-import { types as actionsTypes } from './table-actions';
+import { actions, types as actionsTypes } from './table-actions';
 import { normalizeData, serializeEntriesForSubmit } from './table-service';
 import { MakePriorityPayload, SubmitDataPayload, TableKeys } from './table.model';
 import { putError } from './table-utils';
-
-import { tableActions } from '.';
 
 /*
  * Sagas
@@ -59,7 +57,7 @@ function* makePriorityHandler({
     );
     return yield all([
       put(resolvedAction(type, isPriority)),
-      put(tableActions.fetchDataList()),
+      put(actions.fetchDataList()),
     ]);
   } catch (error) {
     yield putError(error as Error, type);
@@ -129,7 +127,7 @@ function* submitDataHandler({
 
     return yield all([
       put(resolvedAction(type, values)),
-      put(tableActions.fetchDataList()),
+      put(actions.fetchDataList()),
     ]);
   } catch (error) {
     yield putError(error as Error, type);

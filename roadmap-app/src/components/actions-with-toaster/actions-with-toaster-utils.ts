@@ -4,7 +4,6 @@ export const createMetaWithToast = (
   message: string,
   reason: ToastReasonType = ToastReasonType.Success,
   containerId: string = 'COMMON_ACTIONS_CONTAINER_ID',
-  needToDismissPrevious = true,
   scrollToTop = false,
 ): AppMeta => ({
   toaster: {
@@ -13,7 +12,6 @@ export const createMetaWithToast = (
       reason,
       containerId,
       scrollToTop,
-      needToDismissPrevious,
     },
   },
 });

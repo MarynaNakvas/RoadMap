@@ -108,13 +108,11 @@ const TextFieldBase: React.FunctionComponent<TextFieldBaseProps> = memo(
     );
 
     const restProps = omit(props, [
-      'isLoading',
       'handleClear',
       'backsWordIcon',
       'prefix',
       'suffix',
       'isClearable',
-      'defaultDate',
     ]);
 
     return (

@@ -4,13 +4,14 @@ import './list.scss';
 
 export interface ListProps {
   data: {};
+  key: string;
 }
 
-const List = ({ data }: ListProps) => {
+const List = ({ data, key }: ListProps) => {
   const listContent = useMemo(() => {
     const list = Object.values(data).map((item: any) => (
       <li className="ordered-list__item" key={item}>
-        {item}
+        {item[key]}
       </li>
     ));
 

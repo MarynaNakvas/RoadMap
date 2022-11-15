@@ -44,6 +44,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
           <FormField
             formik={formik}
             name={`dataList.${originIndex}.${TableKeys.title}`}
+            fieldType="text"
             placeholder="Title"
             fullWidth
           />
@@ -78,10 +79,10 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
         </div>
 
         <div
-        className={classNames(
-          'table-row__column',
-          { 'table-row__column--priority': isPriority },
-        )}
+          className={classNames(
+            'table-row__column',
+            { 'table-row__column--priority': isPriority },
+          )}
         >
           <ActionItem
             icon={<IconStar />}
@@ -89,18 +90,11 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
             tooltip="Make Priority"
             disabled={isTouched || !id}
           />
-          {/* <FormField
-            formik={formik}
-            name={`${originIndex}.${TableKeys.isPriority}`}
-            fieldType="checkbox"
-            icon={<IconStar />}
-            checkedIcon={<IconStar />}
-            fullWidth
-          /> */}
         </div>
 
-        {id
-          ? <button
+        <div>
+          {id &&
+            <button
               className="table-row__column table-row__column-action"
               type="button"
               onClick={() => remove(originIndex)}
@@ -108,8 +102,8 @@ const TableRow: React.FunctionComponent<TableRowProps> = memo(
               <DeleteIcon />
               <span>Delete</span>
             </button>
-          : <span/>
-        }  
+          }
+        </div>
       </>
     );
   },
