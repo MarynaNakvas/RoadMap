@@ -7,7 +7,7 @@ import { CustomStore, AsyncReducers, AsyncSagas } from './root.model';
 const withInjectStoreAndSaga = (stores: any) => (WrappedComponent: React.FunctionComponent) => {
   const InjectReducerAndSaga = (props: any) => {
     const { store } = useContext(ReactReduxContext);
-    const customStore: CustomStore = store;
+    const customStore: any = store;
     console.log('stores', stores);
     
     const hasStores = useSelector((state: any) => {
