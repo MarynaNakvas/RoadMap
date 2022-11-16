@@ -1,197 +1,227 @@
 import React, {
-  CSSProperties,
+  memo,
   useCallback,
   useEffect,
   useMemo,
-  useRef,
-  useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormikConfig, FormikValues, useFormik } from 'formik';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { VariableSizeList } from 'react-window';
-import { roadMapActions, roadMapSelectors } from 'core/roadmap';
-import { globalFilters } from 'core/app-constants';
+import { FormikConfig, useFormik } from 'formik';
+import { get, isEqual } from 'lodash';
 
-import { checkDataPriority } from 'utils/data-priority';
-import { useSortData } from 'utils/sort-data';
+import { tableActions, tableSelectors, TableData } from 'core/roadmap';
+import {
+  TableKeys,
+} from 'core/roadmap/table.model';
+import {
+  NO_ITEMS_PLACEHOLDER_DESCRIPTION,
+  NO_SELECTED_ITEMS_PLACEHOLDER_TITLE,
+  NO_SELECTED_ITEMS_PLACEHOLDER_DESCRIPTION,
+} from 'core/app-constants';
+import ScreenPlaceholder from 'components/screen-placeholder';
+import StickyFormControls from 'components/sticky-form-controls';
 import Spinner from 'components/spinner';
 import Form from 'components/formik';
+import { debounce } from 'utils/debounce';
+import { useSorting } from 'utils/sorting';
 
-import TableFilters from './table-filters';
+import TableFilters, { useFiltering } from './table-filters';
 import TableHeader from './table-header';
 import TableRow from './table-row';
+import { processData, addRow, removeRow } from './table-utils';
 
 import './table.scss';
 
-const TABLE_ROW_HEIGHT = 41;
-
-type AutoSizerType = {
-  width: number;
-  height: number;
-};
-
-type VariableSizeListType = {
-  index: number;
-  style: CSSProperties;
-};
-
-const Table: React.FunctionComponent = () => {
-  const dataList = useSelector(roadMapSelectors.getDataList);
-
-  const isDataListFetching = useSelector(
-    roadMapSelectors.getIsDataListFetched,
-  );
-
-  const isMakePriorityFetching = useSelector(
-    roadMapSelectors.getIsMakePriorityFetched,
-  );
-
+const TableComponent: React.FunctionComponent = memo(() => {
   const dispatch = useDispatch();
 
-  const data = useCallback(() => {
-    dispatch(roadMapActions.fetchDataList());
-  }, [dispatch]);
-
-  const [activeFilters, changeActiveFilters] = useState(
-    globalFilters,
+  const isDataListFetching = useSelector(
+    tableSelectors.getIsDataListFetching,
   );
 
-  const { items, sortData, sortRules } = useSortData(dataList);
-
-  const dataListWithPriority = useMemo(
-    () => checkDataPriority({ tableContent: items }),
-    [items],
+  const isDataSubmitting = useSelector(
+    tableSelectors.getIsDataSubmitting,
   );
 
-  const [tableContent, setTableContent] = useState(
-    dataListWithPriority,
-  );
+  const initialValues = useSelector(tableSelectors.getData);
 
-  const initialValues = useMemo(() => dataList, [dataList]);
-
-  const makePriority = useCallback(
-    (payload) => {
-      dispatch(roadMapActions.makePriority(payload));
+  const submit = useCallback(
+    (values: TableData) => {
+      dispatch(
+        tableActions.submitData({
+          values: values.dataList,
+          initialValues: initialValues.dataList,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, initialValues],
   );
-
-  const clearAllFilters = () =>
-    checkDataPriority({ tableContent: dataList });
 
   const formikConfig = useMemo(
-    (): FormikConfig<FormikValues> => ({
+    (): FormikConfig<TableData> => ({
+      validateOnChange: true,
+      validateOnBlur: true,
       enableReinitialize: true,
       initialValues,
-      onSubmit: (values: any) => {
-        makePriority({ values, initialValues });
-      },
+      onSubmit: submit,
     }),
     [initialValues],
   );
 
   const formik = useFormik(formikConfig);
-
-  const { handleSubmit } = formik;
-
-  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    handleSubmit();
-  };
-
-  const getItemSize = () => TABLE_ROW_HEIGHT;
-  const lineHeights = getItemSize() * tableContent.length;
-
-  const listRef = useRef<VariableSizeList>(null);
-  useEffect(() => {
-    if (listRef.current) {
-      listRef.current.resetAfterIndex(0);
-    }
-  }, [listRef, lineHeights]);
-
-  const Row = ({ index, style }: VariableSizeListType) => (
-    <div style={style}>
-      <TableRow
-        key={index}
-        rowData={tableContent[index]}
-        formik={formik}
-      />
-    </div>
+  const { values, resetForm, isSubmitting } = formik;
+  const { dataList } = values;
+  const isTouched = useMemo(
+    () => !isEqual(values, initialValues) || isSubmitting,
+    [values, initialValues, isSubmitting],
   );
 
-  const tableAllContent: any = useMemo(
-    () => (
-      <AutoSizer disableWidth>
-        {({ height }: AutoSizerType) => (
-          <VariableSizeList
-            className="table-rows"
-            ref={listRef}
-            width="auto"
-            height={height}
-            itemCount={tableContent.length}
-            itemSize={getItemSize}
-          >
-            {Row}
-          </VariableSizeList>
-        )}
-      </AutoSizer>
+  // Sorting and filtering.
+  const { sortingRules, changeSortingRules } = useSorting(
+    TableKeys.rating,
+    false,
+  );
+  const {
+    title,
+    author,
+    date,
+    rating,
+    hasFilters,
+    resetFilters,
+  } = useFiltering(dataList);
+  const processedData = useMemo(
+    () =>
+      processData(
+        dataList,
+        sortingRules,
+        title.value,
+        author.value,
+        date.value,
+        rating.value,
+      ),
+    [
+      dataList,
+      sortingRules,
+      title.value,
+      author.value,
+      date.value,
+      rating.value,
+    ],
+  );
+
+  // Add and remove
+  const addEntry = useCallback(
+    debounce(() =>
+      formik.setFieldValue(
+        'dataList',
+        addRow(dataList),
+      ),
     ),
-    [tableContent, formik],
+    [dataList, formik.setFieldValue],
+  );
+  const removeEntry = useCallback(
+    (originIndex: number) =>
+      formik.setFieldValue(
+        'dataList',
+        removeRow(dataList, originIndex),
+      ),
+    [dataList, formik.setFieldValue],
   );
 
-  const isEmptyTableContent = tableContent.length;
-
-  const actions = {
-    setTableContent,
-    changeActiveFilters,
-    sortData,
-    clearAllFilters,
-  };
-
   useEffect(() => {
-    data();
-  }, []);
+    dispatch(tableActions.fetchDataList());
+  }, [dispatch]);
 
-  useEffect(() => {
-    setTableContent(dataListWithPriority);
-  }, [dataList, changeActiveFilters]);
+  useEffect(
+    () => () => {
+      dispatch(tableActions.resetDataList());
+    },
+    [dispatch],
+  );
 
   return (
-    <div className="content">
-      <div className="table">
-        <Form formik={formik}>
-          <TableHeader actions={actions} sortRules={sortRules} />
-          <TableFilters
-            dataList={dataList}
-            actions={actions}
-            tableContent={tableContent}
-            activeFilters={activeFilters}
-            sortRules={sortRules}
+    <div className="table">
+      <Form formik={formik}>
+        <div className="table__content-wrapper">
+          <div className="table__controls">
+            <div className="table__title">Posts</div>
+
+            <div className="table__buttons">
+              {hasFilters && (
+                <button
+                  type="button"
+                  className="table__button--text"
+                  onClick={resetFilters}
+                >
+                  <span>Clear filters</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                className="table__button-action"
+                onClick={addEntry}
+              >
+                <span>Create new</span>
+              </button>
+            </div>
+          </div>
+
+          <TableHeader
+            sortingRules={sortingRules}
+            changeSortingRules={changeSortingRules}
           />
+
+          <TableFilters
+            title={title}
+            author={author}
+            date={date}
+            rating={rating}
+          />
+
           <Spinner isFetching={isDataListFetching}>
-            {!isEmptyTableContent && (
-              <div className="table-rows__description">
-                Sorry, no content matched your criteria.
+            {processedData.length ? (
+              <div className="table__rows">
+                {processedData.map((item) => {
+                  const id = get(item, TableKeys.id);
+                  return (<div className="table-row" key={id}>
+                    <TableRow
+                      formik={formik}
+                      item={item}
+                      remove={removeEntry}
+                      isTouched={isTouched}
+                    />
+                  </div>)})}
+              </div>
+            ) : (
+              <div className="table__placeholder-wrapper">
+                <ScreenPlaceholder
+                  title={
+                    hasFilters
+                      ? NO_SELECTED_ITEMS_PLACEHOLDER_TITLE
+                      : ''
+                  }
+                  description={
+                    hasFilters
+                      ? NO_SELECTED_ITEMS_PLACEHOLDER_DESCRIPTION
+                      : NO_ITEMS_PLACEHOLDER_DESCRIPTION
+                  }
+                />
               </div>
             )}
-            <div className="table-rows__wrapper">
-              {tableAllContent}
-            </div>
           </Spinner>
-          <div className="table-buttons">
-            <Spinner isFetching={isMakePriorityFetching}>
-              <button className="table-button" onClick={onClick}>
-                Make a priority
-              </button>
-            </Spinner>
-          </div>
-        </Form>
-      </div>
+        </div>
+        <StickyFormControls
+          className="table__form-controls"
+          inProgress={isDataSubmitting}
+          isTouched={isTouched}
+          resetForm={resetForm}
+          title="Save Changes"
+        />
+      </Form>
     </div>
   );
-};
+});
 
-Table.displayName = 'Table';
+TableComponent.displayName = 'TableComponent';
 
-export default Table;
+export default TableComponent;

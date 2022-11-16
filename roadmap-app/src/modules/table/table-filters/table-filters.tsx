@@ -1,73 +1,43 @@
-import React from 'react';
-import SelectFilter from 'components/select-filter';
-import { TableKeys, TableKeysType } from 'core/roadmap';
-import {
-  ActiveFiltersProps,
-  Collection,
-  CollectionMap,
-  SotringRulesProps,
-  TableActionProps,
-} from '../table.model';
+import React, { memo } from 'react';
+
+import { FilterWithDatePicker } from 'components/date-picker';
+import { FilterWithTermSearch } from 'components/term-filter';
+import { FilterProps } from 'utils/filtering';
+
 import './table-filters.scss';
 
 interface TableFiltersProps {
-  actions: TableActionProps;
-  dataList: TableKeysType[];
-  tableContent: TableKeysType[];
-  activeFilters: ActiveFiltersProps;
-  sortRules: SotringRulesProps;
+  title: FilterProps<string>;
+  author: FilterProps<string>;
+  date: FilterProps<Date>;
+  rating: FilterProps<number>;
 }
 
-const TableFilters = ({
-  dataList,
-  actions,
-  tableContent,
-  activeFilters,
-  sortRules,
-}: TableFiltersProps) => {
-  const filtersOptions: Collection = {};
-  const map: CollectionMap = {};
+const TableFilters: React.FunctionComponent<TableFiltersProps> = memo(
+  ({ title, author, date, rating }) => (
+    <div className="table-filters">
+      <div className="table-filters__column">
+        <FilterWithTermSearch filter={title} placeholder="Search" />
+      </div>
 
-  const optionGroups: string[] = [
-    TableKeys.Title,
-    TableKeys.Author,
-    TableKeys.Date,
-    TableKeys.Rating,
-  ];
+      <div className="table-filters__column">
+        <FilterWithTermSearch filter={author} placeholder="Search" />
+      </div>
 
-  optionGroups.forEach((key) => {
-    map[key] = new Set();
-    filtersOptions[key] = [];
-  });
+      <div className="table-filters__column">
+        <FilterWithDatePicker filter={date} />
+      </div>
 
-  tableContent.forEach((item: any) => {
-    optionGroups.forEach((key: string) => {
-      const value = item[key];
-      if (!!value && !map[key].has(value)) {
-        map[key].add(value);
-        filtersOptions[key].push({
-          value: value,
-          label: value,
-        });
-      }
-    });
-  });
+      <div className="table-filters__column">
+        <FilterWithTermSearch filter={rating} placeholder="Search" />
+      </div>
 
-  const tableFilters = optionGroups.map((key: string) => (
-    <div key={key} className="table-filters__item">
-      <SelectFilter
-        byKey={key}
-        options={filtersOptions[key]}
-        actions={actions}
-        dataList={dataList}
-        activeFilters={activeFilters}
-        sortRules={sortRules}
-      />
+      <div className="table-filters__column table-filters__actions" />
+
+      <div className="table-filters__column table-filters__actions" />
     </div>
-  ));
-
-  return <div className="table-filters">{tableFilters}</div>;
-};
+  ),
+);
 
 TableFilters.displayName = 'TableFilters';
 

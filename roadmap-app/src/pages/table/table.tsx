@@ -1,13 +1,26 @@
-import React from 'react';
-import Table from 'modules/table';
+import React, { useEffect, memo } from 'react';
+
+import TableComponent from 'modules/table';
 
 import './table.scss';
 
-const TablePage = () => (
-  <div className="table-container">
-    <Table />
-  </div>
-);
+interface TablePageProps {
+  title: string;
+  setTitle(title: string): void;
+}
+
+const TablePage: React.FunctionComponent<TablePageProps> = memo(
+  ({ title, setTitle }) => {
+    useEffect(() => {
+      setTitle(title);
+    }, [title, setTitle]);
+  
+    return (
+      <div className="table-container">
+        <TableComponent />
+      </div>
+    );
+});
 
 TablePage.displayName = 'TablePage';
 

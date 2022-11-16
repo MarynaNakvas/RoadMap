@@ -1,0 +1,59 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.text-field {
+  &.MuiFormControl-root {
+    width: 100%;
+  }
+
+  &--label-on-left {
+    &.MuiFormControl-root {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .text-field__label {
+      margin-right: 24px;
+
+      .MuiInputLabel-shrink {
+        margin-bottom: 0;
+      }
+    }
+
+    ~ .MuiFormHelperText-root.Mui-error {
+      margin-left: 110px;
+    }
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .MuiFormLabel-root {
+      white-space: nowrap;
+    }
+
+    // We can add styles for one of possible view detail components.
+    .button-with-tooltip {
+      @extend .text-caption-regular;
+      width: auto;
+      padding: 0;
+      color: $color-primary;
+    }
+  }
+
+  .MuiTextField-root .MuiInputBase-root {
+    &.MuiInputBase-adornedStart {
+      padding-left: 0;
+    }
+
+    &.MuiInputBase-adornedEnd {
+      padding-right: 0;
+    }
+    
+    .MuiOutlinedInput-inputAdornedEnd {
+      padding: 6px 0 7px 5px;
+    }
+  }
+}

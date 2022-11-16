@@ -1,0 +1,117 @@
+@import '../variables.scss';
+@import '../typography.scss';
+
+@mixin table-grid() {
+  display: grid;
+  align-items: center;
+  width: 100%;
+  min-width: min-content;
+
+  .MuiIconButton-root {
+    padding: 6px;
+  }
+}
+
+@mixin table-header() {
+  @include table-grid();
+  background-color: $color-light-grey-20;
+
+  > * {
+    @extend .text-header;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 32px;
+    padding: 8px;
+
+    &:first-child {
+      padding-left: 16px;
+    }
+
+    &:last-child {
+      padding-right: 16px;
+    }
+  }
+
+  &__column--right {
+    justify-content: flex-end;
+  }
+}
+
+@mixin table-filters() {
+  @include table-grid();
+  border-color: $color-light-grey;
+  border-style: solid none;
+  border-width: 1px;
+
+  > * {
+    @extend .text-caption-regular;
+
+    height: 100%;
+    border-left: 1px solid $color-light-grey;
+
+    &:first-child {
+      padding-left: 6px;
+      border-left: none;
+    }
+
+    & .react-datepicker-wrapper {
+      width: 100%;
+
+      & .MuiFormControl-root {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@mixin table-row() {
+  @include table-grid();
+  border-bottom: 1px solid $color-border;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom-style: none;
+  }
+
+  &:hover {
+    background-color: $color-background-primary-hover;
+  }
+
+  &__column {
+    @extend .text-caption-regular;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-height: 39px;
+    padding: 2px 8px;
+
+    &:first-child {
+      padding-left: 8px;
+    }
+
+    &:last-child {
+      padding-right: 24px;
+    }
+
+    &--right {
+      justify-content: flex-end;
+    }
+
+    &--right-aligned {
+      justify-content: flex-end;
+      padding-right: 30px;
+    }
+
+    &--link {
+      color: $color-text;
+    }
+
+    & .MuiInputBase-root {
+      @extend .text-subhead;
+    }
+  }
+}

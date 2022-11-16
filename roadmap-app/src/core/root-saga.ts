@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 
-import { roadMapSagas } from './roadmap';
+import { tableSagas } from './roadmap';
 
 export default function* startForman() {
-  yield all([...roadMapSagas]);
+  yield all([...tableSagas]);
 }

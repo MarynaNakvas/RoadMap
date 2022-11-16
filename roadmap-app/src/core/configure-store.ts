@@ -1,44 +1,68 @@
-import createSagaMiddleware from 'redux-saga';
-import storage from 'redux-persist/lib/storage';
-import { createBrowserHistory } from 'history';
 import { applyMiddleware, createStore } from 'redux';
+import createSagaMiddleware, { Task } from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { persistReducer, persistStore } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import { createBrowserHistory } from 'history';
 
+import { createCustomMiddleWare } from 'core/roadmap';
 import rootSaga from './root-saga';
-import { rootReducers } from './root-reducer';
-
-const sagaMiddleware = createSagaMiddleware();
-
-const persistConfig = {
-  key: 'root',
-  version: 1,
-  storage: storage,
-  stateReconciler: autoMergeLevel2,
-};
+import rootReducer from './root-reducer';
+import { CustomStore, AsyncReducers, AsyncSagas } from './root.model';
 
 export const history = createBrowserHistory();
 
 const dev = process.env.NODE_ENV === 'development';
 
-let middleware = applyMiddleware(sagaMiddleware);
+const sagaMiddleware = createSagaMiddleware();
+const customMiddleWare = createCustomMiddleWare();
+let middleware = applyMiddleware(customMiddleWare, sagaMiddleware);
 
 if (dev) {
   middleware = composeWithDevTools(middleware);
 }
 
-const persistedReducer = persistReducer<any>(
-  persistConfig,
-  rootReducers,
-);
+const configureStore = (extraReducers = {}) => {
+  const store: CustomStore = createStore(
+    rootReducer(extraReducers), middleware,
+  );
 
-export default () => {
-  const store = createStore(persistedReducer, middleware);
-  const persistor = persistStore(store);
+  store.asyncReducers = {};
+  store.injectReducer = (asyncReducers: AsyncReducers) => {
+    Object.keys(asyncReducers).forEach(key => {
+      if (store.asyncReducers && !store.asyncReducers[key]) {
+        store.asyncReducers[key] = asyncReducers[key]
+      }
+    })
+    store.replaceReducer(rootReducer(store.asyncReducers))
+  }
+
+  const createSagaInjector = (runSaga: (saga: () => Generator<any, void, any>) => Task)=> {
+    const injectedSagas: AsyncSagas = {}
+  
+    const injectSaga = (key: string, saga: () => Generator<any, void, any>) => {
+      if (injectedSagas[key]) {
+        return injectedSagas[key];
+      }
+      
+      const task = runSaga(saga);
+      injectedSagas[key] = task;
+    
+      return task;
+    }
+  
+    return injectSaga;
+  }
+  
+  store.injectSaga = createSagaInjector(sagaMiddleware.run);
+  const rootTask = store.injectSaga && store.injectSaga('root', rootSaga);
+
+  const asyncTasks = Object.entries(extraReducers)
+    .filter(([storeSlice]: any) => !!storeSlice.saga)
+    .map(([key, storeSlice]: any) => store.injectSaga && store.injectSaga(key, storeSlice.saga))
+
   return {
     store,
-    persistor,
-    runSaga: sagaMiddleware.run(rootSaga),
-  };
-};
+    runSaga: [rootTask, ...asyncTasks],
+  }
+}
+
+export default configureStore;

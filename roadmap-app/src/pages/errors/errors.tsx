@@ -1,17 +1,24 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import List from 'components/list';
-import { roadMapSelectors } from 'core/roadmap';
+import React, { useEffect, memo } from 'react';
 
-import './errors.scss';
+import Errors from 'modules/errors';
 
-const ErrorsPage = () => {
-  const errors = useSelector(roadMapSelectors.getErrors);
+interface ErrorsPageProps {
+  title: string;
+  setTitle(title: string): void;
+}
 
-  return (
-    <List data={errors} />
-  )
-};
+const ErrorsPage: React.FunctionComponent<ErrorsPageProps> = memo(
+  ({ title, setTitle }) => {
+    useEffect(() => {
+      setTitle(title);
+    }, [title, setTitle]);
+
+    return (
+      <div className="table-container">
+        <Errors />
+      </div>
+    );
+});
 
 ErrorsPage.displayName = 'ErrorsPage';
 

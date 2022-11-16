@@ -1,82 +1,113 @@
-import React, { useMemo } from 'react';
-import classNames from 'clsx';
-import CheckBox from 'components/checkbox';
+import React, { memo, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormikProps } from 'formik';
-import { TableKeys } from 'core/roadmap';
+import { get } from 'lodash';
+import classNames from 'clsx';
+
+import { ReactComponent as DeleteIcon } from 'assets/icons/delete.svg';
+import { ReactComponent as IconStar } from 'assets/icons/icon-star.svg';
+import { tableActions, tableSelectors, TableKeys, Table, TableData } from 'core/roadmap';
+import FormField from 'components/formik/field';
+import ActionItem from 'components/action-item';
 
 import './table-row.scss';
 
-interface TextCell {
-  id: string;
-  data?: string | number | Date | JSX.Element;
-  className?: string;
-}
-
 interface TableRowProps {
-  rowData: any;
-  formik: FormikProps<any>;
+  formik: FormikProps<TableData>;
+  item: Table;
+  remove(originIndex: number): void;
+  isTouched: boolean;
 }
 
-const TableRow = ({ rowData, formik }: TableRowProps) => {
-  const cells = useMemo(() => {
-    const {
-      [TableKeys.id]: id,
-      [TableKeys.Title]: title,
-      [TableKeys.Author]: author,
-      [TableKeys.Date]: date,
-      [TableKeys.Rating]: rating,
-    } = rowData;
+const TableRow: React.FunctionComponent<TableRowProps> = memo(
+  ({ formik, item, remove, isTouched }) => {
+    const dispatch = useDispatch();
 
-    const name = `${id}.${TableKeys.isPriority}`;
+    const isPriorityMaking = useSelector(
+      tableSelectors.getIsPriorityMaking,
+    );
 
-    const titleCell = {
-      id: TableKeys.Title,
-      data: title,
-    };
-    const authorCell = {
-      id: TableKeys.Author,
-      data: author,
-    };
-    const dateCell = {
-      id: TableKeys.Date,
-      data: date,
-    };
-    const ratingCell = {
-      id: TableKeys.Rating,
-      data: rating,
-    };
+    const { originIndex, id, key, isPriority } = useMemo(() => ({
+      originIndex: get(item, TableKeys.originIndex),
+      id: get(item, TableKeys.id),
+      key: get(item, TableKeys.key),
+      isPriority: get(item, TableKeys.isPriority),
+    }), [item]);
 
-    const actionCell = {
-      id: TableKeys.Action,
-      data: (
-        <CheckBox
-          className="table-row__item-action"
-          name={name}
-          formik={formik}
-        />
-      ),
-    };
+    const makePriority = useCallback(() =>
+      dispatch(tableActions.makePriority({ id: key, isPriority: !isPriority })),
+    [key, isPriority]);
 
-    const tableCells = [
-      titleCell,
-      authorCell,
-      dateCell,
-      ratingCell,
-      actionCell,
-    ];
+    return (
+      <>
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`dataList.${originIndex}.${TableKeys.title}`}
+            fieldType="text"
+            placeholder="Title"
+            fullWidth
+          />
+        </div>
 
-    return tableCells.map(({ id, data, className }: TextCell) => (
-      <div
-        key={id}
-        className={classNames('table-row__item', { className })}
-      >
-        {data}
-      </div>
-    ));
-  }, [rowData, formik]);
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`dataList.${originIndex}.${TableKeys.author}`}
+            placeholder="Author"
+            fullWidth
+          />
+        </div>
 
-  return <div className="table-row">{cells}</div>;
-};
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`dataList.${originIndex}.${TableKeys.date}`}
+            fieldType="datePicker"
+            isFormView
+          />
+        </div>
+
+        <div className="table-row__column">
+          <FormField
+            formik={formik}
+            name={`dataList.${originIndex}.${TableKeys.rating}`}
+            fieldType="numberField"
+            placeholder="Rating"
+            fullWidth
+          />
+        </div>
+
+        <div
+          className={classNames(
+            'table-row__column',
+            { 'table-row__column--priority': isPriority },
+          )}
+        >
+          <ActionItem
+            icon={<IconStar />}
+            onClick={makePriority}
+            tooltip="Make Priority"
+            disabled={isTouched || !id}
+          />
+        </div>
+
+        <div>
+          {id &&
+            <button
+              className="table-row__column table-row__column-action"
+              type="button"
+              onClick={() => remove(originIndex)}
+            >
+              <DeleteIcon />
+              <span>Delete</span>
+            </button>
+          }
+        </div>
+      </>
+    );
+  },
+);
 
 TableRow.displayName = 'TableRow';
 

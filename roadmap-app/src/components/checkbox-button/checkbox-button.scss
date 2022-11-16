@@ -1,0 +1,28 @@
+@import 'styles/variables';
+
+.checkbox-button {
+  box-sizing: border-box;
+  width: min-content;
+
+  &--errors {
+    border: 1px solid $color-red;
+  }
+
+  &:hover,
+  &:active,
+  &:focus-within {
+    text-decoration: none;
+  }
+
+  &.MuiButtonBase-root.MuiIconButton-root {
+    padding: 4px;
+
+    &.MuiCheckbox-root {
+      color: $color-medium-grey;
+    }
+
+    &.Mui-checked {
+      color: $color-orange;
+    }
+  }
+}

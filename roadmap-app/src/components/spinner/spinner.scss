@@ -6,8 +6,9 @@
   align-items: center;
   align-self: center;
   justify-content: center;
+  overflow: hidden;
 
-  & .MuiCircularProgress-colorPrimary {
-    color: $color-primary;
+  .MuiCircularProgress-colorPrimary {
+    color: $color-medium-grey;
   }
 }

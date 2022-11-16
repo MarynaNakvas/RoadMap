@@ -1,94 +1,41 @@
 @import 'styles/variables';
 @import 'styles/typography';
+@import 'styles/mixins/content';
+@import 'styles/mixins/scrollbar';
+@import 'styles/mixins/buttons';
+
+$table-title: minmax(200px, 100fr);
+$table-author: minmax(175px, 75fr);
+$table-date: minmax(125px, 50fr);
+$table-rating: minmax(125px, 50fr);
+$table-isPriority: 60px;
+$table-action: 100px;
+
+$table-columns: $table-title $table-author
+$table-date $table-rating $table-isPriority
+$table-action;
 
 .table {
-  @extend .text;
-  z-index: 1;
-  max-width: 60vw;
-  background-color: $color-background-primary;
-  border-radius: 10px;
-  box-shadow: $shadow-table;
+  @include with-content();
+  overflow: inherit;
 
-  &-rows__wrapper {
-    height: 65vh;
+  &__button-action {
+    @extend .button-common;
+
+    padding: 4px 30px;
   }
 
-  &-rows {
-    &::-webkit-scrollbar {
-      position: absolute;
-      width: 10px;
-
-      &:horizontal {
-        height: 5px;
-      }
-
-      &-track {
-        box-shadow: $shadow_scrollbar;
-      }
-
-      &-thumb {
-        min-height: 30px;
-        background-color: $color-primary-80;
-        border-radius: 5px;
-      }
+  &__form-controls {
+    & .sticky-form-controls__buttons > * {
+      max-width: 165px;
     }
   }
 
-  &-rows__description {
-    @extend .text;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    letter-spacing: 0.3px;
-  }
+  &__rows {
+    height: 45vh;
 
-  &-buttons {
-    display: flex;
-    justify-content: flex-end;
-
-    & .spinner {
-      justify-content: flex-end;
-      margin-right: 80px;
+    &-auto-sizer > div {
+      @include custom-scrollbar();
     }
   }
-
-  &-button {
-    @extend .text;
-    margin: 0 40px 15px 0;
-    padding: 6px 14px;
-    letter-spacing: 0.5px;
-    background-color: $color-background-secondary;
-    border: 2px solid $color-primary;
-    border-radius: 10px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $color-background-primary-hover;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  &__select-filter {
-    position: relative;
-
-    & .seacrh-select__placeholder {
-      display: flex;
-      align-items: center;
-      color: $color-placeholder;
-
-      &-text {
-        margin: 0 0 0 7px;
-        padding-top: 3px;
-      }
-    }
-  }
-}
-
-.content {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
 }

@@ -1,0 +1,40 @@
+@import '../variables.scss';
+
+@mixin custom-scrollbar(
+  $thumb: $color-medium-grey-50,
+  $thumb-radius: 2.5px,
+  $scrollbar-vertical-width: 7px,
+  $thumb-horisontal: $color-scroll-track,
+  $thumb-horisontal-radius: 4px,
+  $scrollbar-horisontal-height: 8px
+) {
+  $bg: transparent;
+
+  // for firefox
+  scrollbar-width: thin;
+  scrollbar-color: $thumb $bg;
+
+  // for chrome
+  &::-webkit-scrollbar {
+    width: $scrollbar-vertical-width;
+
+    &:horizontal {
+      height: $scrollbar-horisontal-height;
+    }
+
+    &-track {
+      background: $bg;
+    }
+
+    &-thumb {
+      min-height: 80px;
+      background-color: $thumb;
+      border-radius: $thumb-radius;
+
+      &:horizontal {
+        background-color: $thumb-horisontal;
+        border-radius: $thumb-horisontal-radius;
+      }
+    }
+  }
+}

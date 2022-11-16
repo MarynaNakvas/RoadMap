@@ -67,6 +67,12 @@ export const customStyles = {
   placeholder: (base: CSSProperties) => ({
     ...base,
     display: 'flex',
+    '& .seacrh-select__placeholder': {
+      display: 'flex',
+      '& .seacrh-select__placeholder-text': {
+        margin: '1px 0 0 5px',
+      },
+    },
   }),
   input: (base: CSSProperties, state: any) => {
     const { value } = state;

@@ -1,0 +1,34 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.actions-with-toaster {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .MuiAppBar-root.actions-bar {
+    flex-grow: 1;
+    width: auto;
+  }
+
+  .Toastify {
+    // Toast animation requires a bit of free space.
+    margin-left: auto;
+    padding-left: 24px;
+
+    .Toastify__toast {
+      min-height: auto;
+      padding: 5px 24px;
+      border-radius: 16px;
+
+      .Toastify__toast-body {
+        @extend .text-caption-medium;
+        text-transform: uppercase;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

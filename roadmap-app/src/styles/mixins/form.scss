@@ -1,0 +1,125 @@
+@import '../variables.scss';
+@import '../typography.scss';
+
+.text-field--table-row {
+  &.MuiFormControl-root {
+    width: 100%;
+
+    .MuiInputBase-input {
+      @extend .text-caption-regular;
+      padding: 4px 8px;
+    }
+  }
+}
+
+.text-field-like-data {
+  > label {
+    @extend .text-caption-regular;
+    display: block;
+    margin-bottom: 4px;
+    color: $color-medium-grey;
+  }
+
+  > span {
+    @extend .text-subhead;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 38px;
+    padding: 7px;
+    border: 1px solid $color-normal-border;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      border-color: $color-primary;
+    }
+  }
+}
+
+.disabled-text-field-like-data {
+  @extend .text-field-like-data;
+
+  > span {
+    background-color: $color-background-60;
+    border: 1px solid $color-disabled-border;
+    cursor: default;
+
+    &:hover,
+    &:focus {
+      border-color: $color-disabled-border;
+    }
+  }
+}
+
+@mixin select-field-container--table-row() {
+  &.MuiFormControl-root {
+    width: 100%;
+  }
+
+  & &-prefix {
+    &__control {
+      @extend .text-caption-regular;
+      height: auto;
+      min-height: 30px;
+    }
+
+    &__value-container {
+      height: auto;
+    }
+
+    &__indicators,
+    &__indicator {
+      align-self: center;
+      padding: 0;
+    }
+
+    &__placeholder,
+    &__single-value {
+      font-size: inherit;
+      line-height: inherit;
+    }
+  }
+
+  &-prefix {
+    &__menu &__menu-list {
+      @extend .react-select__menu-list;
+    }
+
+    &__menu &__option {
+      @extend .text-caption-regular;
+      height: auto;
+      min-height: 30px;
+      border-bottom: 1px solid $color-normal-border;
+
+      .select-item__status {
+        font-size: inherit;
+        line-height: inherit;
+      }
+    }
+  }
+}
+
+@mixin field--with-error() {
+  & .MuiInputBase-input {
+    color: $color-red;
+    -webkit-text-fill-color: $color-red; // important for Safari
+  }
+
+  & .MuiOutlinedInput-root:hover {
+    & .MuiOutlinedInput-notchedOutline {
+      border-color: $color-red;
+    }
+  }
+
+  & .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: $color-red;
+  }
+}
+
+@mixin field-validation-fail() {
+  @extend .text-caption-regular;
+  padding-top: 8px;
+  color: $color-red;
+}
