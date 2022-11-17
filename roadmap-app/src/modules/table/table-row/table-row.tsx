@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FormikProps } from 'formik';
 import { get } from 'lodash';
 import classNames from 'clsx';
 
 import { ReactComponent as DeleteIcon } from 'assets/icons/delete.svg';
 import { ReactComponent as IconStar } from 'assets/icons/icon-star.svg';
-import { tableActions, tableSelectors, TableKeys, Table, TableData } from 'core/roadmap';
+import { tableActions, TableKeys, Table, TableData } from 'core/roadmap';
 import FormField from 'components/formik/field';
 import ActionItem from 'components/action-item';
 
@@ -22,10 +22,6 @@ interface TableRowProps {
 const TableRow: React.FunctionComponent<TableRowProps> = memo(
   ({ formik, item, remove, isTouched }) => {
     const dispatch = useDispatch();
-
-    const isPriorityMaking = useSelector(
-      tableSelectors.getIsPriorityMaking,
-    );
 
     const { originIndex, id, key, isPriority } = useMemo(() => ({
       originIndex: get(item, TableKeys.originIndex),

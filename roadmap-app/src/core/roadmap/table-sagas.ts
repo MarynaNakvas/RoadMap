@@ -16,7 +16,11 @@ import { putError } from './table-utils';
 function* fetchDataListHandler({
   type,
   meta,
-}: ActionMeta<any, AppMeta>) {
+}: ActionMeta<any, AppMeta>): Generator<
+any,
+void,
+any
+> {
   try {
     const { requestOptions } = meta;
     const options = {
@@ -43,7 +47,11 @@ function* makePriorityHandler({
   type,
   payload: { id, isPriority },
   meta,
-}: ActionMeta<MakePriorityPayload, AppMeta>) {
+}: ActionMeta<MakePriorityPayload, AppMeta>): Generator<
+any,
+void,
+any
+> {
   try {
     const { requestOptions } = meta;
     yield call(

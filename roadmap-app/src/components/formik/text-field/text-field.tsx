@@ -1,5 +1,4 @@
 import React, {
-  ComponentType,
   memo,
   useCallback,
   useMemo,

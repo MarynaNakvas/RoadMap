@@ -2,13 +2,12 @@ import React, { useEffect, useContext } from 'react';
 import { ReactReduxContext, useSelector } from 'react-redux';
 
 import Spinner from 'components/spinner';
-import { CustomStore, AsyncReducers, AsyncSagas } from './root.model';
+import { CustomStore } from './root.model';
 
-const withInjectStoreAndSaga = (stores: any) => (WrappedComponent: React.FunctionComponent) => {
+const withInjectReducerAndSaga = (stores: any) => (WrappedComponent: React.FunctionComponent) => {
   const InjectReducerAndSaga = (props: any) => {
     const { store } = useContext(ReactReduxContext);
-    const customStore: any = store;
-    console.log('stores', stores);
+    const customStore: CustomStore = store;
     
     const hasStores = useSelector((state: any) => {
       const keys = Object.keys(stores)
@@ -43,4 +42,4 @@ const withInjectStoreAndSaga = (stores: any) => (WrappedComponent: React.Functio
   return InjectReducerAndSaga;
 }
 
-export default withInjectStoreAndSaga;
+export default withInjectReducerAndSaga;

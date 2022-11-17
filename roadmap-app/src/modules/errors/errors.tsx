@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
-import { all, call, fork } from 'redux-saga/effects';
+import { call } from 'redux-saga/effects';
 import { get } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
-import withInjectStoreAndSaga from 'core/withInjectStoreAndSaga';
+import withInjectReducerAndSaga from 'core/withInjectReducerAndSaga';
 import List from 'components/list';
 
 import './errors.scss';
@@ -36,7 +36,7 @@ export function* fetchErrors() {
 const myReducer = (state: any) => ({...state, errors: sagaErrors});
 const myOtherReducer = (state: any) => ({...state, soAuthor: 'Vasia'});
 
-const withReducer = withInjectStoreAndSaga({
+const withReducer = withInjectReducerAndSaga({
   mySaga: {saga : fetchErrors},
   mySlice: myReducer,
   myOtherSlice: myOtherReducer,
