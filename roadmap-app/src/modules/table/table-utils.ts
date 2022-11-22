@@ -52,7 +52,7 @@ export const processData = (
               .toLocaleLowerCase()
               .includes(authorValue.toLocaleLowerCase())
           : true) &&
-        (dateValue && date ? isEqual(date, dateValue) : true) &&
+        (dateValue && date ? isEqual(new Date(date), dateValue) : true) &&
         (ratingValue ? rating === Number(ratingValue) : true)
       );
     });
