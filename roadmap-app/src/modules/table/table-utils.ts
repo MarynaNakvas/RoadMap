@@ -6,13 +6,13 @@ import {
   Table,
   SortingProps,
 } from 'core/roadmap/table.model';
-import { stringCompareFunction } from 'utils/sorting';
+import { dateCompareFunction, numberCompareFunction, stringCompareFunction } from 'utils/sorting';
 
 export const TABLE_ROW_INITIAL_VALUES: Table = {
   [TableKeys.id]: null,
   [TableKeys.title]: '',
   [TableKeys.author]: '',
-  [TableKeys.date]: '',
+  [TableKeys.date]: null,
   [TableKeys.rating]: null,
   [TableKeys.isPriority]: false,
   [TableKeys.key]: null,
@@ -38,8 +38,7 @@ export const processData = (
     items = items.filter((item) => !!item).filter((item) => {
       const title = get(item, TableKeys.title);
       const author = get(item, TableKeys.author);
-      const rawDate = get(item, TableKeys.date);
-      const date = new Date(rawDate);
+      const date = get(item, TableKeys.date);
       const rating = get(item, TableKeys.rating);
 
       return (
@@ -53,7 +52,7 @@ export const processData = (
               .toLocaleLowerCase()
               .includes(authorValue.toLocaleLowerCase())
           : true) &&
-        (dateValue ? isEqual(date, dateValue) : true) &&
+        (dateValue && date ? isEqual(date, dateValue) : true) &&
         (ratingValue ? rating === Number(ratingValue) : true)
       );
     });
@@ -70,7 +69,21 @@ export const processData = (
     const left = get(leftItem, sortingRules.id);
     const right = get(rightItem, sortingRules.id);
 
-    return stringCompareFunction({
+    let comparator;
+    switch (sortingRules.id) {
+      case TableKeys.date:
+        comparator = dateCompareFunction;
+        break;
+      case TableKeys.rating:
+        comparator = numberCompareFunction;
+        break;
+
+      default:
+        comparator = stringCompareFunction;
+        break;
+    }
+
+    return comparator({
       left,
       right,
       isReversed: sortingRules.isReversed,

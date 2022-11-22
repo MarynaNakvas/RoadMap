@@ -1,6 +1,6 @@
 import { ActionMeta } from 'redux-actions';
 import { put, fork, call, takeLatest, all } from 'redux-saga/effects';
-import { get } from 'lodash';
+import { get, shuffle, take, range } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
 import { resolvedAction, AppMeta } from 'utils/actions';
@@ -94,8 +94,9 @@ function* submitDataHandler({
     );
 
     const addedEntriesCalls =
-      addedEntries.map((entry, index) => {
-        const key = values.length - (1 + index);
+      addedEntries.map((entry) => {
+        const key = take(shuffle(range(1, 2000)));
+        
         return createApiCall(
           `https://road-map-241b4-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json`, {
           method: 'PATCH',

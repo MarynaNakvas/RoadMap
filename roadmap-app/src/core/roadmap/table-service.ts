@@ -1,7 +1,6 @@
 import { v4 as createUID } from 'uuid';
 import { get, pick } from 'lodash';
 
-import { dateFormat } from 'utils/date-formatter';
 import { updateUnorderedList } from 'utils/redux-saga';
 import { TableKeys, Table } from './table.model';
 
@@ -13,7 +12,7 @@ export const normalizeData = (data: any) =>
         [TableKeys.id]: id,
         [TableKeys.title]: title,
         [TableKeys.author]: author,
-        [TableKeys.date]: dateFormat(new Date(date)),
+        [TableKeys.date]: date,
         [TableKeys.rating]: rating,
         [TableKeys.isPriority]: isPriority,
         [TableKeys.key]: key,

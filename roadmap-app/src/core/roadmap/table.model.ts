@@ -34,7 +34,7 @@ export interface Table {
   [TableKeys.id]?: string | null;
   [TableKeys.title]: string;
   [TableKeys.author]: string;
-  [TableKeys.date]: string;
+  [TableKeys.date]: Date | null;
   [TableKeys.rating]: number | null;
   [TableKeys.isPriority]: boolean;
   [TableKeys.key]: string | number | null;
@@ -43,6 +43,14 @@ export interface Table {
 
 export interface TableData {
   dataList: Table[];
+}
+
+export interface InitialState {
+  isDataListFetching: boolean;
+  dataList: Table[];
+  isPriorityMaking: boolean;
+  isDataSubmitting: boolean;
+  errors: TableErrors;
 }
 
 export interface MakePriorityPayload {
@@ -68,4 +76,13 @@ export interface OptionProps {
 export interface OnSearchProps {
   term: string;
   meta: InputActionMeta;
+}
+
+export interface Error {
+  id: string;
+  text: string;
+}
+
+export interface TableErrors {
+  [key: string]: Error;
 }

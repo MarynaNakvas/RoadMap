@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { ReactReduxContext, useSelector } from 'react-redux';
+import { ReactReduxContext } from 'react-redux';
 
-import Spinner from 'components/spinner';
 import { CustomStore } from './root.model';
 
 const withInjectReducerAndSaga = (stores: any) => (WrappedComponent: React.FunctionComponent) => {
@@ -9,31 +8,18 @@ const withInjectReducerAndSaga = (stores: any) => (WrappedComponent: React.Funct
     const { store } = useContext(ReactReduxContext);
     const customStore: CustomStore = store;
     
-    const hasStores = useSelector((state: any) => {
-      const keys = Object.keys(stores)
-      for (const key of keys) {
-        if (!state[key]) {
-          return false;
-        }
-      }
-      return true;
-    })
-
     useEffect(() => {
-      for (const [key, storeSlice] of Object.entries(stores) as any) {
+      for (const [key, storeSlice] of Object.entries(stores) as any[]) {
         if (customStore.injectSaga && !!storeSlice.saga) {
           customStore.injectSaga(key, storeSlice.saga)
         }
       }
-      const newStores: any = Object.entries(stores).filter(([storeSlice]: any) => !storeSlice.saga);
+      const newStores: any[] = Object.entries(stores).filter(
+        ([storeSlice]: any) => !storeSlice.saga);
       if (customStore.injectReducer) {
         customStore.injectReducer(Object.fromEntries(newStores));
       }
     }, [])
-
-    if (!hasStores) {
-      return <Spinner />;
-    }
 
     return <WrappedComponent {...props} />;
   }

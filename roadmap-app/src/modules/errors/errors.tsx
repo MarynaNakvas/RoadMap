@@ -5,17 +5,19 @@ import { get } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
 import withInjectReducerAndSaga from 'core/withInjectReducerAndSaga';
+import { TableErrors, InitialState } from 'core/roadmap';
 import List from 'components/list';
 
 import './errors.scss';
 
-let sagaErrors: any[] = [];
+let sagaErrors: TableErrors = {};
 
 const Errors: React.FunctionComponent = memo(() => {
-  const newState = useSelector(state => get(state, 'mySlice'));
-  const sagaErrors = get(newState, 'errors');
+  const newState = useSelector(state => get(state, 'errorsReducer'));
 
-  return <List data={sagaErrors} key={'text'}/>;
+  const errors = get(newState, 'errors');
+
+  return <List data={errors} byKey={'text'}/>;
 });
 
 Errors.displayName = 'Errors';
@@ -33,13 +35,13 @@ export function* fetchErrors() {
 }
 
 // Reducers
-const myReducer = (state: any) => ({...state, errors: sagaErrors});
-const myOtherReducer = (state: any) => ({...state, soAuthor: 'Vasia'});
+const errorsReducer = (state: InitialState) => ({...state, errors: sagaErrors});
+const versionReducer = (state: InitialState) => ({...state, version: '1.0'});
 
-const withReducer = withInjectReducerAndSaga({
-  mySaga: {saga : fetchErrors},
-  mySlice: myReducer,
-  myOtherSlice: myOtherReducer,
+const withReducerAndSaga = withInjectReducerAndSaga({
+  injectSaga: {saga : fetchErrors},
+  errorsReducer,
+  versionReducer,
 });
 
-export default withReducer(Errors);
+export default withReducerAndSaga(Errors);

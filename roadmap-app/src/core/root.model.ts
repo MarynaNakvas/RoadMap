@@ -1,10 +1,6 @@
 import { Store } from 'redux';
 import { Task } from 'redux-saga';
 
-export interface State {
-  roadMap: {}; 
-}
-
 export interface AsyncReducers {
   [key: string]: (state: any) => void;
 }

@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { ReducerType } from './table-reducer';
+import { InitialState } from './table.model';
 
 export interface StateType {
-  roadMap: ReducerType;
+  roadMap: InitialState;
 }
 
 const getLocalState = (state: StateType) => state.roadMap;
@@ -23,11 +23,6 @@ const getIsDataListFetching = createSelector(
   ({ isDataListFetching }) => isDataListFetching,
 );
 
-const getErrors = createSelector(
-  getLocalState,
-  ({ errors }) => errors,
-);
-
 const getIsPriorityMaking = createSelector(
   getLocalState,
   ({ isPriorityMaking }) => isPriorityMaking,
@@ -42,7 +37,6 @@ export default {
   getDataList,
   getData,
   getIsDataListFetching,
-  getErrors,
   getIsPriorityMaking,
   getIsDataSubmitting,
 };

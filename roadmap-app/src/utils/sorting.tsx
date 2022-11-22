@@ -85,9 +85,11 @@ export const dateCompareFunction = ({
   if (right == null) {
     return isReversed ? 1 : -1;
   }
+  const desc = left && right && compareDesc(new Date(left), new Date(right));
+  const asc = left && right && compareAsc(new Date(left), new Date(right));
   return isReversed
-    ? compareDesc(left, right)
-    : compareAsc(left, right);
+    ? desc
+    : asc;
 };
 
 export const useSorting = (
