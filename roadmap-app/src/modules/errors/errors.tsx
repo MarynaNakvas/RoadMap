@@ -1,12 +1,17 @@
 import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { call } from 'redux-saga/effects';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 import { createApiCall } from 'services/api-service';
 import withInjectReducerAndSaga from 'core/withInjectReducerAndSaga';
 import { TableErrors, InitialState } from 'core/roadmap';
+import {
+  NO_ITEMS_PLACEHOLDER_DESCRIPTION,
+} from 'core/app-constants';
 import List from 'components/list';
+import ScreenPlaceholder from 'components/screen-placeholder';
+import Spinner from 'components/spinner';
 
 import './errors.scss';
 
@@ -17,7 +22,18 @@ const Errors: React.FunctionComponent = memo(() => {
 
   const errors = get(newState, 'errors');
 
-  return <List data={errors} byKey={'text'}/>;
+  return (
+    <Spinner isFetching={false}>
+      {!isEmpty(errors) ? (
+        <List data={errors} byKey={'text'}/>
+      ) : (
+        <div className="table__placeholder-wrapper">
+          <ScreenPlaceholder
+            description={NO_ITEMS_PLACEHOLDER_DESCRIPTION}
+          />
+        </div>
+      )}
+    </Spinner>);
 });
 
 Errors.displayName = 'Errors';
