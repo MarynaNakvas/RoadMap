@@ -1,0 +1,9 @@
+@import 'styles/variables';
+
+.select-item {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s background-color;
+}

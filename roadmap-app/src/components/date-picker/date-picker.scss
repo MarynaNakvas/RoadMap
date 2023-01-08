@@ -1,0 +1,189 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.date-picker {
+  & .MuiOutlinedInput-root {
+    & .MuiOutlinedInput-notchedOutline {
+      display: none;
+    }
+  }
+
+  & .MuiFormControl-root {
+    & .MuiOutlinedInput-root.Mui-focused {
+      outline: 1px solid $color-primary;
+      outline-offset: -1px;
+    }
+
+    & .MuiInputBase-input {
+      height: 38px;
+      padding: 0 0 0 8px;
+      font-size: 13px;
+    }
+
+    &.date-picker-input {
+      &__month-format {
+        .MuiInputBase-input {
+          color: $color-primary;
+          -webkit-text-fill-color: $color-primary; // important for Safari
+          cursor: pointer;
+
+          @extend .text-headline-medium;
+        }
+      }
+    }
+  }
+
+  &:not(:last-child) {
+    border-right: 1px solid $color-light-grey;
+  }
+
+  & .MuiOutlinedInput-adornedEnd {
+    & .MuiIconButton-root {
+      color: $color-medium-grey;
+      border-radius: 6px;
+    }
+  }
+
+  &--with-date {
+    width: 100%;
+
+    .react-datepicker-wrapper {
+      display: block;
+    }
+
+    & .MuiFormControl-root {
+      & .MuiOutlinedInput-root {
+        color: $color-white;
+        background: $background-select-filter-active;
+        border-radius: unset;
+
+        .clear-button {
+          margin-left: 0;
+        }
+      }
+
+      & .MuiOutlinedInput-adornedEnd {
+        & .MuiIconButton-root {
+          color: $color-white;
+
+          &:last-child {
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  &--with-table-date,
+  &--with-form-date {
+    & .MuiFormControl-root {
+      & .MuiOutlinedInput-root {
+        height: 30px;
+        color: inherit;
+        background-color: inherit;
+        border: 1px solid $color-normal-border;
+        border-radius: 8px;
+
+        &:hover {
+          border: 1px solid $color-primary;
+        }
+      }
+
+      & .MuiOutlinedInput-adornedEnd {
+        & .MuiIconButton-root {
+          padding: 5px;
+          color: $color-primary;
+          border-radius: 6px;
+
+          &:last-child {
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  &--with-table-date .MuiFormControl-root .MuiOutlinedInput-root {
+    height: 30px;
+  }
+
+  &--with-form-date {
+    .react-datepicker-wrapper {
+      display: block;
+    }
+
+    .MuiFormControl-root {
+      display: block;
+
+      .MuiInputBase-root {
+        width: 100%;
+        height: 30px;
+        padding: 3px;
+        transition: 0.2s border-color;
+
+        &.Mui-disabled {
+          background-color: $color-background;
+          border-color: $color-disabled-border !important;
+        }
+
+        .MuiInputBase-input {
+          height: auto;
+          padding-left: 5px;
+          font-size: inherit;
+          line-height: inherit;
+        }
+
+        .MuiIconButton-root {
+          padding: 7px;
+        }
+      }
+
+      &.react-datepicker-ignore-onclickoutside .MuiInputBase-root,
+      .MuiInputBase-root.Mui-focused,
+      .MuiInputBase-root:hover {
+        border-color: $color-primary;
+        outline: none;
+      }
+    }
+  }
+
+  &--with-error {
+    & .MuiFormControl-root {
+      & .MuiOutlinedInput-root {
+        border: 1px solid $color-red;
+
+        .MuiOutlinedInput {
+          &-input {
+            color: $color-red;
+
+            &::placeholder {
+              color: $color-red;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &--with-default-date {
+    & .MuiFormControl-root {
+      & .MuiOutlinedInput-root {
+        color: $color-white;
+        background: initial;
+
+        .MuiOutlinedInput {
+          &-input {
+            color: $color-primary;
+          }
+        }
+      }
+
+      & .MuiOutlinedInput-adornedEnd {
+        & .MuiIconButton-root {
+          color: $color-medium-grey;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.sorting-button {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  margin: 0;
+  padding: 0 8px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &__icon {
+    flex-shrink: 0;
+    margin-left: 6px;
+    color: $color-medium-grey-80;
+    transition: transform 0.3s;
+
+    &--active {
+      color: $color-orange;
+    }
+
+    &--asc {
+      transform: rotate(180deg);
+    }
+
+    &--desc {
+      transform: rotate(0);
+    }
+  }
+}

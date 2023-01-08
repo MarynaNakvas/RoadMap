@@ -1,0 +1,26 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background-color: $color-background;
+}
+
+.slide-enter {
+  transform: translate(350%, 0);
+}
+
+.slide-enter.slide-enter-active {
+  transform: translate(0%, 0);
+  transition: all 500ms;
+}
+
+.slide-exit {
+  transform: translate(100%, 0);
+}
+
+.slide-exit.slide-exit-active {
+  transform: translate(0%, 0);
+  transition: all 500ms;
+}

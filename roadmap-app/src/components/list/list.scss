@@ -1,0 +1,20 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.list {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+
+  & .ordered-list {
+    @extend .text;
+    margin: 0;
+    padding: 15px 20px 15px 35px;
+    background: $color-background-secondary;
+    border-radius: 8px;
+
+    &__item:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+@import 'styles/variables';
+@import 'styles/typography';
+@import 'styles/mixins/buttons';
+
+$button-width: 176px;
+
+.sticky-form-controls {
+  width: 100%;
+
+  &.actions-bar {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__inner-container {
+    display: block;
+  }
+
+  &__error-message {
+    padding: 16px 0 0;
+    color: $color-red;
+
+    > * {
+      margin: 16px 0 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    padding: 16px 0;
+
+    > * {
+      @extend .button-common;
+
+      width: $button-width;
+      height: min-content;
+
+      &:not(:last-of-type) {
+        margin-right: 24px;
+        background-color: $color-primary;
+        color: $color-white;
+
+        &:hover {
+          background-color: $color-dark-green;
+          border-color: $color-dark-green;
+        }
+      }
+    }
+  }
+}
+
+.MuiAppBar-positionSticky.MuiAppBar-colorInherit {
+  .sticky-form-controls {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,92 @@
+@import '../variables.scss';
+@import '../typography.scss';
+@import '../mixins/buttons';
+
+@mixin with-content-controls() {
+  &__controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    padding: 10px 24px;
+  }
+}
+
+@mixin with-content-buttons() {
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > * {
+      margin-right: 16px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__button {
+    @extend .button-common;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--text {
+      @extend .button-common--text;
+      margin-right: 32px;
+      color: $color-red;
+      cursor: pointer;
+    }
+  }
+}
+
+@mixin with-content-placeholder() {
+  &__placeholder-wrapper {
+    display: flex;
+    align-items: center;
+    min-height: 150px;
+  }
+}
+
+@mixin with-content() {
+  @include with-content-controls();
+  @include with-content-buttons();
+  @include with-content-placeholder();
+  padding-bottom: 8px;
+  overflow: auto;
+
+  &__content-wrapper {
+    min-width: min-content;
+    padding-bottom: 20px;
+    background-color: $color-white;
+    border-radius: 16px;
+    box-shadow: $shadow-block;
+
+    & > .spinner {
+      margin-top: 16px;
+    }
+  }
+
+  &__title {
+    @extend .text-headline-medium;
+    position: sticky;
+    left: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > :first-child {
+      margin-left: 4px;
+    }
+  }
+
+  &__subtitle {
+    color: $color-medium-grey;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 20px;
+  }
+}

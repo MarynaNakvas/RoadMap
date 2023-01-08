@@ -1,0 +1,44 @@
+@import '../variables.scss';
+@import '../typography.scss';
+
+.button-common {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 4px 16px;
+  overflow: hidden;
+  color: $color-primary;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none;
+  background-color: transparent;
+  border: 2px solid $color-primary;
+  border-radius: 20px;
+  cursor: pointer;
+
+  @extend .buttons-small;
+
+  &:hover {
+    color: $color-white;
+    background-color: $color-primary;
+  }
+
+  &:disabled {
+    color: $color-white;
+    background-color: $color-light-grey;
+    border-color: $color-light-grey;
+    cursor: initial;
+  }
+
+  &--text {
+    padding: 0;
+    text-decoration: underline;
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

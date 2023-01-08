@@ -1,0 +1,14 @@
+@import 'styles/typography';
+@import 'styles/mixins/table';
+@import '../table.scss';
+
+.table-header {
+  @include table-header();
+  grid-template-columns: $table-columns;
+
+  &__action {
+    @extend .text-caption-regular;
+    justify-content: flex-end;
+    margin-right: 8px;
+  }
+}

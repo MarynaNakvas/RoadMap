@@ -1,0 +1,33 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.date-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 8px;
+  cursor: pointer;
+
+  &__date-wrapper {
+    flex-grow: 1;
+  }
+
+  &__title {
+    @extend .text-subhead;
+    font-weight: 500;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    color: $color-primary;
+
+    &--increase {
+      transform: rotate(180deg);
+    }
+  }
+
+  & .MuiButtonBase-root.MuiIconButton-root {
+    padding: 6px;
+  }
+}

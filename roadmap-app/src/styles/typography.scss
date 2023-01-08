@@ -1,0 +1,77 @@
+@import './variables.scss';
+
+.text {
+  color: $color-text;
+  font-weight: normal;
+  font-size: 14px;
+  font-family: $font-primary;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.text-title {
+  font-weight: 500;
+  font-size: 24px;
+  font-family: $font-primary;
+  line-height: 28px;
+  letter-spacing: 0.2px;
+}
+
+.text-title-main {
+  font-weight: 500;
+  font-size: 20px;
+  font-family: $font-primary;
+  font-style: italic;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+}
+
+.text-caption-medium {
+  font-weight: 500;
+  font-size: 11px;
+  font-family: $font-primary;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0.3px;
+}
+
+.text-caption-regular {
+  font-weight: normal;
+  font-size: 12px;
+  font-family: $font-primary;
+  line-height: 14px;
+  letter-spacing: 0.2px;
+}
+
+.text-headline-medium {
+  font-weight: 500;
+  font-size: 18px;
+  font-family: $font-primary;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+}
+
+.text-subhead {
+  font-size: 14px;
+  font-family: $font-primary;
+  line-height: 18px;
+  letter-spacing: 0.2px;
+}
+
+.text-header {
+  font-weight: 400;
+  font-size: 13px;
+  font-family: $font-primary;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+}
+
+.buttons-small {
+  font-weight: 600;
+  font-size: 13px;
+  font-family: $font-primary;
+  font-style: normal;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}

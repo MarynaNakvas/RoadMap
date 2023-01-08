@@ -1,0 +1,7 @@
+@import 'styles/mixins/table';
+@import '../table.scss';
+
+.table-filters {
+  @include table-filters();
+  grid-template-columns: $table-columns;
+}

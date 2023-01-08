@@ -1,0 +1,12 @@
+@import 'styles/variables';
+@import 'styles/typography';
+
+.home-container {
+  @extend .text;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+  color: $color-primary;
+  font-size: 33px;
+  letter-spacing: 1.5px;
+}
